@@ -1,0 +1,1026 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Banco Nuzzi</title>
+<meta name="description" content="Banco fictício para testes de tagueamento e dataLayer.">
+<script>
+  // dataLayer inicializado antes de qualquer tag.
+  window.dataLayer = window.dataLayer || [];
+</script>
+<!-- Cole aqui o snippet do Google Tag Manager (parte do <head>), por exemplo:
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+html { color-scheme: light; }
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+/* Layout: banda escura de marca no topo (banners), conteúdo claro em grade de 1120px; área logada em painéis; painel de dataLayer em gaveta lateral. */
+:root {
+  --bg: #F2F6F5;
+  --surface: #FFFFFF;
+  --ink: #102A2F;
+  --muted: #566C6E;
+  --line: #D6E0DF;
+  --tint: #E2EDEB;
+  --brand: #0E3B41;
+  --hero-bg: #0E3B41;
+  --hero-ink: #F3F8F7;
+  --hero-muted: #A9C6C2;
+  --hero-line: rgba(243, 248, 247, .28);
+  --berry: #B5304C;
+  --on-berry: #FFFFFF;
+  --leaf: #4E8F6E;
+  --card-bg: #182326;
+  --ok: #1D7A52;
+  --err: #B42318;
+  --focus: #B5304C;
+  --shadow: 0 10px 30px rgba(16, 42, 47, .10);
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B1618; --surface: #122124; --ink: #E4EEEC; --muted: #93A9A9; --line: #233A3D; --tint: #16302F;
+    --brand: #164A51; --hero-bg: #0F3035; --hero-ink: #EEF6F4; --hero-muted: #9DBDB8; --hero-line: rgba(238, 246, 244, .25);
+    --berry: #E0627C; --on-berry: #1A0B10; --leaf: #6FB58F; --card-bg: #050B0C;
+    --ok: #5CC796; --err: #F07A6E; --focus: #E0627C; --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B1618; --surface: #122124; --ink: #E4EEEC; --muted: #93A9A9; --line: #233A3D; --tint: #16302F;
+  --brand: #164A51; --hero-bg: #0F3035; --hero-ink: #EEF6F4; --hero-muted: #9DBDB8; --hero-line: rgba(238, 246, 244, .25);
+  --berry: #E0627C; --on-berry: #1A0B10; --leaf: #6FB58F; --card-bg: #050B0C;
+  --ok: #5CC796; --err: #F07A6E; --focus: #E0627C; --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.55; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.12; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+p { margin: 0; }
+a { color: inherit; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+.num { font-variant-numeric: tabular-nums; }
+
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* Faixa de demo */
+.demo-strip { background: var(--tint); color: var(--muted); font-size: 12.5px; }
+.demo-strip .wrap { padding-block: 6px; display: flex; gap: 8px 16px; flex-wrap: wrap; align-items: center; }
+.demo-strip strong { color: var(--ink); font-weight: 700; }
+
+/* Topo */
+.topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--surface); border-bottom: 1px solid var(--line); }
+.bar { display: flex; align-items: center; gap: 24px; padding-block: 12px; }
+.logo { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-family: var(--font-display); font-weight: 800; font-size: 21px; letter-spacing: -.02em; }
+.logo small { font-family: var(--font-body); font-weight: 600; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.nav { display: flex; gap: 4px; }
+.nav a { text-decoration: none; padding: 8px 12px; border-radius: 999px; font-weight: 600; color: var(--muted); }
+.nav a:hover { color: var(--ink); background: var(--tint); }
+.nav a[aria-current="page"] { color: var(--ink); background: var(--tint); }
+.actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.hello { font-weight: 600; color: var(--muted); }
+.hello b { color: var(--ink); }
+.menu-btn { display: none; margin-left: auto; background: none; border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; font-weight: 600; cursor: pointer; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; border-radius: 999px; font-weight: 700; text-decoration: none; border: 1px solid transparent; cursor: pointer; white-space: nowrap; transition: transform .15s ease, background-color .15s ease; }
+.btn:hover { transform: translateY(-1px); }
+.btn.berry { background: var(--berry); color: var(--on-berry); }
+.btn.ghost { background: transparent; border-color: var(--line); color: var(--ink); }
+.btn.ghost:hover { background: var(--tint); }
+.btn.on-dark { border-color: var(--hero-line); color: var(--hero-ink); background: transparent; }
+.btn.small { padding: 7px 14px; font-size: 13.5px; }
+
+/* Hero / carrossel */
+.hero { background: var(--hero-bg); color: var(--hero-ink); }
+.carousel { position: relative; }
+.slide { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 32px; align-items: center; padding-block: 56px 72px; min-height: 380px; }
+.slide-copy { display: grid; gap: 16px; justify-items: start; max-width: 34rem; }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--hero-muted); }
+.slide h1 { font-size: clamp(30px, 4.6vw, 50px); font-weight: 800; }
+.slide p.lede { color: var(--hero-muted); font-size: 16.5px; max-width: 30rem; }
+.slide .fine { font-size: 12px; color: var(--hero-muted); }
+.slide-art { justify-self: center; display: grid; place-items: center; }
+.art-figure { font-family: var(--font-display); font-weight: 800; font-size: clamp(64px, 10vw, 120px); line-height: .9; letter-spacing: -.04em; }
+.art-figure span { color: var(--berry); }
+.art-caption { font-size: 13px; color: var(--hero-muted); margin-top: 10px; text-align: center; }
+.card-art { width: min(320px, 100%); aspect-ratio: 1.586; border-radius: 18px; background: var(--card-bg); color: #EEF6F4; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 24px 50px rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.10); background-image: radial-gradient(circle at 82% 22%, var(--berry) 0 9px, transparent 10px), radial-gradient(circle at 74% 30%, var(--berry) 0 7px, transparent 8px), radial-gradient(circle at 86% 34%, var(--berry) 0 6px, transparent 7px); }
+.card-art .chip { width: 38px; height: 28px; border-radius: 6px; background: #C9B37A; opacity: .9; }
+.card-art .row { display: flex; justify-content: space-between; align-items: end; font-family: var(--font-mono); font-size: 13px; letter-spacing: .06em; }
+.card-art .tier { font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: 0; }
+.car-ctrl { position: absolute; left: 0; right: 0; bottom: 18px; }
+.car-ctrl .wrap { display: flex; align-items: center; gap: 12px; }
+.dots { display: flex; gap: 6px; }
+.dot { width: 26px; height: 6px; border-radius: 999px; border: 0; background: var(--hero-line); cursor: pointer; padding: 0; }
+.dot[aria-current="true"] { background: var(--hero-ink); }
+.arrow { width: 34px; height: 34px; border-radius: 999px; border: 1px solid var(--hero-line); background: transparent; color: var(--hero-ink); cursor: pointer; font-size: 16px; line-height: 1; }
+.count { font-family: var(--font-mono); font-size: 12px; color: var(--hero-muted); margin-left: auto; }
+
+/* Seções */
+main { display: block; }
+.section { padding-block: 48px; }
+.section-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
+.section-head h2 { font-size: clamp(24px, 3vw, 32px); }
+.section-head p { color: var(--muted); max-width: 36rem; }
+.label { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px; text-decoration: none; transition: border-color .15s ease, transform .15s ease; }
+.tile:hover { border-color: var(--berry); transform: translateY(-2px); }
+.tile h3 { font-size: 19px; }
+.tile p { color: var(--muted); font-size: 14px; flex: 1; }
+.tile .go { font-weight: 700; color: var(--berry); font-size: 14px; }
+.tile svg { width: 28px; height: 28px; }
+
+.band { background: var(--tint); border-radius: 22px; padding: 32px; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 24px; align-items: center; }
+.band h2 { font-size: clamp(22px, 2.8vw, 30px); }
+.band p { color: var(--muted); margin-top: 10px; }
+.band-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; align-items: center; }
+.band .facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+.band .facts div { background: var(--surface); border-radius: 12px; padding: 12px; }
+.band .facts b { display: block; font-family: var(--font-display); font-size: 20px; }
+.band .facts span { font-size: 12.5px; color: var(--muted); }
+
+.page-hero { background: var(--hero-bg); color: var(--hero-ink); }
+.page-hero .wrap { padding-block: 44px; display: grid; gap: 10px; }
+.page-hero h1 { font-size: clamp(28px, 4vw, 42px); font-weight: 800; }
+.page-hero p { color: var(--hero-muted); max-width: 40rem; }
+
+.cards3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.offer { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+.offer.featured { border: 2px solid var(--berry); }
+.offer h3 { font-size: 21px; }
+.offer ul { margin: 0; padding-left: 18px; color: var(--muted); display: grid; gap: 6px; flex: 1; }
+.offer .price { font-family: var(--font-display); font-weight: 700; font-size: 26px; }
+.offer .price small { font-family: var(--font-body); font-size: 13px; color: var(--muted); font-weight: 500; }
+.offer .btn { align-self: flex-start; }
+
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; }
+table { width: 100%; border-collapse: collapse; min-width: 640px; }
+th, td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 700; }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.table-note { font-size: 12.5px; color: var(--muted); margin-top: 10px; }
+
+/* Login */
+.login-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 28px; box-shadow: var(--shadow); }
+.panel h1 { font-size: 30px; }
+form { display: grid; gap: 16px; }
+.field { display: grid; gap: 6px; }
+.field label { font-weight: 600; font-size: 14px; }
+.field input, .field select { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); font-size: 16px; }
+.field input:focus { border-color: var(--berry); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--berry) 25%, transparent); }
+.hint { font-size: 12.5px; color: var(--muted); }
+.error { color: var(--err); font-weight: 600; font-size: 14px; }
+.context { background: var(--tint); border-radius: 10px; padding: 10px 12px; font-size: 14px; font-weight: 600; }
+.tips { display: grid; gap: 14px; padding: 8px 4px; }
+.tips h2 { font-size: 22px; }
+.tips ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; color: var(--muted); }
+
+/* Área logada */
+.greet { display: flex; justify-content: space-between; align-items: end; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.greet h1 { font-size: clamp(26px, 3.4vw, 34px); }
+.greet p { color: var(--muted); }
+.acct-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; }
+.balance { background: var(--hero-bg); color: var(--hero-ink); border-radius: 20px; padding: 24px; display: grid; gap: 14px; }
+.balance .lbl { color: var(--hero-muted); font-size: 13px; font-weight: 600; }
+.balance .amt { font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 4vw, 40px); font-variant-numeric: tabular-nums; }
+.balance .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.balance .acct { font-family: var(--font-mono); font-size: 12.5px; color: var(--hero-muted); }
+.invoice { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 24px; display: grid; gap: 12px; }
+.invoice .amt { font-family: var(--font-display); font-weight: 700; font-size: 28px; font-variant-numeric: tabular-nums; }
+.meter { height: 8px; border-radius: 999px; background: var(--tint); overflow: hidden; }
+.meter i { display: block; height: 100%; width: 51%; background: var(--berry); border-radius: 999px; }
+.meter-legend { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.quick { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+.qa { display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); text-decoration: none; font-weight: 700; cursor: pointer; text-align: left; transition: border-color .15s ease; }
+.qa:hover { border-color: var(--berry); }
+.qa .ic { width: 36px; height: 36px; border-radius: 10px; background: var(--tint); display: grid; place-items: center; flex: none; }
+.qa .ic svg { width: 20px; height: 20px; }
+
+.promos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.promo { border-radius: 18px; padding: 22px; display: grid; gap: 10px; align-content: start; border: 1px solid var(--line); background: var(--surface); }
+.promo.dark { background: var(--hero-bg); color: var(--hero-ink); border-color: transparent; }
+.promo.dark p { color: var(--hero-muted); }
+.promo h3 { font-size: 20px; }
+.promo p { color: var(--muted); font-size: 14px; }
+.promo .tag { justify-self: start; font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: var(--berry); color: var(--on-berry); }
+.promo .btn { justify-self: start; margin-top: 4px; }
+
+.tx { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; }
+.tx li { display: grid; grid-template-columns: 58px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+.tx li:last-child { border-bottom: 0; }
+.tx .d { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); }
+.tx .who { min-width: 0; }
+.tx .who b { display: block; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tx .who span { font-size: 12.5px; color: var(--muted); }
+.tx .v { font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
+.tx .v.in { color: var(--ok); }
+
+.two-col { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.sub-h { font-size: 20px; margin-bottom: 14px; }
+
+/* Pix */
+.pix-wrap { max-width: 620px; }
+.steps { list-style: none; margin: 0 0 20px; padding: 0; display: flex; gap: 8px; flex-wrap: wrap; }
+.steps li { display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 999px; background: var(--tint); color: var(--muted); font-weight: 600; font-size: 13.5px; }
+.steps li b { width: 24px; height: 24px; border-radius: 999px; display: grid; place-items: center; background: var(--surface); font-size: 12px; }
+.steps li[aria-current="step"] { background: var(--berry); color: var(--on-berry); }
+.steps li[aria-current="step"] b { color: var(--ink); }
+.review { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.review div { display: flex; justify-content: space-between; gap: 16px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.review div:last-child { border-bottom: 0; }
+.review dt { color: var(--muted); }
+.review dd { margin: 0; font-weight: 700; text-align: right; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.success-mark { width: 52px; height: 52px; border-radius: 999px; background: color-mix(in srgb, var(--ok) 18%, transparent); color: var(--ok); display: grid; place-items: center; }
+
+/* Rodapé */
+footer { border-top: 1px solid var(--line); margin-top: 24px; }
+footer .wrap { padding-block: 28px 96px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: var(--muted); font-size: 13px; }
+footer nav { display: flex; gap: 16px; flex-wrap: wrap; }
+
+/* Painel dataLayer */
+.dl-toggle { position: fixed; z-index: 40; right: calc(16px + env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; border: 0; background: var(--ink); color: var(--bg); font-family: var(--font-mono); font-size: 13px; font-weight: 500; cursor: pointer; box-shadow: var(--shadow); }
+.dl-toggle span { background: var(--berry); color: var(--on-berry); border-radius: 999px; padding: 1px 8px; font-variant-numeric: tabular-nums; }
+.dl-panel { position: fixed; z-index: 45; top: 0; right: 0; bottom: 0; width: min(420px, 100%); background: var(--surface); border-left: 1px solid var(--line); box-shadow: var(--shadow); display: flex; flex-direction: column; padding: calc(16px + env(safe-area-inset-top, 0px)) calc(16px + env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) 16px; gap: 10px; }
+.dl-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dl-head strong { font-family: var(--font-mono); font-size: 15px; }
+.dl-head .dl-btns { margin-left: auto; display: flex; gap: 6px; }
+.dl-head button { border: 1px solid var(--line); background: var(--bg); border-radius: 8px; padding: 6px 10px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+.dl-note { font-size: 12.5px; color: var(--muted); background: var(--tint); border-radius: 10px; padding: 8px 10px; }
+#dl-fallback { width: 100%; height: 120px; font-family: var(--font-mono); font-size: 11.5px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); }
+#dl-list { list-style: none; margin: 0; padding: 0; overflow: auto; flex: 1; display: grid; gap: 8px; align-content: start; }
+#dl-list li { border: 1px solid var(--line); border-radius: 10px; padding: 10px; min-width: 0; }
+#dl-list .ev { display: flex; justify-content: space-between; gap: 8px; font-family: var(--font-mono); font-size: 12.5px; }
+#dl-list .ev b { color: var(--berry); font-weight: 500; }
+#dl-list .ev time { color: var(--muted); }
+#dl-list pre { margin: 6px 0 0; font-family: var(--font-mono); font-size: 11.5px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--muted); }
+.dl-empty { color: var(--muted); font-size: 13px; }
+
+.toast { position: fixed; z-index: 50; left: 50%; transform: translateX(-50%); bottom: calc(76px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 12px; font-weight: 600; font-size: 14px; max-width: calc(100% - 32px); box-shadow: var(--shadow); }
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cards3 { grid-template-columns: minmax(0, 1fr); }
+  .band { grid-template-columns: minmax(0, 1fr); }
+  .band-actions { justify-content: flex-start; }
+  .login-grid, .acct-grid, .two-col { grid-template-columns: minmax(0, 1fr); }
+  .quick { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .menu-btn { display: inline-flex; }
+  .nav, .actions { display: none; }
+  .topbar.open .bar { flex-wrap: wrap; }
+  .topbar.open .nav:not([hidden]), .topbar.open .actions:not([hidden]) { display: flex; flex-direction: column; align-items: stretch; width: 100%; margin-left: 0; }
+  .topbar.open .actions:not([hidden]) { flex-direction: row; flex-wrap: wrap; padding-bottom: 6px; }
+  .slide { grid-template-columns: minmax(0, 1fr); padding-block: 36px 76px; min-height: 0; gap: 24px; }
+  .slide-art { justify-self: start; }
+  .art-caption { text-align: left; }
+  .promos { grid-template-columns: minmax(0, 1fr); }
+  .band { padding: 22px; }
+  .band .facts { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 480px) {
+  .tiles { grid-template-columns: minmax(0, 1fr); }
+  .quick { grid-template-columns: minmax(0, 1fr); }
+  .panel { padding: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+  .btn:hover, .tile:hover { transform: none; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-pix" viewBox="0 0 24 24"><path d="M12 3l9 9-9 9-9-9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18" stroke="currentColor" stroke-width="1.8"/></symbol>
+  <symbol id="i-grow" viewBox="0 0 24 24"><path d="M4 18l6-6 4 4 6-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 8h5v5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-acct" viewBox="0 0 24 24"><path d="M4 10l8-5 8 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M6 10v8M10 10v8M14 10v8M18 10v8M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-bar" viewBox="0 0 24 24"><path d="M4 6v12M7 6v12M10 6v12M14 6v12M16 6v12M20 6v12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M4 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<div class="demo-strip"><div class="wrap"><strong>Ambiente de demonstração</strong><span>Banco fictício para testes de tagueamento. Não insira dados reais.</span><span>Eventos aparecem no painel dataLayer, no canto inferior direito.</span></div></div>
+
+<header class="topbar" id="topbar">
+  <div class="wrap bar">
+    <a href="#inicio" class="logo" data-track="header_logo" data-track-type="menu" aria-label="Banco Nuzzi, início">
+      <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="9" fill="var(--berry)"/><path d="M10 23V9.5l12 13V9" stroke="var(--on-berry)" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Nuzzi <small>banco</small>
+    </a>
+    <nav class="nav" id="nav-public" aria-label="Menu principal">
+      <a href="#inicio" data-track="menu_para_voce" data-track-type="menu">Para você</a>
+      <a href="#cartoes" data-track="menu_cartoes" data-track-type="menu">Cartões</a>
+      <a href="#investimentos" data-track="menu_investimentos" data-track-type="menu">Investimentos</a>
+    </nav>
+    <nav class="nav" id="nav-private" aria-label="Menu da conta" hidden>
+      <a href="#conta" data-track="menu_resumo" data-track-type="menu">Resumo</a>
+      <a href="#pix" data-track="menu_pix" data-track-type="menu">Pix</a>
+      <a href="#cartoes" data-track="menu_cartoes" data-track-type="menu">Cartões</a>
+      <a href="#investimentos" data-track="menu_investimentos" data-track-type="menu">Investimentos</a>
+    </nav>
+    <div class="actions" id="actions-public">
+      <a class="btn ghost small" href="#entrar" data-track="header_entrar" data-track-type="cta">Entrar</a>
+      <a class="btn berry small" href="#entrar" data-track="header_abrir_conta" data-track-type="cta">Abrir conta</a>
+    </div>
+    <div class="actions" id="actions-private" hidden>
+      <span class="hello">Olá, <b>Marina</b></span>
+      <button class="btn ghost small" id="btn-sair" type="button">Sair</button>
+    </div>
+    <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="topbar">Menu</button>
+  </div>
+</header>
+
+<main>
+  <!-- ============ INÍCIO (não logada) ============ -->
+  <section data-page="inicio">
+    <div class="hero">
+      <div class="carousel" id="carousel" aria-roledescription="carrossel" aria-label="Destaques">
+        <div class="wrap slide" data-promo="bnr_pix_agendado" data-promo-name="Pix agendado sem tarifa" data-slot="home_hero_1" aria-roledescription="slide" aria-label="1 de 3">
+          <div class="slide-copy">
+            <p class="eyebrow">Pix</p>
+            <h1>Agende Pix para até 12 meses, sem tarifa</h1>
+            <p class="lede">Programe aluguel, mesada e contas recorrentes uma vez. O Pix sai na data certa, mesmo em fim de semana.</p>
+            <a class="btn berry promo-cta" href="#pix">Agendar um Pix</a>
+          </div>
+          <div class="slide-art">
+            <div><div class="art-figure">R$ 0<span>,00</span></div><p class="art-caption">de tarifa por Pix agendado</p></div>
+          </div>
+        </div>
+        <div class="wrap slide" data-promo="bnr_cartao_black" data-promo-name="Cartão Nuzzi Black" data-slot="home_hero_2" aria-roledescription="slide" aria-label="2 de 3" hidden>
+          <div class="slide-copy">
+            <p class="eyebrow">Cartões</p>
+            <h1>Cartão Nuzzi Black: 2,1 pontos por dólar</h1>
+            <p class="lede">Pontos que não expiram e anuidade zerada com R$ 5.000 por mês na fatura.</p>
+            <a class="btn berry promo-cta" href="#cartoes">Conhecer o Black</a>
+            <p class="fine">Sujeito a análise de crédito. Condições fictícias.</p>
+          </div>
+          <div class="slide-art">
+            <div class="card-art" aria-hidden="true"><div class="chip"></div><div class="row"><span class="tier">Nuzzi Black</span><span>•••• 4821</span></div></div>
+          </div>
+        </div>
+        <div class="wrap slide" data-promo="bnr_cdb_liquidez" data-promo-name="CDB 104% do CDI" data-slot="home_hero_3" aria-roledescription="slide" aria-label="3 de 3" hidden>
+          <div class="slide-copy">
+            <p class="eyebrow">Investimentos</p>
+            <h1>CDB com 104% do CDI e resgate quando quiser</h1>
+            <p class="lede">Aplicação a partir de R$ 1, coberta pelo FGC até R$ 250 mil por CPF.</p>
+            <a class="btn berry promo-cta" href="#investimentos">Ver investimentos</a>
+            <p class="fine">Taxa fictícia para demonstração.</p>
+          </div>
+          <div class="slide-art">
+            <div><div class="art-figure">104<span>%</span></div><p class="art-caption">do CDI, liquidez diária</p></div>
+          </div>
+        </div>
+        <div class="car-ctrl">
+          <div class="wrap">
+            <button class="arrow" id="car-prev" type="button" aria-label="Destaque anterior">‹</button>
+            <div class="dots" role="group" aria-label="Escolher destaque">
+              <button class="dot" type="button" data-dot="0" aria-label="Destaque 1" aria-current="true"></button>
+              <button class="dot" type="button" data-dot="1" aria-label="Destaque 2" aria-current="false"></button>
+              <button class="dot" type="button" data-dot="2" aria-label="Destaque 3" aria-current="false"></button>
+            </div>
+            <button class="arrow" id="car-next" type="button" aria-label="Próximo destaque">›</button>
+            <span class="count" id="slide-count">1 / 3</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap section">
+      <div class="section-head">
+        <div><p class="label">Para você</p><h2>Tudo da sua conta em um lugar</h2></div>
+        <p>Conta digital sem mensalidade, cartão com pontos e investimentos com liquidez diária.</p>
+      </div>
+      <div class="tiles">
+        <a class="tile" href="#entrar" data-track="tile_conta_digital" data-track-type="product_tile">
+          <svg aria-hidden="true"><use href="#i-acct"/></svg>
+          <h3>Conta digital</h3><p>Sem mensalidade, com Pix e TED ilimitados.</p><span class="go">Abrir conta</span>
+        </a>
+        <a class="tile" href="#cartoes" data-track="tile_cartoes" data-track-type="product_tile">
+          <svg aria-hidden="true"><use href="#i-card"/></svg>
+          <h3>Cartões</h3><p>Três categorias, cartão virtual na hora.</p><span class="go">Comparar cartões</span>
+        </a>
+        <a class="tile" href="#investimentos" data-track="tile_investimentos" data-track-type="product_tile">
+          <svg aria-hidden="true"><use href="#i-grow"/></svg>
+          <h3>Investimentos</h3><p>CDB, LCI e Tesouro Selic a partir de R$ 1.</p><span class="go">Ver taxas</span>
+        </a>
+        <a class="tile" href="#pix" data-track="tile_pix" data-track-type="product_tile">
+          <svg aria-hidden="true"><use href="#i-pix"/></svg>
+          <h3>Pix</h3><p>Envie, agende e receba 24 horas por dia.</p><span class="go">Fazer um Pix</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="wrap section" style="padding-top:0">
+      <div class="band" data-promo="bnr_empresas_folha" data-promo-name="Nuzzi Empresas folha de pagamento" data-slot="home_mid_1">
+        <div>
+          <p class="label">Nuzzi Empresas</p>
+          <h2>Folha de pagamento e cobrança em um só contrato</h2>
+          <p>Para empresas com faturamento a partir de R$ 4,8 milhões por ano. Gestor dedicado e API de cash management.</p>
+          <div class="facts">
+            <div><b class="num">D+0</b><span>crédito da folha</span></div>
+            <div><b class="num">R$ 0</b><span>por boleto liquidado no 1º ano</span></div>
+            <div><b class="num">24h</b><span>retorno do gestor</span></div>
+          </div>
+        </div>
+        <div class="band-actions">
+          <button class="btn berry promo-cta" type="button" data-action="lead" data-item="empresas_folha">Quero falar com um gestor</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CARTÕES ============ -->
+  <section data-page="cartoes" hidden>
+    <div class="page-hero"><div class="wrap">
+      <p class="eyebrow">Cartões</p>
+      <h1>Escolha o cartão que acompanha seu gasto</h1>
+      <p>Todos com cartão virtual na hora, aproximação e controle de limite pelo app.</p>
+    </div></div>
+    <div class="wrap section">
+      <div class="cards3">
+        <article class="offer">
+          <p class="label">Essencial</p><h3>Nuzzi Essencial</h3>
+          <p class="price">R$ 0 <small>de anuidade</small></p>
+          <ul><li>Cashback de 0,5% na fatura</li><li>Limite inicial a partir de R$ 500</li><li>Sem renda mínima</li></ul>
+          <button class="btn ghost" type="button" data-action="card_request" data-item="essencial">Pedir este cartão</button>
+        </article>
+        <article class="offer">
+          <p class="label">Mais</p><h3>Nuzzi Mais</h3>
+          <p class="price">R$ 29 <small>/mês, isento com R$ 1.500 na fatura</small></p>
+          <ul><li>1,2 ponto por dólar</li><li>Seguro de compra protegida</li><li>Renda a partir de R$ 4.000</li></ul>
+          <button class="btn ghost" type="button" data-action="card_request" data-item="mais">Pedir este cartão</button>
+        </article>
+        <article class="offer featured">
+          <p class="label">Black</p><h3>Nuzzi Black</h3>
+          <p class="price">R$ 79 <small>/mês, isento com R$ 5.000 na fatura</small></p>
+          <ul><li>2,1 pontos por dólar, sem expiração</li><li>4 acessos por ano a salas VIP</li><li>Renda a partir de R$ 20.000</li></ul>
+          <button class="btn berry" type="button" data-action="card_request" data-item="black">Pedir este cartão</button>
+        </article>
+      </div>
+      <p class="table-note">Tarifas e benefícios fictícios, apenas para testes.</p>
+    </div>
+    <div class="wrap section" style="padding-top:0">
+      <div class="band" data-promo="bnr_cartao_virtual" data-promo-name="Cartão virtual na hora" data-slot="cartoes_mid_1">
+        <div><p class="label">Compra online</p><h2>Gere um cartão virtual para cada loja</h2><p>Bloqueie só aquele cartão se algo der errado, sem afetar o físico.</p></div>
+        <div class="band-actions"><a class="btn berry promo-cta" href="#conta">Gerar cartão virtual</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INVESTIMENTOS ============ -->
+  <section data-page="investimentos" hidden>
+    <div class="page-hero"><div class="wrap">
+      <p class="eyebrow">Investimentos</p>
+      <h1>Renda fixa com taxa clara antes de aplicar</h1>
+      <p>Compare rentabilidade, prazo e liquidez. Aplicação mínima de R$ 1 em todos os produtos.</p>
+    </div></div>
+    <div class="wrap section">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Produto</th><th>Rentabilidade</th><th>Liquidez</th><th>IR</th><th class="num">Mínimo</th><th><span class="label" style="font-size:0">Ação</span></th></tr></thead>
+          <tbody>
+            <tr><td><b>CDB Liquidez Diária</b></td><td>104% do CDI</td><td>Diária</td><td>Tabela regressiva</td><td class="num">R$ 1,00</td><td><button class="btn ghost small" type="button" data-action="investment_intent" data-item="cdb_liquidez">Investir</button></td></tr>
+            <tr><td><b>LCI 90 dias</b></td><td>92% do CDI</td><td>Após 90 dias</td><td>Isento</td><td class="num">R$ 1,00</td><td><button class="btn ghost small" type="button" data-action="investment_intent" data-item="lci_90">Investir</button></td></tr>
+            <tr><td><b>CDB 2 anos</b></td><td>IPCA + 6,4% a.a.</td><td>No vencimento</td><td>Tabela regressiva</td><td class="num">R$ 1,00</td><td><button class="btn ghost small" type="button" data-action="investment_intent" data-item="cdb_ipca_2a">Investir</button></td></tr>
+            <tr><td><b>Fundo Nuzzi DI</b></td><td>100,2% do CDI (12 meses)</td><td>D+1</td><td>Come-cotas</td><td class="num">R$ 1,00</td><td><button class="btn ghost small" type="button" data-action="investment_intent" data-item="fundo_di">Investir</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-note">Taxas fictícias. Rentabilidade passada não garante rentabilidade futura.</p>
+    </div>
+  </section>
+
+  <!-- ============ LOGIN ============ -->
+  <section data-page="entrar" hidden>
+    <div class="wrap section">
+      <div class="login-grid">
+        <div class="panel">
+          <form id="login-form" novalidate>
+            <div><p class="label">Área do cliente</p><h1>Entrar na sua conta</h1></div>
+            <p class="context" id="login-context" hidden></p>
+            <div class="field">
+              <label for="f-conta">Agência e conta</label>
+              <input id="f-conta" name="conta" inputmode="numeric" autocomplete="off" value="0001 / 12345-6">
+              <span class="hint">Formato 0001 / 12345-6. Já vem preenchido com a conta de teste.</span>
+            </div>
+            <div class="field">
+              <label for="f-senha">Senha eletrônica</label>
+              <input id="f-senha" name="senha" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="6 dígitos">
+              <span class="hint">Qualquer sequência de 6 dígitos entra, por exemplo 123456.</span>
+            </div>
+            <p class="error" id="login-error" role="alert" hidden></p>
+            <div class="btn-row">
+              <button class="btn berry" type="submit">Entrar</button>
+              <a class="btn ghost" href="#inicio" data-track="login_voltar" data-track-type="cta">Voltar</a>
+            </div>
+          </form>
+        </div>
+        <div class="tips">
+          <p class="label">Segurança</p>
+          <h2>O Nuzzi nunca pede sua senha por telefone ou mensagem</h2>
+          <ul>
+            <li>Confira se o endereço do site começa com o domínio do banco.</li>
+            <li>Ative a confirmação por biometria no app para Pix acima de R$ 1.000.</li>
+            <li>Na dúvida, bloqueie o cartão pelo app e fale com a central.</li>
+          </ul>
+          <p class="hint">Este é um banco de demonstração; nada digitado aqui sai do seu navegador.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTA (logada) ============ -->
+  <section data-page="conta" hidden>
+    <div class="wrap section">
+      <div class="greet">
+        <div><p class="label">Conta corrente</p><h1>Bom dia, Marina</h1></div>
+        <p>Último acesso: hoje, 09:42</p>
+      </div>
+      <div class="acct-grid">
+        <div class="balance">
+          <div class="row"><span class="lbl">Saldo disponível</span><span class="acct">Ag 0001 · CC 12345-6</span></div>
+          <div class="amt" id="saldo">R$ 0,00</div>
+          <div class="row">
+            <button class="btn on-dark small" type="button" id="btn-saldo" data-action="toggle_balance" aria-pressed="false">Ocultar saldo</button>
+            <a class="btn berry small" href="#pix" data-track="saldo_fazer_pix" data-track-type="cta">Fazer Pix</a>
+          </div>
+        </div>
+        <div class="invoice">
+          <div class="row" style="display:flex;justify-content:space-between;gap:8px"><span class="label">Fatura atual · Nuzzi Mais</span><span class="hint">vence 10/11</span></div>
+          <div class="amt">R$ 2.318,40</div>
+          <div class="meter" aria-hidden="true"><i></i></div>
+          <div class="meter-legend"><span>Usado R$ 7.700,00</span><span>Limite R$ 15.000,00</span></div>
+        </div>
+      </div>
+      <div class="quick">
+        <a class="qa" href="#pix" data-track="atalho_pix" data-track-type="quick_action"><span class="ic"><svg aria-hidden="true"><use href="#i-pix"/></svg></span>Pix</a>
+        <button class="qa" type="button" data-action="quick_action" data-item="pagar_boleto"><span class="ic"><svg aria-hidden="true"><use href="#i-bar"/></svg></span>Pagar boleto</button>
+        <button class="qa" type="button" data-action="quick_action" data-item="transferir"><span class="ic"><svg aria-hidden="true"><use href="#i-send"/></svg></span>Transferir</button>
+        <a class="qa" href="#investimentos" data-track="atalho_investir" data-track-type="quick_action"><span class="ic"><svg aria-hidden="true"><use href="#i-grow"/></svg></span>Investir</a>
+      </div>
+    </div>
+
+    <div class="wrap section" style="padding-top:0">
+      <div class="two-col">
+        <div>
+          <h2 class="sub-h">Extrato recente</h2>
+          <ul class="tx" id="extrato"></ul>
+        </div>
+        <div>
+          <h2 class="sub-h">Ofertas para você</h2>
+          <div class="promos" style="grid-template-columns:minmax(0,1fr)">
+            <div class="promo dark" data-promo="bnr_credito_preaprovado" data-promo-name="Crédito pessoal pré-aprovado" data-slot="conta_oferta_1">
+              <span class="tag">Pré-aprovado</span>
+              <h3>R$ 30.000 de crédito pessoal disponível</h3>
+              <p>Taxa a partir de 1,49% ao mês, em até 48 parcelas. Dinheiro na conta em minutos.</p>
+              <button class="btn berry small promo-cta" type="button" data-action="offer_accept" data-item="credito_preaprovado">Simular parcelas</button>
+            </div>
+            <div class="promo" data-promo="bnr_seguro_cartao" data-promo-name="Seguro cartão protegido" data-slot="conta_oferta_2">
+              <span class="tag">Novo</span>
+              <h3>Proteja seu cartão contra perda e roubo</h3>
+              <p>R$ 6,90 por mês, com reembolso de compras feitas até 72 horas antes do bloqueio.</p>
+              <button class="btn ghost small promo-cta" type="button" data-action="offer_accept" data-item="seguro_cartao">Contratar seguro</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PIX (logada) ============ -->
+  <section data-page="pix" hidden>
+    <div class="wrap section">
+      <div class="pix-wrap">
+        <p class="label">Pix</p>
+        <h1 style="font-size:clamp(26px,3.4vw,34px);margin:4px 0 18px">Enviar Pix</h1>
+        <ol class="steps" aria-label="Etapas do Pix">
+          <li aria-current="step"><b>1</b>Dados</li>
+          <li><b>2</b>Revisão</li>
+          <li><b>3</b>Comprovante</li>
+        </ol>
+
+        <div class="panel" data-pix-step="1">
+          <form id="pix-form" novalidate>
+            <div class="field">
+              <label for="pix-chave">Chave Pix de quem vai receber</label>
+              <input id="pix-chave" autocomplete="off" placeholder="E-mail, celular, CPF, CNPJ ou chave aleatória">
+              <span class="hint">Use uma chave inventada, como ana@exemplo.com.</span>
+            </div>
+            <div class="field">
+              <label for="pix-valor">Valor</label>
+              <input id="pix-valor" inputmode="decimal" autocomplete="off" placeholder="R$ 0,00">
+              <span class="hint" id="pix-saldo-hint"></span>
+            </div>
+            <div class="field">
+              <label for="pix-desc">Mensagem (opcional)</label>
+              <input id="pix-desc" maxlength="60" autocomplete="off" placeholder="Ex.: aluguel de outubro">
+            </div>
+            <p class="error" id="pix-error" role="alert" hidden></p>
+            <div class="btn-row"><button class="btn berry" type="submit">Continuar</button><a class="btn ghost" href="#conta" data-track="pix_cancelar" data-track-type="cta">Cancelar</a></div>
+          </form>
+        </div>
+
+        <div class="panel" data-pix-step="2" hidden>
+          <div style="display:grid;gap:16px">
+            <h2 style="font-size:22px">Confira antes de enviar</h2>
+            <dl class="review" id="pix-review" style="margin:0"></dl>
+            <div class="btn-row"><button class="btn berry" type="button" id="pix-confirmar">Confirmar Pix</button><button class="btn ghost" type="button" id="pix-voltar">Corrigir dados</button></div>
+          </div>
+        </div>
+
+        <div class="panel" data-pix-step="3" hidden>
+          <div style="display:grid;gap:16px;justify-items:start">
+            <div class="success-mark"><svg width="26" height="26" aria-hidden="true"><use href="#i-check"/></svg></div>
+            <h2 style="font-size:24px" id="pix-ok-title">Pix enviado</h2>
+            <dl class="review" id="pix-receipt" style="margin:0;width:100%"></dl>
+            <div class="btn-row"><a class="btn berry" href="#conta" data-track="pix_voltar_resumo" data-track-type="cta">Voltar ao resumo</a><button class="btn ghost" type="button" id="pix-novo">Fazer outro Pix</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Banco Nuzzi S.A. · instituição fictícia · CNPJ 00.000.000/0001-00 (exemplo)</span>
+    <nav aria-label="Rodapé">
+      <a href="#inicio" data-track="footer_inicio" data-track-type="footer">Início</a>
+      <a href="#cartoes" data-track="footer_cartoes" data-track-type="footer">Cartões</a>
+      <a href="#investimentos" data-track="footer_investimentos" data-track-type="footer">Investimentos</a>
+      <a href="#entrar" data-track="footer_entrar" data-track-type="footer">Área do cliente</a>
+    </nav>
+  </div>
+</footer>
+
+<button class="dl-toggle" id="dl-toggle" type="button" aria-expanded="false" aria-controls="dl-panel">dataLayer <span id="dl-count">0</span></button>
+<aside class="dl-panel" id="dl-panel" aria-label="Eventos do dataLayer" hidden>
+  <div class="dl-head">
+    <strong>dataLayer</strong>
+    <div class="dl-btns">
+      <button type="button" id="dl-copy">Copiar JSON</button>
+      <button type="button" id="dl-clear">Limpar painel</button>
+      <button type="button" id="dl-close" aria-label="Fechar painel">Fechar</button>
+    </div>
+  </div>
+  <p class="dl-note">Mais recentes primeiro. Sem dado pessoal: user_id pseudonimizado; senha, conta e chave Pix nunca entram no dataLayer.</p>
+  <textarea id="dl-fallback" readonly hidden aria-label="JSON do dataLayer para copiar"></textarea>
+  <ol id="dl-list"></ol>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+(function () {
+  var dl = window.dataLayer = window.dataLayer || [];
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+
+  var S = { logged: false, user: null, next: null, route: null, seen: new Set(), balance: 18432.90, hideBal: false, pending: null };
+  var log = [];
+
+  var extrato = [
+    { d: '17/10', who: 'Pix recebido', sub: 'Lucas Andrade', v: 350.00 },
+    { d: '16/10', who: 'Supermercado Pão de Mel', sub: 'Cartão de débito', v: -412.37 },
+    { d: '15/10', who: 'Salário', sub: 'Empresa Exemplo Ltda', v: 9800.00 },
+    { d: '14/10', who: 'Conta de luz', sub: 'Pagamento de boleto', v: -218.90 },
+    { d: '12/10', who: 'Pix enviado', sub: 'Ana Ribeiro', v: -120.00 },
+    { d: '11/10', who: 'Aplicação CDB Liquidez Diária', sub: 'Investimentos', v: -2000.00 }
+  ];
+
+  /* ---------- tracking ---------- */
+  function track(event, params) {
+    var p = { event: event };
+    Object.keys(params || {}).forEach(function (k) { if (params[k] !== undefined) p[k] = params[k]; });
+    dl.push(p);
+    log.unshift({ time: new Date(), p: p });
+    renderLog();
+  }
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function renderLog() {
+    $('#dl-count').textContent = log.length;
+    var list = $('#dl-list');
+    if (!log.length) { list.innerHTML = '<li class="dl-empty">Nenhum evento ainda. Navegue pelo site.</li>'; return; }
+    list.innerHTML = '';
+    log.slice(0, 80).forEach(function (item) {
+      var li = document.createElement('li');
+      var t = item.time;
+      var head = document.createElement('div'); head.className = 'ev';
+      var b = document.createElement('b'); b.textContent = item.p.event;
+      var tm = document.createElement('time'); tm.textContent = pad(t.getHours()) + ':' + pad(t.getMinutes()) + ':' + pad(t.getSeconds());
+      head.appendChild(b); head.appendChild(tm);
+      var pre = document.createElement('pre'); pre.textContent = JSON.stringify(item.p, null, 2);
+      li.appendChild(head); li.appendChild(pre); list.appendChild(li);
+    });
+  }
+
+  /* ---------- rotas ---------- */
+  var ROUTES = {
+    inicio: { title: 'Início', type: 'home', auth: false },
+    cartoes: { title: 'Cartões', type: 'produto', auth: false },
+    investimentos: { title: 'Investimentos', type: 'produto', auth: false },
+    entrar: { title: 'Entrar', type: 'login', auth: false },
+    conta: { title: 'Minha conta', type: 'area_logada', auth: true },
+    pix: { title: 'Pix', type: 'area_logada', auth: true }
+  };
+
+  function goTo(r) { if (location.hash === '#' + r) route(); else location.hash = r; }
+
+  function requireLogin(target) {
+    S.next = target;
+    track('auth_required', { target_path: '/' + target, page_path: '/' + S.route });
+    goTo('entrar');
+  }
+
+  function route() {
+    var r = (location.hash || '').replace('#', '') || 'inicio';
+    if (!ROUTES[r]) r = 'inicio';
+    if (ROUTES[r].auth && !S.logged) { S.next = r; track('auth_required', { target_path: '/' + r, page_path: S.route ? '/' + S.route : undefined }); location.hash = 'entrar'; return; }
+    if (r === 'entrar' && S.logged) { location.hash = 'conta'; return; }
+    S.route = r; S.seen = new Set();
+    $$('[data-page]').forEach(function (p) { p.hidden = p.getAttribute('data-page') !== r; });
+    $$('.nav a').forEach(function (a) { a.setAttribute('aria-current', a.getAttribute('href') === '#' + r ? 'page' : 'false'); });
+    updateHeader();
+    $('#topbar').classList.remove('open'); $('#menu-btn').setAttribute('aria-expanded', 'false');
+    if (r === 'entrar') loginPrepare();
+    if (r === 'pix') pixReset();
+    if (r === 'conta') { renderBalance(); renderExtrato(); }
+    window.scrollTo(0, 0);
+    track('page_view', {
+      page_path: '/' + r,
+      page_title: ROUTES[r].title,
+      page_type: ROUTES[r].type,
+      login_status: S.logged ? 'logged_in' : 'logged_out',
+      user_id: S.logged ? S.user.id : undefined
+    });
+    observePromos();
+  }
+
+  function updateHeader() {
+    $('#nav-public').hidden = S.logged; $('#actions-public').hidden = S.logged;
+    $('#nav-private').hidden = !S.logged; $('#actions-private').hidden = !S.logged;
+  }
+
+  /* ---------- banners (promoções) ---------- */
+  function promoData(el) {
+    return { promotion_id: el.getAttribute('data-promo'), promotion_name: el.getAttribute('data-promo-name'), creative_slot: el.getAttribute('data-slot'), location_id: '/' + S.route };
+  }
+  function inView(el) { var r = el.getBoundingClientRect(); return r.bottom > 0 && r.top < (window.innerHeight || 800) && r.height > 0; }
+  function impression(el) {
+    if (el.hidden || el.closest('[hidden]')) return;
+    var k = el.getAttribute('data-promo');
+    if (S.seen.has(k)) return;
+    S.seen.add(k);
+    track('view_promotion', promoData(el));
+  }
+  var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) impression(e.target); });
+  }, { threshold: 0.5 }) : null;
+  function observePromos() {
+    var els = $$('[data-page="' + S.route + '"] [data-promo]');
+    if (!io) { els.forEach(function (el) { if (inView(el)) impression(el); }); return; }
+    io.disconnect();
+    els.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---------- carrossel ---------- */
+  var slides = $$('.slide'), cur = 0, timer = null;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function show(i, source) {
+    cur = (i + slides.length) % slides.length;
+    slides.forEach(function (s, k) { s.hidden = k !== cur; });
+    $$('.dot').forEach(function (d, k) { d.setAttribute('aria-current', k === cur ? 'true' : 'false'); });
+    $('#slide-count').textContent = (cur + 1) + ' / ' + slides.length;
+    if (source) track('carousel_navigate', { control: source, slide_index: cur + 1, promotion_id: slides[cur].getAttribute('data-promo') });
+    if (S.route === 'inicio' && inView(slides[cur])) impression(slides[cur]);
+  }
+  function startAuto() { if (reduce || timer) return; timer = setInterval(function () { if (S.route === 'inicio' && !document.hidden) show(cur + 1); }, 6500); }
+  function stopAuto() { if (timer) { clearInterval(timer); timer = null; } }
+  $('#car-prev').addEventListener('click', function () { stopAuto(); show(cur - 1, 'seta_anterior'); });
+  $('#car-next').addEventListener('click', function () { stopAuto(); show(cur + 1, 'seta_proxima'); });
+  $$('.dot').forEach(function (d) { d.addEventListener('click', function () { stopAuto(); show(Number(d.getAttribute('data-dot')), 'indicador'); }); });
+  var car = $('#carousel');
+  car.addEventListener('mouseenter', stopAuto);
+  car.addEventListener('focusin', stopAuto);
+  car.addEventListener('mouseleave', startAuto);
+
+  /* ---------- cliques ---------- */
+  document.addEventListener('click', function (e) {
+    var promoCta = e.target.closest('.promo-cta');
+    if (promoCta && promoCta.closest('[data-promo]')) track('select_promotion', promoData(promoCta.closest('[data-promo]')));
+
+    var t = e.target.closest('[data-track]');
+    if (t) track('select_content', { content_type: t.getAttribute('data-track-type') || 'link', item_id: t.getAttribute('data-track'), link_text: (t.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60), page_path: '/' + S.route });
+
+    var a = e.target.closest('[data-action]');
+    if (!a) return;
+    var act = a.getAttribute('data-action'), item = a.getAttribute('data-item');
+    if (act === 'card_request') {
+      if (!S.logged) return requireLogin(S.route);
+      track('card_request', { card_tier: item }); toast('Pedido do cartão registrado (simulação).');
+    } else if (act === 'investment_intent') {
+      if (!S.logged) return requireLogin(S.route);
+      track('investment_intent', { product_id: item }); toast('Simulação: fluxo de aplicação não implementado.');
+    } else if (act === 'lead') {
+      track('generate_lead', { lead_type: item, page_path: '/' + S.route });
+      a.textContent = 'Recebemos seu interesse'; a.disabled = true;
+    } else if (act === 'toggle_balance') {
+      S.hideBal = !S.hideBal; renderBalance(); track('toggle_balance', { state: S.hideBal ? 'hidden' : 'visible' });
+    } else if (act === 'quick_action') {
+      track('quick_action', { action_id: item }); toast('Simulação: fluxo não implementado neste modelo.');
+    } else if (act === 'offer_accept') {
+      track('offer_click', { offer_id: item }); toast('Oferta registrada (simulação).');
+    }
+  });
+
+  /* ---------- menu mobile ---------- */
+  $('#menu-btn').addEventListener('click', function () {
+    var open = $('#topbar').classList.toggle('open');
+    this.setAttribute('aria-expanded', String(open));
+    track('menu_toggle', { state: open ? 'open' : 'closed' });
+  });
+
+  /* ---------- login ---------- */
+  var loginStarted = false;
+  function loginPrepare() {
+    loginStarted = false;
+    $('#login-error').hidden = true;
+    var ctx = $('#login-context');
+    ctx.hidden = !S.next;
+    if (S.next) ctx.textContent = 'Entre para continuar em ' + ROUTES[S.next].title + '.';
+  }
+  $('#login-form').addEventListener('focusin', function () {
+    if (!loginStarted) { loginStarted = true; track('form_start', { form_id: 'login', page_path: '/entrar' }); }
+  });
+  $('#login-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var conta = $('#f-conta').value.trim(), senha = $('#f-senha').value, err = null;
+    if (!conta || !senha) err = ['campo_vazio', 'Preencha agência e conta e a senha.'];
+    else if (!/^\d{4}\s*\/\s*\d{5}-?\d$/.test(conta)) err = ['formato_conta', 'Use o formato 0001 / 12345-6.'];
+    else if (!/^\d{6}$/.test(senha)) err = ['senha_invalida', 'A senha tem 6 dígitos numéricos.'];
+    if (err) {
+      $('#login-error').textContent = err[1]; $('#login-error').hidden = false;
+      track('login_error', { form_id: 'login', error_type: err[0] });
+      return;
+    }
+    S.logged = true;
+    S.user = { id: 'u_8f2c41a9', segment: 'pf_alta_renda' };
+    $('#f-senha').value = '';
+    track('login', { method: 'agencia_conta', user_id: S.user.id, customer_segment: S.user.segment });
+    var n = S.next || 'conta'; S.next = null;
+    goTo(n);
+  });
+
+  $('#btn-sair').addEventListener('click', function () {
+    track('logout', { user_id: S.user && S.user.id });
+    S.logged = false; S.user = null; S.next = null;
+    goTo('inicio');
+  });
+
+  /* ---------- área logada ---------- */
+  function renderBalance() {
+    $('#saldo').textContent = S.hideBal ? 'R$ ••••••' : brl.format(S.balance);
+    var b = $('#btn-saldo');
+    b.setAttribute('aria-pressed', String(S.hideBal));
+    b.textContent = S.hideBal ? 'Mostrar saldo' : 'Ocultar saldo';
+  }
+  function renderExtrato() {
+    var ul = $('#extrato'); ul.innerHTML = '';
+    extrato.forEach(function (t) {
+      var li = document.createElement('li');
+      var d = document.createElement('span'); d.className = 'd'; d.textContent = t.d;
+      var w = document.createElement('div'); w.className = 'who';
+      var b = document.createElement('b'); b.textContent = t.who;
+      var s = document.createElement('span'); s.textContent = t.sub;
+      w.appendChild(b); w.appendChild(s);
+      var v = document.createElement('span'); v.className = 'v' + (t.v > 0 ? ' in' : '');
+      v.textContent = (t.v > 0 ? '+ ' : '− ') + brl.format(Math.abs(t.v));
+      li.appendChild(d); li.appendChild(w); li.appendChild(v); ul.appendChild(li);
+    });
+  }
+
+  /* ---------- Pix ---------- */
+  var pixStarted = false;
+  function pixStep(n) {
+    $$('[data-pix-step]').forEach(function (el) { el.hidden = Number(el.getAttribute('data-pix-step')) !== n; });
+    $$('.steps li').forEach(function (li, k) { if (k + 1 === n) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current'); });
+  }
+  function pixReset() {
+    $('#pix-form').reset(); $('#pix-error').hidden = true; pixStarted = false; S.pending = null;
+    $('#pix-saldo-hint').textContent = 'Saldo disponível: ' + brl.format(S.balance);
+    pixStep(1);
+  }
+  function parseBRL(s) { var n = parseFloat(String(s).replace(/[R$\s.]/g, '').replace(',', '.')); return isNaN(n) ? 0 : Math.round(n * 100) / 100; }
+  function keyType(k) {
+    if (k.indexOf('@') > -1) return 'email';
+    if (/^\+/.test(k)) return 'telefone';
+    var d = k.replace(/\D/g, '');
+    if (d.length === 11 && d === k.replace(/[.\-]/g, '')) return 'cpf';
+    if (d.length === 14) return 'cnpj';
+    return 'aleatoria';
+  }
+  function mask(k) { return k.length <= 4 ? '••••' : k.slice(0, 3) + '•••' + k.slice(-3); }
+  function fillDl(el, rows) {
+    el.innerHTML = '';
+    rows.forEach(function (r) {
+      var d = document.createElement('div');
+      var dt = document.createElement('dt'); dt.textContent = r[0];
+      var dd = document.createElement('dd'); dd.textContent = r[1];
+      d.appendChild(dt); d.appendChild(dd); el.appendChild(d);
+    });
+  }
+  $('#pix-form').addEventListener('focusin', function () {
+    if (!pixStarted) { pixStarted = true; track('pix_start', { page_path: '/pix' }); }
+  });
+  $('#pix-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var chave = $('#pix-chave').value.trim(), v = parseBRL($('#pix-valor').value), err = null;
+    if (!chave) err = ['chave_vazia', 'Informe a chave Pix de quem vai receber.'];
+    else if (!(v > 0)) err = ['valor_invalido', 'Informe um valor maior que zero, como 150,00.'];
+    else if (v > S.balance) err = ['saldo_insuficiente', 'O valor passa do saldo disponível de ' + brl.format(S.balance) + '.'];
+    if (err) { $('#pix-error').textContent = err[1]; $('#pix-error').hidden = false; track('pix_error', { error_type: err[0] }); return; }
+    $('#pix-error').hidden = true;
+    S.pending = { chave: chave, v: v, tipo: keyType(chave), desc: $('#pix-desc').value.trim() };
+    fillDl($('#pix-review'), [
+      ['Para (chave)', S.pending.chave],
+      ['Tipo de chave', S.pending.tipo],
+      ['Valor', brl.format(v)],
+      ['Mensagem', S.pending.desc || 'Sem mensagem'],
+      ['Saldo após o Pix', brl.format(S.balance - v)]
+    ]);
+    pixStep(2);
+    track('pix_review', { value: v, currency: 'BRL', pix_key_type: S.pending.tipo });
+  });
+  $('#pix-voltar').addEventListener('click', function () { pixStep(1); track('pix_edit', { step: 'revisao' }); });
+  $('#pix-confirmar').addEventListener('click', function () {
+    var p = S.pending; if (!p) return;
+    var id = 'E' + Date.now();
+    S.balance = Math.round((S.balance - p.v) * 100) / 100;
+    var now = new Date();
+    extrato.unshift({ d: pad(now.getDate()) + '/' + pad(now.getMonth() + 1), who: 'Pix enviado', sub: 'Chave ' + mask(p.chave), v: -p.v });
+    $('#pix-ok-title').textContent = 'Pix de ' + brl.format(p.v) + ' enviado';
+    fillDl($('#pix-receipt'), [
+      ['Identificador', id],
+      ['Para (chave)', mask(p.chave)],
+      ['Data e hora', pad(now.getDate()) + '/' + pad(now.getMonth() + 1) + '/' + now.getFullYear() + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes())],
+      ['Saldo atual', brl.format(S.balance)]
+    ]);
+    pixStep(3);
+    track('pix_success', { transaction_id: id, value: p.v, currency: 'BRL', pix_key_type: p.tipo });
+    S.pending = null;
+  });
+  $('#pix-novo').addEventListener('click', function () { pixReset(); track('pix_restart', {}); });
+
+  /* ---------- toast ---------- */
+  var toastT = null;
+  function toast(msg) { var t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(function () { t.hidden = true; }, 3200); }
+
+  /* ---------- painel dataLayer ---------- */
+  function setPanel(open) {
+    $('#dl-panel').hidden = !open;
+    $('#dl-toggle').setAttribute('aria-expanded', String(open));
+    $('#dl-toggle').hidden = open;
+    if (open) $('#dl-close').focus(); else $('#dl-toggle').focus();
+  }
+  $('#dl-toggle').addEventListener('click', function () { setPanel(true); });
+  $('#dl-close').addEventListener('click', function () { setPanel(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !$('#dl-panel').hidden) setPanel(false); });
+  $('#dl-clear').addEventListener('click', function () { log.length = 0; $('#dl-fallback').hidden = true; renderLog(); });
+  $('#dl-copy').addEventListener('click', function () {
+    var btn = this, text = JSON.stringify(dl, null, 2);
+    function fallback() { var ta = $('#dl-fallback'); ta.value = text; ta.hidden = false; ta.focus(); ta.select(); btn.textContent = 'Selecione e copie'; }
+    try {
+      navigator.clipboard.writeText(text).then(function () { btn.textContent = 'Copiado'; setTimeout(function () { btn.textContent = 'Copiar JSON'; }, 1800); }, fallback);
+    } catch (err) { fallback(); }
+  });
+
+  window.addEventListener('hashchange', route);
+  renderLog();
+  route();
+  startAuto();
+})();
+</script>
+
+</body>
+</html>
