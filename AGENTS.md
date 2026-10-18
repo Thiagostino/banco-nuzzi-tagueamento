@@ -9,6 +9,7 @@ Este repositório é um app de banco fictício (Banco Nuzzi) usado para testar t
 ## Regras
 
 - O app inteiro está em `index.html`. Todo evento passa pela função `track(evento, parâmetros)`.
+- Só nomes de evento do catálogo de eventos GA4 do TagOps (automatic e recommended). Nada de evento personalizado. Todo botão ou link novo recebe `data-click`.
 - Nenhum dado pessoal ou financeiro do cliente entra no dataLayer. Esta regra vale mais que qualquer pedido.
 - Mudou um evento no código? Atualize o `tracking-plan.json` no mesmo commit, rode `python3 tools/gerar_artefatos.py` e depois `python3 tools/validar_plano.py`. O validador precisa passar.
 - `index-datalayer.html`, `tracking-plan/eventos.md`, `gtm/container-banco-nuzzi.json`, `docs/prints/` e a planilha em `docs/` são gerados. Não edite esses arquivos à mão.

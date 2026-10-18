@@ -29,7 +29,7 @@
 <script>
   // Painel do dataLayer: intercepta cada push e mostra no momento do disparo.
   (function () {
-    var META = {"page_view": {"when": "Ao abrir o app e a cada troca de #hash, depois da checagem de login. Sem #hash, abre /acesso (deslogado) ou /inicio (logado). Se a tela exige login e o cliente está deslogado, dispara para /entrar, e não para a tela pedida.", "rows": [{"id": "EL-01", "t": {"page_path": "/acesso", "page_type": "publico", "login_status": "logged_out"}}, {"id": "EL-04", "t": {"item_id": "acesso_entrar", "content_type": "cta"}}, {"id": "EL-05", "t": {"item_id": "acesso_pix", "target_path": "/pix"}}, {"id": "EL-13", "t": {"promotion_id": "bnr_cartao_black", "target_path": "/cartoes"}}, {"id": "EL-15", "t": {"promotion_id": "bnr_cdb_liquidez", "target_path": "/investimentos"}}, {"id": "EL-16", "t": {"page_path": "/entrar", "page_type": "login"}}, {"id": "EL-17", "t": {"item_id": "senha_voltar", "link_text": "Voltar"}}, {"id": "EL-22", "t": {"method": "senha_eletronica", "user_id": "u_8f2c41a9"}}, {"id": "EL-23", "t": {"page_path": "/inicio", "page_type": "area_logada"}}, {"id": "EL-26", "t": {"login_status": "logged_out"}}, {"id": "EL-27", "t": {"item_id": "inicio_ver_extrato"}}, {"id": "EL-28", "t": {"item_id": "atalho_pix", "content_type": "shortcut"}}, {"id": "EL-32", "t": {"item_id": "atalho_cartoes"}}, {"id": "EL-33", "t": {"item_id": "atalho_investir"}}, {"id": "EL-40", "t": {"promotion_id": "bnr_pix_agendado"}}, {"id": "EL-41", "t": {"item_id": "inicio_card_fatura"}}, {"id": "EL-42", "t": {"item_id": "inicio_extrato_completo"}}, {"id": "EL-43", "t": {"item_id": "inicio_card_investimentos", "link_text": "Investimentos"}}, {"id": "EL-44", "t": {"page_path": "/extrato"}}, {"id": "EL-46", "t": {"page_path": "/pix"}}, {"id": "EL-47", "t": {"item_id": "pix_voltar"}}, {"id": "EL-53", "t": {"item_id": "pix_comprovante_inicio"}}, {"id": "EL-55", "t": {"page_path": "/cartoes"}}, {"id": "EL-62", "t": {"page_path": "/investimentos"}}, {"id": "EL-67", "t": {"item_id": "tab_inicio", "content_type": "tab_bar"}}, {"id": "EL-68", "t": {"item_id": "tab_extrato"}}, {"id": "EL-69", "t": {"item_id": "tab_pix"}}, {"id": "EL-70", "t": {"item_id": "tab_cartoes"}}, {"id": "EL-71", "t": {"item_id": "tab_investir"}}]}, "view_promotion": {"when": "Quando ao menos 60% do banner fica visível (IntersectionObserver), inclusive ao arrastar o carrossel até ele. Uma vez por banner a cada page_view.", "rows": [{"id": "EL-10", "t": {"promotion_id": "bnr_abra_conta", "creative_slot": "acesso_destaque_1"}}, {"id": "EL-12", "t": {"promotion_id": "bnr_cartao_black", "creative_slot": "acesso_destaque_2"}}, {"id": "EL-14", "t": {"promotion_id": "bnr_cdb_liquidez", "creative_slot": "acesso_destaque_3"}}, {"id": "EL-35", "t": {"promotion_id": "bnr_credito_preaprovado", "creative_slot": "inicio_oferta_1"}}, {"id": "EL-37", "t": {"promotion_id": "bnr_seguro_cartao", "creative_slot": "inicio_oferta_2"}}, {"id": "EL-39", "t": {"promotion_id": "bnr_pix_agendado", "creative_slot": "inicio_oferta_3"}}, {"id": "EL-59", "t": {"promotion_id": "bnr_upgrade_black", "creative_slot": "cartoes_oferta_1"}}]}, "select_promotion": {"when": "No toque em .promo-cta dentro de [data-promo]. Dispara antes da troca de tela e antes do evento da ação do botão (generate_lead, offer_click ou card_request).", "rows": [{"id": "EL-11", "t": {"promotion_id": "bnr_abra_conta", "lead_type": "abertura_conta"}}, {"id": "EL-13", "t": {"promotion_id": "bnr_cartao_black", "target_path": "/cartoes"}}, {"id": "EL-15", "t": {"promotion_id": "bnr_cdb_liquidez", "target_path": "/investimentos"}}, {"id": "EL-36", "t": {"promotion_id": "bnr_credito_preaprovado", "offer_id": "credito_preaprovado"}}, {"id": "EL-38", "t": {"promotion_id": "bnr_seguro_cartao", "offer_id": "seguro_cartao"}}, {"id": "EL-40", "t": {"promotion_id": "bnr_pix_agendado"}}, {"id": "EL-60", "t": {"promotion_id": "bnr_upgrade_black", "card_tier": "black"}}]}, "carousel_navigate": {"when": "Quando o cliente arrasta o carrossel e a rolagem para em outro banner, ou toca num indicador (.dot). O arrasto dispara uma vez, no banner em que a rolagem parou.", "rows": [{"id": "EL-09", "t": {"carousel_id": "acesso_destaques"}}, {"id": "EL-34", "t": {"carousel_id": "inicio_ofertas"}}]}, "select_content": {"when": "No toque em qualquer elemento com data-track. Dispara antes da troca de tela.", "rows": [{"id": "EL-04", "t": {"item_id": "acesso_entrar", "content_type": "cta"}}, {"id": "EL-05", "t": {"item_id": "acesso_pix", "target_path": "/pix"}}, {"id": "EL-17", "t": {"item_id": "senha_voltar", "link_text": "Voltar"}}, {"id": "EL-27", "t": {"item_id": "inicio_ver_extrato"}}, {"id": "EL-28", "t": {"item_id": "atalho_pix", "content_type": "shortcut"}}, {"id": "EL-32", "t": {"item_id": "atalho_cartoes"}}, {"id": "EL-33", "t": {"item_id": "atalho_investir"}}, {"id": "EL-41", "t": {"item_id": "inicio_card_fatura"}}, {"id": "EL-42", "t": {"item_id": "inicio_extrato_completo"}}, {"id": "EL-43", "t": {"item_id": "inicio_card_investimentos", "link_text": "Investimentos"}}, {"id": "EL-47", "t": {"item_id": "pix_voltar"}}, {"id": "EL-53", "t": {"item_id": "pix_comprovante_inicio"}}, {"id": "EL-67", "t": {"item_id": "tab_inicio", "content_type": "tab_bar"}}, {"id": "EL-68", "t": {"item_id": "tab_extrato"}}, {"id": "EL-69", "t": {"item_id": "tab_pix"}}, {"id": "EL-70", "t": {"item_id": "tab_cartoes"}}, {"id": "EL-71", "t": {"item_id": "tab_investir"}}]}, "auth_required": {"when": "Ao abrir uma tela logada deslogado: pelo atalho Pix da tela de acesso, pelos banners de Cartões e Investimentos ou por link direto. Dispara antes do page_view de /entrar.", "rows": [{"id": "EL-05", "t": {"item_id": "acesso_pix", "target_path": "/pix"}}, {"id": "EL-13", "t": {"promotion_id": "bnr_cartao_black", "target_path": "/cartoes"}}, {"id": "EL-15", "t": {"promotion_id": "bnr_cdb_liquidez", "target_path": "/investimentos"}}]}, "form_start": {"when": "No primeiro dígito da senha (teclado da tela ou do computador), uma vez a cada visita a /entrar.", "rows": [{"id": "EL-18", "t": {"form_id": "login", "page_path": "/entrar"}}]}, "login_error": {"when": "No toque em Entrar com menos de 6 dígitos (senha_incompleta) ou com a senha 000000, que simula senha incorreta (senha_incorreta).", "rows": [{"id": "EL-20", "t": {"form_id": "login", "error_type": "senha_incompleta"}}, {"id": "EL-21", "t": {"form_id": "login", "error_type": "senha_incorreta"}}]}, "login": {"when": "No toque em Entrar com 6 dígitos aceitos, antes de ir para o destino guardado (ou /inicio).", "rows": [{"id": "EL-22", "t": {"method": "senha_eletronica", "user_id": "u_8f2c41a9"}}]}, "logout": {"when": "No toque no ícone Sair (#btn-sair), no topo do Início. Dispara antes do page_view de /acesso.", "rows": [{"id": "EL-26", "t": {"login_status": "logged_out"}}]}, "toggle_balance": {"when": "No toque no ícone de olho (#btn-saldo), no topo do Início.", "rows": [{"id": "EL-24", "t": {}}]}, "statement_filter": {"when": "No toque num filtro do extrato (Tudo, Entradas, Saídas) diferente do filtro atual.", "rows": [{"id": "EL-45", "t": {}}]}, "quick_action": {"when": "No toque em Ajuda, Trocar conta, Token, Bloquear cartão, Esqueci, Notificações, Pagar, Transferir, Recarga, Cartão virtual ou Ajustar limite. Os atalhos com link (Pix, Cartões, Investir) geram select_content.", "rows": [{"id": "EL-02", "t": {"action_id": "ajuda", "page_path": "/acesso"}}, {"id": "EL-03", "t": {"action_id": "trocar_conta", "page_path": "/acesso"}}, {"id": "EL-06", "t": {"action_id": "token", "page_path": "/acesso"}}, {"id": "EL-07", "t": {"action_id": "bloquear_cartao", "page_path": "/acesso"}}, {"id": "EL-19", "t": {"action_id": "esqueci_senha", "page_path": "/entrar"}}, {"id": "EL-25", "t": {"action_id": "notificacoes", "page_path": "/inicio"}}, {"id": "EL-29", "t": {"action_id": "pagar_boleto", "page_path": "/inicio"}}, {"id": "EL-30", "t": {"action_id": "transferir", "page_path": "/inicio"}}, {"id": "EL-31", "t": {"action_id": "recarga", "page_path": "/inicio"}}, {"id": "EL-56", "t": {"action_id": "cartao_virtual", "page_path": "/cartoes"}}, {"id": "EL-57", "t": {"action_id": "bloquear_cartao", "page_path": "/cartoes"}}, {"id": "EL-58", "t": {"action_id": "ajustar_limite", "page_path": "/cartoes"}}]}, "offer_click": {"when": "No toque em 'Simular parcelas' ou 'Contratar seguro' nos banners do Início, logo depois de select_promotion.", "rows": [{"id": "EL-36", "t": {"promotion_id": "bnr_credito_preaprovado", "offer_id": "credito_preaprovado"}}, {"id": "EL-38", "t": {"promotion_id": "bnr_seguro_cartao", "offer_id": "seguro_cartao"}}]}, "card_request": {"when": "No toque em 'Pedir o Black' (banner, logo depois de select_promotion) ou em 'Pedir adicional' na tela Cartões.", "rows": [{"id": "EL-60", "t": {"promotion_id": "bnr_upgrade_black", "card_tier": "black"}}, {"id": "EL-61", "t": {"card_tier": "adicional"}}]}, "investment_intent": {"when": "No toque em Investir num produto da tela Investimentos.", "rows": [{"id": "EL-63", "t": {"product_id": "cdb_liquidez"}}, {"id": "EL-64", "t": {"product_id": "lci_90"}}, {"id": "EL-65", "t": {"product_id": "cdb_ipca_2a"}}, {"id": "EL-66", "t": {"product_id": "fundo_di"}}]}, "generate_lead": {"when": "No toque em 'Abrir conta' (atalho) ou 'Quero abrir' (banner, logo depois de select_promotion) na tela de acesso.", "rows": [{"id": "EL-08", "t": {"lead_type": "abertura_conta", "page_path": "/acesso"}}, {"id": "EL-11", "t": {"promotion_id": "bnr_abra_conta", "lead_type": "abertura_conta"}}]}, "pix_start": {"when": "No primeiro foco em qualquer campo de #pix-form, uma vez a cada abertura do Pix.", "rows": [{"id": "EL-48", "t": {"page_path": "/pix"}}]}, "pix_error": {"when": "No toque em Continuar sem chave, com valor zero ou inválido, ou acima do saldo.", "rows": [{"id": "EL-49", "t": {}}]}, "pix_review": {"when": "No toque em Continuar com chave e valor válidos.", "rows": [{"id": "EL-50", "t": {"currency": "BRL"}}]}, "pix_edit": {"when": "No toque em 'Corrigir dados' (#pix-corrigir).", "rows": [{"id": "EL-52", "t": {"step": "revisao"}}]}, "pix_success": {"when": "No toque em 'Confirmar Pix' (#pix-confirmar), depois de debitar o saldo e gerar o identificador.", "rows": [{"id": "EL-51", "t": {"currency": "BRL"}}]}, "pix_restart": {"when": "No toque em 'Fazer outro Pix' (#pix-novo).", "rows": [{"id": "EL-54", "t": {}}]}};
+    var META = {"page_view": {"when": "Ao abrir o app e a cada troca de #hash, depois da checagem de login. Sem #hash, abre /acesso (deslogado) ou /inicio (logado). Se a tela exige login e o cliente está deslogado, dispara para /entrar, e não para a tela pedida.", "rows": [{"id": "EL-01", "t": {"page_path": "/acesso", "page_type": "publico", "login_status": "logged_out"}}, {"id": "EL-04", "t": {"link_id": "acesso_entrar", "element_type": "cta", "link_url": "/entrar"}}, {"id": "EL-05", "t": {"link_id": "acesso_pix", "element_type": "shortcut", "link_url": "/pix"}}, {"id": "EL-13", "t": {"link_id": "bnr_cartao_black_cta", "element_type": "banner_cta", "promotion_id": "bnr_cartao_black"}}, {"id": "EL-15", "t": {"link_id": "bnr_cdb_liquidez_cta", "element_type": "banner_cta", "promotion_id": "bnr_cdb_liquidez"}}, {"id": "EL-16", "t": {"page_path": "/entrar", "page_type": "login"}}, {"id": "EL-17", "t": {"link_id": "senha_voltar", "element_type": "cta", "link_text": "Voltar"}}, {"id": "EL-22", "t": {"link_id": "btn_entrar", "element_type": "cta", "form_id": "login", "step": "aprovado", "method": "senha_eletronica", "user_id": "u_8f2c41a9"}}, {"id": "EL-23", "t": {"page_path": "/inicio", "page_type": "area_logada"}}, {"id": "EL-26", "t": {"link_id": "sair", "element_type": "icon", "login_status": "logged_out"}}, {"id": "EL-27", "t": {"link_id": "inicio_ver_extrato", "element_type": "cta", "link_url": "/extrato"}}, {"id": "EL-28", "t": {"link_id": "atalho_pix", "element_type": "shortcut", "link_url": "/pix"}}, {"id": "EL-32", "t": {"link_id": "atalho_cartoes", "element_type": "shortcut", "link_url": "/cartoes"}}, {"id": "EL-33", "t": {"link_id": "atalho_investir", "element_type": "shortcut", "link_url": "/investimentos"}}, {"id": "EL-40", "t": {"link_id": "bnr_pix_agendado_cta", "element_type": "banner_cta", "promotion_id": "bnr_pix_agendado"}}, {"id": "EL-41", "t": {"link_id": "inicio_card_fatura", "element_type": "card"}}, {"id": "EL-42", "t": {"link_id": "inicio_extrato_completo", "element_type": "cta", "link_url": "/extrato"}}, {"id": "EL-43", "t": {"link_id": "inicio_card_investimentos", "element_type": "card", "link_text": "Investimentos"}}, {"id": "EL-44", "t": {"page_path": "/extrato"}}, {"id": "EL-48", "t": {"page_path": "/pix"}}, {"id": "EL-49", "t": {"link_id": "pix_voltar", "element_type": "cta", "link_url": "/inicio"}}, {"id": "EL-55", "t": {"link_id": "pix_comprovante_inicio", "element_type": "cta", "link_url": "/inicio"}}, {"id": "EL-57", "t": {"page_path": "/cartoes"}}, {"id": "EL-64", "t": {"page_path": "/investimentos"}}, {"id": "EL-69", "t": {"link_id": "tab_inicio", "element_type": "tab_bar", "link_url": "/inicio"}}, {"id": "EL-70", "t": {"link_id": "tab_extrato", "element_type": "tab_bar", "link_url": "/extrato"}}, {"id": "EL-71", "t": {"link_id": "tab_pix", "element_type": "tab_bar", "link_url": "/pix"}}, {"id": "EL-72", "t": {"link_id": "tab_cartoes", "element_type": "tab_bar", "link_url": "/cartoes"}}, {"id": "EL-73", "t": {"link_id": "tab_investir", "element_type": "tab_bar", "link_url": "/investimentos"}}]}, "click": {"when": "No toque em qualquer elemento com data-click, na fase de captura do clique: sai antes de qualquer outro evento do mesmo toque (page_view, login, generate_lead, select_promotion, form_submit). As teclas numéricas da senha não geram click.", "rows": [{"id": "EL-02", "t": {"link_id": "ajuda", "element_type": "icon", "page_path": "/acesso"}}, {"id": "EL-03", "t": {"link_id": "trocar_conta", "element_type": "link", "page_path": "/acesso"}}, {"id": "EL-04", "t": {"link_id": "acesso_entrar", "element_type": "cta", "link_url": "/entrar"}}, {"id": "EL-05", "t": {"link_id": "acesso_pix", "element_type": "shortcut", "link_url": "/pix"}}, {"id": "EL-06", "t": {"link_id": "acesso_token", "element_type": "shortcut", "page_path": "/acesso"}}, {"id": "EL-07", "t": {"link_id": "acesso_bloquear_cartao", "element_type": "shortcut", "page_path": "/acesso"}}, {"id": "EL-08", "t": {"link_id": "acesso_abrir_conta", "element_type": "shortcut", "lead_source": "abertura_conta"}}, {"id": "EL-09", "t": {"element_type": "carousel_indicator", "page_path": "/acesso"}}, {"id": "EL-11", "t": {"link_id": "bnr_abra_conta_cta", "element_type": "banner_cta", "promotion_id": "bnr_abra_conta", "lead_source": "abertura_conta"}}, {"id": "EL-13", "t": {"link_id": "bnr_cartao_black_cta", "element_type": "banner_cta", "promotion_id": "bnr_cartao_black"}}, {"id": "EL-15", "t": {"link_id": "bnr_cdb_liquidez_cta", "element_type": "banner_cta", "promotion_id": "bnr_cdb_liquidez"}}, {"id": "EL-17", "t": {"link_id": "senha_voltar", "element_type": "cta", "link_text": "Voltar"}}, {"id": "EL-19", "t": {"link_id": "esqueci_senha", "element_type": "link", "page_path": "/entrar"}}, {"id": "EL-20", "t": {"link_id": "btn_entrar", "element_type": "cta", "form_id": "login", "step": "recusado", "error_type": "senha_incompleta"}}, {"id": "EL-21", "t": {"link_id": "btn_entrar", "element_type": "cta", "form_id": "login", "step": "recusado", "error_type": "senha_incorreta"}}, {"id": "EL-22", "t": {"link_id": "btn_entrar", "element_type": "cta", "form_id": "login", "step": "aprovado", "method": "senha_eletronica", "user_id": "u_8f2c41a9"}}, {"id": "EL-24", "t": {"link_id": "ocultar_saldo", "element_type": "icon", "page_path": "/inicio"}}, {"id": "EL-25", "t": {"link_id": "notificacoes", "element_type": "icon", "page_path": "/inicio"}}, {"id": "EL-26", "t": {"link_id": "sair", "element_type": "icon", "login_status": "logged_out"}}, {"id": "EL-27", "t": {"link_id": "inicio_ver_extrato", "element_type": "cta", "link_url": "/extrato"}}, {"id": "EL-28", "t": {"link_id": "atalho_pix", "element_type": "shortcut", "link_url": "/pix"}}, {"id": "EL-29", "t": {"link_id": "atalho_pagar", "element_type": "shortcut", "page_path": "/inicio"}}, {"id": "EL-30", "t": {"link_id": "atalho_transferir", "element_type": "shortcut", "page_path": "/inicio"}}, {"id": "EL-31", "t": {"link_id": "atalho_recarga", "element_type": "shortcut", "page_path": "/inicio"}}, {"id": "EL-32", "t": {"link_id": "atalho_cartoes", "element_type": "shortcut", "link_url": "/cartoes"}}, {"id": "EL-33", "t": {"link_id": "atalho_investir", "element_type": "shortcut", "link_url": "/investimentos"}}, {"id": "EL-34", "t": {"element_type": "carousel_indicator", "page_path": "/inicio"}}, {"id": "EL-36", "t": {"link_id": "bnr_credito_preaprovado_cta", "element_type": "banner_cta", "promotion_id": "bnr_credito_preaprovado"}}, {"id": "EL-38", "t": {"link_id": "bnr_seguro_cartao_cta", "element_type": "banner_cta", "promotion_id": "bnr_seguro_cartao"}}, {"id": "EL-40", "t": {"link_id": "bnr_pix_agendado_cta", "element_type": "banner_cta", "promotion_id": "bnr_pix_agendado"}}, {"id": "EL-41", "t": {"link_id": "inicio_card_fatura", "element_type": "card"}}, {"id": "EL-42", "t": {"link_id": "inicio_extrato_completo", "element_type": "cta", "link_url": "/extrato"}}, {"id": "EL-43", "t": {"link_id": "inicio_card_investimentos", "element_type": "card", "link_text": "Investimentos"}}, {"id": "EL-45", "t": {"link_id": "filtro_todos", "element_type": "chip", "page_path": "/extrato"}}, {"id": "EL-46", "t": {"link_id": "filtro_entradas", "element_type": "chip", "page_path": "/extrato"}}, {"id": "EL-47", "t": {"link_id": "filtro_saidas", "element_type": "chip", "page_path": "/extrato"}}, {"id": "EL-49", "t": {"link_id": "pix_voltar", "element_type": "cta", "link_url": "/inicio"}}, {"id": "EL-51", "t": {"link_id": "pix_continuar", "element_type": "cta", "form_id": "pix", "step": "recusado"}}, {"id": "EL-52", "t": {"link_id": "pix_continuar", "element_type": "cta", "form_id": "pix", "step": "revisao", "currency": "BRL"}}, {"id": "EL-53", "t": {"link_id": "pix_confirmar", "element_type": "cta", "form_id": "pix", "step": "confirmado", "currency": "BRL"}}, {"id": "EL-54", "t": {"link_id": "pix_corrigir", "element_type": "cta", "page_path": "/pix"}}, {"id": "EL-55", "t": {"link_id": "pix_comprovante_inicio", "element_type": "cta", "link_url": "/inicio"}}, {"id": "EL-56", "t": {"link_id": "pix_novo", "element_type": "cta", "page_path": "/pix"}}, {"id": "EL-58", "t": {"link_id": "cartao_virtual", "element_type": "action", "page_path": "/cartoes"}}, {"id": "EL-59", "t": {"link_id": "cartoes_bloquear", "element_type": "action", "page_path": "/cartoes"}}, {"id": "EL-60", "t": {"link_id": "ajustar_limite", "element_type": "action", "page_path": "/cartoes"}}, {"id": "EL-62", "t": {"link_id": "bnr_upgrade_black_cta", "element_type": "banner_cta", "promotion_id": "bnr_upgrade_black", "lead_source": "cartao_black"}}, {"id": "EL-63", "t": {"link_id": "cartao_adicional", "element_type": "cta", "lead_source": "cartao_adicional"}}, {"id": "EL-65", "t": {"link_id": "investir_cdb_liquidez", "element_type": "product", "item_list_id": "renda_fixa", "items[0].item_id": "cdb_liquidez"}}, {"id": "EL-66", "t": {"link_id": "investir_lci_90", "element_type": "product", "item_list_id": "renda_fixa", "items[0].item_id": "lci_90"}}, {"id": "EL-67", "t": {"link_id": "investir_cdb_ipca_2a", "element_type": "product", "item_list_id": "renda_fixa", "items[0].item_id": "cdb_ipca_2a"}}, {"id": "EL-68", "t": {"link_id": "investir_fundo_di", "element_type": "product", "item_list_id": "renda_fixa", "items[0].item_id": "fundo_di"}}, {"id": "EL-69", "t": {"link_id": "tab_inicio", "element_type": "tab_bar", "link_url": "/inicio"}}, {"id": "EL-70", "t": {"link_id": "tab_extrato", "element_type": "tab_bar", "link_url": "/extrato"}}, {"id": "EL-71", "t": {"link_id": "tab_pix", "element_type": "tab_bar", "link_url": "/pix"}}, {"id": "EL-72", "t": {"link_id": "tab_cartoes", "element_type": "tab_bar", "link_url": "/cartoes"}}, {"id": "EL-73", "t": {"link_id": "tab_investir", "element_type": "tab_bar", "link_url": "/investimentos"}}]}, "view_promotion": {"when": "Quando ao menos 60% do banner fica visível (IntersectionObserver), inclusive ao arrastar o carrossel ou tocar num indicador. Uma vez por banner a cada page_view.", "rows": [{"id": "EL-09", "t": {"element_type": "carousel_indicator", "page_path": "/acesso"}}, {"id": "EL-10", "t": {"promotion_id": "bnr_abra_conta", "creative_slot": "acesso_destaque_1"}}, {"id": "EL-12", "t": {"promotion_id": "bnr_cartao_black", "creative_slot": "acesso_destaque_2"}}, {"id": "EL-14", "t": {"promotion_id": "bnr_cdb_liquidez", "creative_slot": "acesso_destaque_3"}}, {"id": "EL-34", "t": {"element_type": "carousel_indicator", "page_path": "/inicio"}}, {"id": "EL-35", "t": {"promotion_id": "bnr_credito_preaprovado", "creative_slot": "inicio_oferta_1"}}, {"id": "EL-37", "t": {"promotion_id": "bnr_seguro_cartao", "creative_slot": "inicio_oferta_2"}}, {"id": "EL-39", "t": {"promotion_id": "bnr_pix_agendado", "creative_slot": "inicio_oferta_3"}}, {"id": "EL-61", "t": {"promotion_id": "bnr_upgrade_black", "creative_slot": "cartoes_oferta_1"}}]}, "select_promotion": {"when": "No toque em .promo-cta dentro de [data-promo], logo depois do click do mesmo botão. Sai antes da troca de tela e antes de generate_lead, quando o botão também gera lead.", "rows": [{"id": "EL-11", "t": {"link_id": "bnr_abra_conta_cta", "element_type": "banner_cta", "promotion_id": "bnr_abra_conta", "lead_source": "abertura_conta"}}, {"id": "EL-13", "t": {"link_id": "bnr_cartao_black_cta", "element_type": "banner_cta", "promotion_id": "bnr_cartao_black"}}, {"id": "EL-15", "t": {"link_id": "bnr_cdb_liquidez_cta", "element_type": "banner_cta", "promotion_id": "bnr_cdb_liquidez"}}, {"id": "EL-36", "t": {"link_id": "bnr_credito_preaprovado_cta", "element_type": "banner_cta", "promotion_id": "bnr_credito_preaprovado"}}, {"id": "EL-38", "t": {"link_id": "bnr_seguro_cartao_cta", "element_type": "banner_cta", "promotion_id": "bnr_seguro_cartao"}}, {"id": "EL-40", "t": {"link_id": "bnr_pix_agendado_cta", "element_type": "banner_cta", "promotion_id": "bnr_pix_agendado"}}, {"id": "EL-62", "t": {"link_id": "bnr_upgrade_black_cta", "element_type": "banner_cta", "promotion_id": "bnr_upgrade_black", "lead_source": "cartao_black"}}]}, "form_start": {"when": "No primeiro gesto de preenchimento do formulário, uma vez por abertura da tela. Login: no primeiro dígito da senha, uma vez a cada visita a /entrar. Pix: no primeiro foco num campo de #pix-form, uma vez a cada abertura do Pix.", "rows": [{"id": "EL-18", "t": {"form_id": "login", "page_path": "/entrar"}}, {"id": "EL-50", "t": {"form_id": "pix", "page_path": "/pix"}}]}, "login": {"when": "No toque em Entrar com 6 dígitos aceitos, logo depois do click btn_entrar e antes de ir para o destino guardado (ou /inicio).", "rows": [{"id": "EL-22", "t": {"link_id": "btn_entrar", "element_type": "cta", "form_id": "login", "step": "aprovado", "method": "senha_eletronica", "user_id": "u_8f2c41a9"}}]}, "form_submit": {"when": "No toque no botão que envia o formulário (Entrar, Continuar ou Confirmar Pix), logo depois do click do mesmo botão. Login: step=recusado com menos de 6 dígitos (senha_incompleta) ou com 000000 (senha_incorreta); step=aprovado com 6 dígitos aceitos, antes do evento login. Pix: no toque em Continuar, logo depois do click pix_continuar, com step=recusado (sem chave, valor inválido ou acima do saldo) ou step=revisao (dados válidos); no toque em Confirmar Pix, depois de debitar o saldo, com step=confirmado.", "rows": [{"id": "EL-20", "t": {"link_id": "btn_entrar", "element_type": "cta", "form_id": "login", "step": "recusado", "error_type": "senha_incompleta"}}, {"id": "EL-21", "t": {"link_id": "btn_entrar", "element_type": "cta", "form_id": "login", "step": "recusado", "error_type": "senha_incorreta"}}, {"id": "EL-22", "t": {"link_id": "btn_entrar", "element_type": "cta", "form_id": "login", "step": "aprovado", "method": "senha_eletronica", "user_id": "u_8f2c41a9"}}, {"id": "EL-51", "t": {"link_id": "pix_continuar", "element_type": "cta", "form_id": "pix", "step": "recusado"}}, {"id": "EL-52", "t": {"link_id": "pix_continuar", "element_type": "cta", "form_id": "pix", "step": "revisao", "currency": "BRL"}}, {"id": "EL-53", "t": {"link_id": "pix_confirmar", "element_type": "cta", "form_id": "pix", "step": "confirmado", "currency": "BRL"}}]}, "generate_lead": {"when": "No toque em 'Abrir conta' ou 'Quero abrir' na tela de acesso (abertura_conta) e em 'Pedir o Black' (cartao_black) ou 'Pedir adicional' (cartao_adicional) na tela Cartões. Sai depois do click e, nos banners, depois de select_promotion.", "rows": [{"id": "EL-08", "t": {"link_id": "acesso_abrir_conta", "element_type": "shortcut", "lead_source": "abertura_conta"}}, {"id": "EL-11", "t": {"link_id": "bnr_abra_conta_cta", "element_type": "banner_cta", "promotion_id": "bnr_abra_conta", "lead_source": "abertura_conta"}}, {"id": "EL-62", "t": {"link_id": "bnr_upgrade_black_cta", "element_type": "banner_cta", "promotion_id": "bnr_upgrade_black", "lead_source": "cartao_black"}}, {"id": "EL-63", "t": {"link_id": "cartao_adicional", "element_type": "cta", "lead_source": "cartao_adicional"}}]}, "select_item": {"when": "No toque em Investir num produto da tela Investimentos, logo depois do click do mesmo botão.", "rows": [{"id": "EL-65", "t": {"link_id": "investir_cdb_liquidez", "element_type": "product", "item_list_id": "renda_fixa", "items[0].item_id": "cdb_liquidez"}}, {"id": "EL-66", "t": {"link_id": "investir_lci_90", "element_type": "product", "item_list_id": "renda_fixa", "items[0].item_id": "lci_90"}}, {"id": "EL-67", "t": {"link_id": "investir_cdb_ipca_2a", "element_type": "product", "item_list_id": "renda_fixa", "items[0].item_id": "cdb_ipca_2a"}}, {"id": "EL-68", "t": {"link_id": "investir_fundo_di", "element_type": "product", "item_list_id": "renda_fixa", "items[0].item_id": "fundo_di"}}]}};
     var dl = window.dataLayer = window.dataLayer || [];
     var queue = [], log = [];
     var orig = dl.push;
@@ -41,7 +41,7 @@
       return out;
     };
     function pad(n) { return String(n).padStart(2, '0'); }
-    // Escolhe no mapa os elementos cujos valores fixos batem com o push (ex.: item_id, promotion_id, page_path).
+    // Escolhe no mapa os elementos cujos valores fixos batem com o push (ex.: link_id, promotion_id, page_path).
     function pick(rows, p) {
       var best = 0, out = [];
       rows.forEach(function (r) {
@@ -362,7 +362,7 @@ button { cursor: pointer; }
             <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="9" fill="var(--white)"/><path d="M10 23V9.5l12 13V9" stroke="var(--navy)" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Nuzzi
           </span>
-          <button class="icon-btn" type="button" data-action="quick_action" data-item="ajuda" aria-label="Ajuda"><svg aria-hidden="true"><use href="#i-help"/></svg></button>
+          <button class="icon-btn" type="button" data-action="atalho" data-item="ajuda" data-click="ajuda" data-click-type="icon" aria-label="Ajuda"><svg aria-hidden="true"><use href="#i-help"/></svg></button>
         </div>
 
         <p class="greet-big"><span class="js-greeting">Olá</span>, Marina</p>
@@ -370,16 +370,16 @@ button { cursor: pointer; }
         <div class="saved">
           <span class="avatar" aria-hidden="true">MA</span>
           <div class="who"><b>Marina Alves</b><span>Ag 0001 · CC 12345-6</span></div>
-          <button class="link-btn" type="button" data-action="quick_action" data-item="trocar_conta">Trocar</button>
+          <button class="link-btn" type="button" data-action="atalho" data-item="trocar_conta" data-click="trocar_conta" data-click-type="link">Trocar</button>
         </div>
 
-        <a class="cta" href="#entrar" data-track="acesso_entrar" data-track-type="cta">Acessar minha conta</a>
+        <a class="cta" href="#entrar" data-click="acesso_entrar" data-click-type="cta">Acessar minha conta</a>
 
         <div class="pub-grid">
-          <a class="pub" href="#pix" data-track="acesso_pix" data-track-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-pix"/></svg></span>Pix</a>
-          <button class="pub" type="button" data-action="quick_action" data-item="token"><span class="ic"><svg aria-hidden="true"><use href="#i-key"/></svg></span>Token</button>
-          <button class="pub" type="button" data-action="quick_action" data-item="bloquear_cartao"><span class="ic"><svg aria-hidden="true"><use href="#i-lock"/></svg></span>Bloquear cartão</button>
-          <button class="pub" type="button" data-action="lead" data-item="abertura_conta"><span class="ic"><svg aria-hidden="true"><use href="#i-plus"/></svg></span>Abrir conta</button>
+          <a class="pub" href="#pix" data-click="acesso_pix" data-click-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-pix"/></svg></span>Pix</a>
+          <button class="pub" type="button" data-action="atalho" data-item="token" data-click="acesso_token" data-click-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-key"/></svg></span>Token</button>
+          <button class="pub" type="button" data-action="atalho" data-item="bloquear_cartao" data-click="acesso_bloquear_cartao" data-click-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-lock"/></svg></span>Bloquear cartão</button>
+          <button class="pub" type="button" data-action="lead" data-item="abertura_conta" data-click="acesso_abrir_conta" data-click-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-plus"/></svg></span>Abrir conta</button>
         </div>
 
         <div class="carousel" data-carousel="acesso_destaques">
@@ -389,19 +389,19 @@ button { cursor: pointer; }
               <span class="tag">Novo cliente</span>
               <h3>Abra sua conta em 5 minutos</h3>
               <p>Conta sem mensalidade, Pix ilimitado e cartão virtual no mesmo dia.</p>
-              <button class="sbtn promo-cta" type="button" data-action="lead" data-item="abertura_conta">Quero abrir</button>
+              <button class="sbtn promo-cta" type="button" data-action="lead" data-item="abertura_conta" data-click="bnr_abra_conta_cta" data-click-type="banner_cta">Quero abrir</button>
             </div>
             <div class="slide s-glass" data-promo="bnr_cartao_black" data-promo-name="Cartão Nuzzi Black" data-slot="acesso_destaque_2">
               <span class="tag">Cartões</span>
               <h3>Nuzzi Black: 2,1 pontos por dólar</h3>
               <p>Pontos sem validade e anuidade zerada com R$ 5.000 por mês na fatura.</p>
-              <a class="sbtn promo-cta" href="#cartoes">Conhecer o Black</a>
+              <a class="sbtn promo-cta" href="#cartoes" data-click="bnr_cartao_black_cta" data-click-type="banner_cta">Conhecer o Black</a>
             </div>
             <div class="slide s-glass" data-promo="bnr_cdb_liquidez" data-promo-name="CDB 104% do CDI" data-slot="acesso_destaque_3">
               <span class="tag">Investimentos</span>
               <h3>CDB com 104% do CDI e resgate quando quiser</h3>
               <p>A partir de R$ 1, com garantia do FGC. Taxa fictícia.</p>
-              <a class="sbtn promo-cta" href="#investimentos">Ver investimentos</a>
+              <a class="sbtn promo-cta" href="#investimentos" data-click="bnr_cdb_liquidez_cta" data-click-type="banner_cta">Ver investimentos</a>
             </div>
           </div>
           <div class="dots" role="group" aria-label="Escolher destaque"></div>
@@ -412,7 +412,7 @@ button { cursor: pointer; }
     <!-- ===================== SENHA ===================== -->
     <section class="screen pwd" data-page="entrar" hidden>
       <div class="topbar">
-        <a class="icon-btn" href="#acesso" data-track="senha_voltar" data-track-type="cta" aria-label="Voltar"><svg aria-hidden="true"><use href="#i-back"/></svg></a>
+        <a class="icon-btn" href="#acesso" data-click="senha_voltar" data-click-type="cta" aria-label="Voltar"><svg aria-hidden="true"><use href="#i-back"/></svg></a>
       </div>
       <div class="body">
         <div style="display:grid;gap:6px">
@@ -427,11 +427,11 @@ button { cursor: pointer; }
           <button class="key" type="button" data-key="1">1</button><button class="key" type="button" data-key="2">2</button><button class="key" type="button" data-key="3">3</button>
           <button class="key" type="button" data-key="4">4</button><button class="key" type="button" data-key="5">5</button><button class="key" type="button" data-key="6">6</button>
           <button class="key" type="button" data-key="7">7</button><button class="key" type="button" data-key="8">8</button><button class="key" type="button" data-key="9">9</button>
-          <button class="key ghost" type="button" data-action="quick_action" data-item="esqueci_senha">Esqueci</button>
+          <button class="key ghost" type="button" data-action="atalho" data-item="esqueci_senha" data-click="esqueci_senha" data-click-type="link">Esqueci</button>
           <button class="key" type="button" data-key="0">0</button>
           <button class="key ghost" type="button" data-key="del" aria-label="Apagar"><svg width="24" height="24" aria-hidden="true"><use href="#i-del"/></svg></button>
         </div>
-        <button class="cta" type="button" id="btn-entrar">Entrar</button>
+        <button class="cta" type="button" id="btn-entrar" data-click="btn_entrar" data-click-type="cta">Entrar</button>
       </div>
     </section>
 
@@ -442,24 +442,24 @@ button { cursor: pointer; }
           <div class="head-row">
             <span class="avatar" aria-hidden="true">MA</span>
             <div class="who"><b><span class="js-greeting">Olá</span>, Marina</b><span class="acct">Ag 0001 · CC 12345-6</span></div>
-            <button class="icon-btn" type="button" id="btn-saldo" data-action="toggle_balance" aria-pressed="false" aria-label="Ocultar saldo"><svg aria-hidden="true"><use href="#i-eye"/></svg></button>
-            <button class="icon-btn" type="button" data-action="quick_action" data-item="notificacoes" aria-label="Notificações"><svg aria-hidden="true"><use href="#i-bell"/></svg></button>
-            <button class="icon-btn" type="button" id="btn-sair" aria-label="Sair"><svg aria-hidden="true"><use href="#i-exit"/></svg></button>
+            <button class="icon-btn" type="button" id="btn-saldo" data-action="saldo" data-click="ocultar_saldo" data-click-type="icon" aria-pressed="false" aria-label="Ocultar saldo"><svg aria-hidden="true"><use href="#i-eye"/></svg></button>
+            <button class="icon-btn" type="button" data-action="atalho" data-item="notificacoes" data-click="notificacoes" data-click-type="icon" aria-label="Notificações"><svg aria-hidden="true"><use href="#i-bell"/></svg></button>
+            <button class="icon-btn" type="button" id="btn-sair" data-click="sair" data-click-type="icon" aria-label="Sair"><svg aria-hidden="true"><use href="#i-exit"/></svg></button>
           </div>
           <div class="balance">
             <p class="lbl">Saldo em conta</p>
             <p class="amt js-saldo">R$ 0,00</p>
-            <a href="#extrato" data-track="inicio_ver_extrato" data-track-type="cta">Ver extrato</a>
+            <a href="#extrato" data-click="inicio_ver_extrato" data-click-type="cta">Ver extrato</a>
           </div>
         </div>
         <div class="content">
           <div class="shortcuts" role="list" aria-label="Atalhos">
-            <a class="sc" role="listitem" href="#pix" data-track="atalho_pix" data-track-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-pix"/></svg></span>Pix</a>
-            <button class="sc" role="listitem" type="button" data-action="quick_action" data-item="pagar_boleto"><span class="ic"><svg aria-hidden="true"><use href="#i-bar"/></svg></span>Pagar</button>
-            <button class="sc" role="listitem" type="button" data-action="quick_action" data-item="transferir"><span class="ic"><svg aria-hidden="true"><use href="#i-send"/></svg></span>Transferir</button>
-            <button class="sc" role="listitem" type="button" data-action="quick_action" data-item="recarga"><span class="ic"><svg aria-hidden="true"><use href="#i-phone"/></svg></span>Recarga</button>
-            <a class="sc" role="listitem" href="#cartoes" data-track="atalho_cartoes" data-track-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-card"/></svg></span>Cartões</a>
-            <a class="sc" role="listitem" href="#investimentos" data-track="atalho_investir" data-track-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-grow"/></svg></span>Investir</a>
+            <a class="sc" role="listitem" href="#pix" data-click="atalho_pix" data-click-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-pix"/></svg></span>Pix</a>
+            <button class="sc" role="listitem" type="button" data-action="atalho" data-item="pagar_boleto" data-click="atalho_pagar" data-click-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-bar"/></svg></span>Pagar</button>
+            <button class="sc" role="listitem" type="button" data-action="atalho" data-item="transferir" data-click="atalho_transferir" data-click-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-send"/></svg></span>Transferir</button>
+            <button class="sc" role="listitem" type="button" data-action="atalho" data-item="recarga" data-click="atalho_recarga" data-click-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-phone"/></svg></span>Recarga</button>
+            <a class="sc" role="listitem" href="#cartoes" data-click="atalho_cartoes" data-click-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-card"/></svg></span>Cartões</a>
+            <a class="sc" role="listitem" href="#investimentos" data-click="atalho_investir" data-click-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-grow"/></svg></span>Investir</a>
           </div>
 
           <div class="carousel" data-carousel="inicio_ofertas">
@@ -468,25 +468,25 @@ button { cursor: pointer; }
                 <span class="tag">Pré-aprovado</span>
                 <h3>R$ 30.000 de crédito pessoal disponível</h3>
                 <p>A partir de 1,49% ao mês, em até 48 parcelas.</p>
-                <button class="sbtn promo-cta" type="button" data-action="offer_accept" data-item="credito_preaprovado">Simular parcelas</button>
+                <button class="sbtn promo-cta" type="button" data-action="oferta" data-item="credito_preaprovado" data-click="bnr_credito_preaprovado_cta" data-click-type="banner_cta">Simular parcelas</button>
               </div>
               <div class="slide s-light" data-promo="bnr_seguro_cartao" data-promo-name="Seguro cartão protegido" data-slot="inicio_oferta_2">
                 <span class="tag">Novo</span>
                 <h3>Proteja seu cartão contra perda e roubo</h3>
                 <p>R$ 6,90 por mês, com reembolso de compras até 72 horas antes do bloqueio.</p>
-                <button class="sbtn promo-cta" type="button" data-action="offer_accept" data-item="seguro_cartao">Contratar seguro</button>
+                <button class="sbtn promo-cta" type="button" data-action="oferta" data-item="seguro_cartao" data-click="bnr_seguro_cartao_cta" data-click-type="banner_cta">Contratar seguro</button>
               </div>
               <div class="slide s-light" data-promo="bnr_pix_agendado" data-promo-name="Pix agendado sem tarifa" data-slot="inicio_oferta_3">
                 <span class="tag">Pix</span>
                 <h3>Agende Pix para até 12 meses, sem tarifa</h3>
                 <p>Aluguel, mesada e contas recorrentes saem na data certa.</p>
-                <a class="sbtn promo-cta" href="#pix">Agendar um Pix</a>
+                <a class="sbtn promo-cta" href="#pix" data-click="bnr_pix_agendado_cta" data-click-type="banner_cta">Agendar um Pix</a>
               </div>
             </div>
             <div class="dots" role="group" aria-label="Escolher oferta"></div>
           </div>
 
-          <a class="card" href="#cartoes" data-track="inicio_card_fatura" data-track-type="card" data-track-text="Cartão Nuzzi Mais">
+          <a class="card" href="#cartoes" data-click="inicio_card_fatura" data-click-type="card" data-click-text="Cartão Nuzzi Mais">
             <div class="card-head"><h2>Cartão Nuzzi Mais</h2><span class="muted">vence 10/11</span></div>
             <p class="muted">Fatura atual</p>
             <p class="big">R$ 2.318,40</p>
@@ -495,11 +495,11 @@ button { cursor: pointer; }
           </a>
 
           <div class="card">
-            <div class="card-head"><h2>Últimos lançamentos</h2><a href="#extrato" data-track="inicio_extrato_completo" data-track-type="cta">Ver tudo</a></div>
+            <div class="card-head"><h2>Últimos lançamentos</h2><a href="#extrato" data-click="inicio_extrato_completo" data-click-type="cta">Ver tudo</a></div>
             <ul class="tx" id="tx-resumo"></ul>
           </div>
 
-          <a class="card" href="#investimentos" data-track="inicio_card_investimentos" data-track-type="card" data-track-text="Investimentos">
+          <a class="card" href="#investimentos" data-click="inicio_card_investimentos" data-click-type="card" data-click-text="Investimentos">
             <div class="card-head"><h2>Investimentos</h2><span class="muted">rende 104% do CDI</span></div>
             <p class="big js-investido">R$ 42.180,00</p>
           </a>
@@ -513,9 +513,9 @@ button { cursor: pointer; }
       <div class="scroll">
         <div class="content">
           <div class="chips" role="group" aria-label="Filtrar lançamentos">
-            <button class="chip" type="button" data-filter="todos" aria-pressed="true">Tudo</button>
-            <button class="chip" type="button" data-filter="entradas" aria-pressed="false">Entradas</button>
-            <button class="chip" type="button" data-filter="saidas" aria-pressed="false">Saídas</button>
+            <button class="chip" type="button" data-filter="todos" data-click="filtro_todos" data-click-type="chip" aria-pressed="true">Tudo</button>
+            <button class="chip" type="button" data-filter="entradas" data-click="filtro_entradas" data-click-type="chip" aria-pressed="false">Entradas</button>
+            <button class="chip" type="button" data-filter="saidas" data-click="filtro_saidas" data-click-type="chip" aria-pressed="false">Saídas</button>
           </div>
           <div class="card"><ul class="tx" id="tx-full"></ul></div>
         </div>
@@ -524,7 +524,7 @@ button { cursor: pointer; }
 
     <!-- ===================== PIX ===================== -->
     <section class="screen with-tabs" data-page="pix" hidden>
-      <div class="appbar"><a class="icon-btn" href="#inicio" data-track="pix_voltar" data-track-type="cta" aria-label="Voltar"><svg aria-hidden="true"><use href="#i-back"/></svg></a><h1>Pix</h1></div>
+      <div class="appbar"><a class="icon-btn" href="#inicio" data-click="pix_voltar" data-click-type="cta" aria-label="Voltar"><svg aria-hidden="true"><use href="#i-back"/></svg></a><h1>Pix</h1></div>
       <div class="scroll">
         <div class="content">
           <ol class="steps" aria-label="Etapas do Pix"><li class="on"></li><li></li><li></li></ol>
@@ -534,20 +534,20 @@ button { cursor: pointer; }
             <div class="field"><label for="pix-valor">Valor</label><input id="pix-valor" inputmode="decimal" autocomplete="off" placeholder="R$ 0,00"><span class="h" id="pix-saldo-hint"></span></div>
             <div class="field"><label for="pix-desc">Mensagem (opcional)</label><input id="pix-desc" maxlength="60" autocomplete="off" placeholder="Ex.: aluguel de outubro"></div>
             <p class="err" id="pix-error" role="alert" hidden style="text-align:left"></p>
-            <button class="cta" type="submit">Continuar</button>
+            <button class="cta" type="submit" data-click="pix_continuar" data-click-type="cta">Continuar</button>
           </form>
           <div data-pix-step="2" hidden style="display:grid;gap:14px">
             <h2 style="font-size:20px">Confira antes de enviar</h2>
             <dl class="review" id="pix-review"></dl>
-            <button class="cta" type="button" id="pix-confirmar">Confirmar Pix</button>
-            <button class="cta ghost" type="button" id="pix-corrigir">Corrigir dados</button>
+            <button class="cta" type="button" id="pix-confirmar" data-click="pix_confirmar" data-click-type="cta">Confirmar Pix</button>
+            <button class="cta ghost" type="button" id="pix-corrigir" data-click="pix_corrigir" data-click-type="cta">Corrigir dados</button>
           </div>
           <div data-pix-step="3" hidden style="display:grid;gap:14px;justify-items:start">
             <div class="ok-mark"><svg width="28" height="28" aria-hidden="true"><use href="#i-check"/></svg></div>
             <h2 style="font-size:22px" id="pix-ok-title">Pix enviado</h2>
             <dl class="review" id="pix-receipt" style="width:100%"></dl>
-            <a class="cta" href="#inicio" data-track="pix_comprovante_inicio" data-track-type="cta">Voltar ao início</a>
-            <button class="cta ghost" type="button" id="pix-novo">Fazer outro Pix</button>
+            <a class="cta" href="#inicio" data-click="pix_comprovante_inicio" data-click-type="cta">Voltar ao início</a>
+            <button class="cta ghost" type="button" id="pix-novo" data-click="pix_novo" data-click-type="cta">Fazer outro Pix</button>
           </div>
         </div>
       </div>
@@ -566,20 +566,20 @@ button { cursor: pointer; }
             <div class="legend"><span>Usado R$ 7.700,00</span><span>Disponível R$ 7.300,00</span></div>
           </div>
           <div class="actions-row">
-            <button class="act" type="button" data-action="quick_action" data-item="cartao_virtual"><svg aria-hidden="true"><use href="#i-card"/></svg>Cartão virtual</button>
-            <button class="act" type="button" data-action="quick_action" data-item="bloquear_cartao"><svg aria-hidden="true"><use href="#i-lock"/></svg>Bloquear</button>
-            <button class="act" type="button" data-action="quick_action" data-item="ajustar_limite"><svg aria-hidden="true"><use href="#i-grow"/></svg>Ajustar limite</button>
+            <button class="act" type="button" data-action="atalho" data-item="cartao_virtual" data-click="cartao_virtual" data-click-type="action"><svg aria-hidden="true"><use href="#i-card"/></svg>Cartão virtual</button>
+            <button class="act" type="button" data-action="atalho" data-item="bloquear_cartao" data-click="cartoes_bloquear" data-click-type="action"><svg aria-hidden="true"><use href="#i-lock"/></svg>Bloquear</button>
+            <button class="act" type="button" data-action="atalho" data-item="ajustar_limite" data-click="ajustar_limite" data-click-type="action"><svg aria-hidden="true"><use href="#i-grow"/></svg>Ajustar limite</button>
           </div>
           <div class="slide s-dark" data-promo="bnr_upgrade_black" data-promo-name="Upgrade para Nuzzi Black" data-slot="cartoes_oferta_1" style="min-height:0">
             <span class="tag">Para você</span>
             <h3>Troque para o Nuzzi Black</h3>
             <p>2,1 pontos por dólar e 4 acessos por ano a salas VIP. Sujeito a análise.</p>
-            <button class="sbtn promo-cta" type="button" data-action="card_request" data-item="black">Pedir o Black</button>
+            <button class="sbtn promo-cta" type="button" data-action="cartao" data-item="black" data-click="bnr_upgrade_black_cta" data-click-type="banner_cta">Pedir o Black</button>
           </div>
           <div class="card">
             <div class="card-head"><h2>Cartão adicional</h2></div>
             <p class="muted">Para alguém da família, sem anuidade, com limite que você define.</p>
-            <button class="pill-btn" type="button" data-action="card_request" data-item="adicional" style="justify-self:start">Pedir adicional</button>
+            <button class="pill-btn" type="button" data-action="cartao" data-item="adicional" data-click="cartao_adicional" data-click-type="cta" style="justify-self:start">Pedir adicional</button>
           </div>
         </div>
       </div>
@@ -597,10 +597,10 @@ button { cursor: pointer; }
           </div>
           <div class="card">
             <div class="card-head"><h2>Renda fixa</h2><span class="muted">taxas fictícias</span></div>
-            <div class="prod"><div><b>CDB Liquidez Diária</b><span>104% do CDI · resgate a qualquer momento</span></div><button class="pill-btn" type="button" data-action="investment_intent" data-item="cdb_liquidez">Investir</button></div>
-            <div class="prod"><div><b>LCI 90 dias</b><span>92% do CDI · isento de IR</span></div><button class="pill-btn" type="button" data-action="investment_intent" data-item="lci_90">Investir</button></div>
-            <div class="prod"><div><b>CDB 2 anos</b><span>IPCA + 6,4% a.a. · no vencimento</span></div><button class="pill-btn" type="button" data-action="investment_intent" data-item="cdb_ipca_2a">Investir</button></div>
-            <div class="prod"><div><b>Fundo Nuzzi DI</b><span>100,2% do CDI em 12 meses · D+1</span></div><button class="pill-btn" type="button" data-action="investment_intent" data-item="fundo_di">Investir</button></div>
+            <div class="prod"><div><b>CDB Liquidez Diária</b><span>104% do CDI · resgate a qualquer momento</span></div><button class="pill-btn" type="button" data-action="investir" data-item="cdb_liquidez" data-click="investir_cdb_liquidez" data-click-type="product">Investir</button></div>
+            <div class="prod"><div><b>LCI 90 dias</b><span>92% do CDI · isento de IR</span></div><button class="pill-btn" type="button" data-action="investir" data-item="lci_90" data-click="investir_lci_90" data-click-type="product">Investir</button></div>
+            <div class="prod"><div><b>CDB 2 anos</b><span>IPCA + 6,4% a.a. · no vencimento</span></div><button class="pill-btn" type="button" data-action="investir" data-item="cdb_ipca_2a" data-click="investir_cdb_ipca_2a" data-click-type="product">Investir</button></div>
+            <div class="prod"><div><b>Fundo Nuzzi DI</b><span>100,2% do CDI em 12 meses · D+1</span></div><button class="pill-btn" type="button" data-action="investir" data-item="fundo_di" data-click="investir_fundo_di" data-click-type="product">Investir</button></div>
           </div>
           <p class="muted">Rentabilidade passada não garante rentabilidade futura.</p>
         </div>
@@ -609,11 +609,11 @@ button { cursor: pointer; }
 
     <!-- ===================== ABAS ===================== -->
     <nav class="tabbar" id="tabbar" aria-label="Navegação do app" hidden>
-      <a class="tab" href="#inicio" data-tab="inicio" data-track="tab_inicio" data-track-type="tab_bar"><svg aria-hidden="true"><use href="#i-home"/></svg>Início</a>
-      <a class="tab" href="#extrato" data-tab="extrato" data-track="tab_extrato" data-track-type="tab_bar"><svg aria-hidden="true"><use href="#i-list"/></svg>Extrato</a>
-      <a class="tab pix-tab" href="#pix" data-tab="pix" data-track="tab_pix" data-track-type="tab_bar"><span class="pic"><svg aria-hidden="true"><use href="#i-pix"/></svg></span>Pix</a>
-      <a class="tab" href="#cartoes" data-tab="cartoes" data-track="tab_cartoes" data-track-type="tab_bar"><svg aria-hidden="true"><use href="#i-card"/></svg>Cartões</a>
-      <a class="tab" href="#investimentos" data-tab="investimentos" data-track="tab_investir" data-track-type="tab_bar"><svg aria-hidden="true"><use href="#i-grow"/></svg>Investir</a>
+      <a class="tab" href="#inicio" data-tab="inicio" data-click="tab_inicio" data-click-type="tab_bar"><svg aria-hidden="true"><use href="#i-home"/></svg>Início</a>
+      <a class="tab" href="#extrato" data-tab="extrato" data-click="tab_extrato" data-click-type="tab_bar"><svg aria-hidden="true"><use href="#i-list"/></svg>Extrato</a>
+      <a class="tab pix-tab" href="#pix" data-tab="pix" data-click="tab_pix" data-click-type="tab_bar"><span class="pic"><svg aria-hidden="true"><use href="#i-pix"/></svg></span>Pix</a>
+      <a class="tab" href="#cartoes" data-tab="cartoes" data-click="tab_cartoes" data-click-type="tab_bar"><svg aria-hidden="true"><use href="#i-card"/></svg>Cartões</a>
+      <a class="tab" href="#investimentos" data-tab="investimentos" data-click="tab_investir" data-click-type="tab_bar"><svg aria-hidden="true"><use href="#i-grow"/></svg>Investir</a>
     </nav>
 
     <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
@@ -680,7 +680,6 @@ button { cursor: pointer; }
       gtag('set', { page_location: g.page_location, page_title: params.page_title });
     }
     gtag('event', event, g);
-    if (event === 'logout') gtag('set', { user_id: null });
   }
   function pad(n) { return String(n).padStart(2, '0'); }
   /* ---------- rotas ---------- */
@@ -699,7 +698,7 @@ button { cursor: pointer; }
   function route() {
     var r = (location.hash || '').replace('#', '') || home();
     if (!ROUTES[r]) r = home();
-    if (ROUTES[r].auth && !S.logged) { S.next = r; track('auth_required', { target_path: '/' + r, page_path: S.route ? '/' + S.route : undefined }); location.hash = 'entrar'; return; }
+    if (ROUTES[r].auth && !S.logged) { S.next = r; location.hash = 'entrar'; return; }
     if ((r === 'acesso' || r === 'entrar') && S.logged) { location.hash = 'inicio'; return; }
     S.route = r; S.seen = new Set();
     $$('[data-page]').forEach(function (p) { p.hidden = p.getAttribute('data-page') !== r; });
@@ -751,12 +750,12 @@ button { cursor: pointer; }
     slides.forEach(function (s, i) {
       var b = document.createElement('button');
       b.type = 'button'; b.className = 'dot'; b.setAttribute('aria-label', 'Destaque ' + (i + 1));
+      b.setAttribute('data-click', id + '_indicador_' + (i + 1)); b.setAttribute('data-click-type', 'carousel_indicator');
       b.setAttribute('aria-current', i === 0 ? 'true' : 'false');
       b.addEventListener('click', function () {
         if (i === cur) return;
         byDot = true;
         trackEl.scrollTo({ left: slides[i].offsetLeft - trackEl.offsetLeft, behavior: 'smooth' });
-        track('carousel_navigate', { carousel_id: id, control: 'indicador', slide_index: i + 1, promotion_id: slides[i].getAttribute('data-promo') });
       });
       dots.appendChild(b);
     });
@@ -768,35 +767,55 @@ button { cursor: pointer; }
         if (i === cur) { byDot = false; return; }
         cur = i;
         $$('.dot', dots).forEach(function (d, k) { d.setAttribute('aria-current', k === cur ? 'true' : 'false'); });
-        if (!byDot) track('carousel_navigate', { carousel_id: id, control: 'arrastar', slide_index: cur + 1, promotion_id: slides[cur].getAttribute('data-promo') });
         byDot = false;
       }, 140);
     }, { passive: true });
   });
 
-  /* ---------- cliques ---------- */
+  /* ---------- click: todo botão e link marcado com data-click ---------- */
+  // Fase de captura: o click sai antes do evento de negócio do mesmo toque (login, generate_lead,
+  // form_submit, select_promotion...). As teclas da senha não têm data-click: nenhum dígito é enviado.
+  document.addEventListener('click', function (e) {
+    var c = e.target.closest('[data-click]');
+    if (!c) return;
+    var href = c.getAttribute('href');
+    track('click', {
+      link_id: c.getAttribute('data-click'),
+      link_text: (c.getAttribute('data-click-text') || c.getAttribute('aria-label') || c.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60),
+      link_url: href && href.charAt(0) === '#' ? '/' + href.slice(1) : undefined,
+      element_type: c.getAttribute('data-click-type'),
+      outbound: false,
+      page_path: '/' + S.route
+    });
+  }, true);
+
+  /* ---------- eventos de negócio dos botões ---------- */
+  var INVEST = {
+    cdb_liquidez: { item_id: 'cdb_liquidez', item_name: 'CDB Liquidez Diária', item_category: 'renda_fixa' },
+    lci_90: { item_id: 'lci_90', item_name: 'LCI 90 dias', item_category: 'renda_fixa' },
+    cdb_ipca_2a: { item_id: 'cdb_ipca_2a', item_name: 'CDB 2 anos', item_category: 'renda_fixa' },
+    fundo_di: { item_id: 'fundo_di', item_name: 'Fundo Nuzzi DI', item_category: 'renda_fixa' }
+  };
   document.addEventListener('click', function (e) {
     var promoCta = e.target.closest('.promo-cta');
     if (promoCta && promoCta.closest('[data-promo]')) track('select_promotion', promoData(promoCta.closest('[data-promo]')));
 
-    var t = e.target.closest('[data-track]');
-    if (t) track('select_content', { content_type: t.getAttribute('data-track-type') || 'link', item_id: t.getAttribute('data-track'), link_text: (t.getAttribute('data-track-text') || t.getAttribute('aria-label') || t.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60), page_path: '/' + S.route });
-
     var a = e.target.closest('[data-action]');
     if (!a) return;
     var act = a.getAttribute('data-action'), item = a.getAttribute('data-item');
-    if (act === 'quick_action') {
-      track('quick_action', { action_id: item, page_path: '/' + S.route }); toast('Simulação: fluxo não implementado neste modelo.');
+    if (act === 'atalho') {
+      toast('Simulação: fluxo não implementado neste modelo.');
     } else if (act === 'lead') {
-      track('generate_lead', { lead_type: item, page_path: '/' + S.route }); toast('Recebemos seu pedido de abertura de conta (simulação).');
-    } else if (act === 'toggle_balance') {
-      S.hideBal = !S.hideBal; renderBalance(); track('toggle_balance', { state: S.hideBal ? 'hidden' : 'visible' });
-    } else if (act === 'offer_accept') {
-      track('offer_click', { offer_id: item }); toast('Oferta registrada (simulação).');
-    } else if (act === 'card_request') {
-      track('card_request', { card_tier: item }); toast('Pedido de cartão registrado (simulação).');
-    } else if (act === 'investment_intent') {
-      track('investment_intent', { product_id: item }); toast('Simulação: aplicação não implementada.');
+      track('generate_lead', { lead_source: item, page_path: '/' + S.route }); toast('Recebemos seu pedido de abertura de conta (simulação).');
+    } else if (act === 'saldo') {
+      S.hideBal = !S.hideBal; renderBalance();
+    } else if (act === 'oferta') {
+      toast('Oferta registrada (simulação).');
+    } else if (act === 'cartao') {
+      track('generate_lead', { lead_source: 'cartao_' + item, page_path: '/' + S.route }); toast('Pedido de cartão registrado (simulação).');
+    } else if (act === 'investir') {
+      var prod = INVEST[item];
+      track('select_item', { item_list_id: 'renda_fixa', item_list_name: 'Renda fixa', items: [prod] }); toast('Simulação: aplicação não implementada.');
     }
   });
 
@@ -823,7 +842,7 @@ button { cursor: pointer; }
   function loginFail(type, msg) {
     $('#login-error').textContent = msg; $('#login-error').hidden = false;
     var pin = $('#pin'); pin.classList.remove('shake'); void pin.offsetWidth; pin.classList.add('shake');
-    track('login_error', { form_id: 'login', error_type: type });
+    track('form_submit', { form_id: 'login', step: 'recusado', error_type: type, value: undefined, currency: undefined, pix_key_type: undefined, transaction_id: undefined });
   }
   function submitLogin() {
     if (S.pin.length < 6) return loginFail('senha_incompleta', 'A senha tem 6 dígitos.');
@@ -831,6 +850,7 @@ button { cursor: pointer; }
     S.logged = true;
     S.user = { id: 'u_8f2c41a9', segment: 'pf_alta_renda' };
     S.pin = '';
+    track('form_submit', { form_id: 'login', step: 'aprovado', error_type: undefined, value: undefined, currency: undefined, pix_key_type: undefined, transaction_id: undefined });
     track('login', { method: 'senha_eletronica', user_id: S.user.id, customer_segment: S.user.segment });
     var n = S.next || 'inicio'; S.next = null;
     goTo(n);
@@ -845,7 +865,8 @@ button { cursor: pointer; }
   });
 
   $('#btn-sair').addEventListener('click', function () {
-    track('logout', { user_id: S.user && S.user.id });
+    // O click do ícone Sair já saiu (fase de captura) com o user_id da sessão; agora o GA4 esquece o cliente.
+    if (typeof window.gtag === 'function') gtag('set', { user_id: null });
     S.logged = false; S.user = null; S.next = null; S.hideBal = false;
     goTo('acesso');
   });
@@ -888,7 +909,6 @@ button { cursor: pointer; }
       S.filter = f;
       $$('[data-filter]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === c)); });
       renderExtrato();
-      track('statement_filter', { filter: f });
     });
   });
 
@@ -923,7 +943,7 @@ button { cursor: pointer; }
     });
   }
   $('#pix-form').addEventListener('focusin', function () {
-    if (!pixStarted) { pixStarted = true; track('pix_start', { page_path: '/pix' }); }
+    if (!pixStarted) { pixStarted = true; track('form_start', { form_id: 'pix', page_path: '/pix' }); }
   });
   $('#pix-form').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -931,7 +951,7 @@ button { cursor: pointer; }
     if (!chave) err = ['chave_vazia', 'Informe a chave Pix de quem vai receber.'];
     else if (!(v > 0)) err = ['valor_invalido', 'Informe um valor maior que zero, como 150,00.'];
     else if (v > S.balance) err = ['saldo_insuficiente', 'O valor passa do saldo disponível de ' + brl.format(S.balance) + '.'];
-    if (err) { $('#pix-error').textContent = err[1]; $('#pix-error').hidden = false; track('pix_error', { error_type: err[0] }); return; }
+    if (err) { $('#pix-error').textContent = err[1]; $('#pix-error').hidden = false; track('form_submit', { form_id: 'pix', step: 'recusado', error_type: err[0], value: undefined, currency: undefined, pix_key_type: undefined, transaction_id: undefined }); return; }
     $('#pix-error').hidden = true;
     S.pending = { chave: chave, v: v, tipo: keyType(chave), desc: $('#pix-desc').value.trim() };
     fillDl($('#pix-review'), [
@@ -942,9 +962,9 @@ button { cursor: pointer; }
       ['Saldo após o Pix', brl.format(S.balance - v)]
     ]);
     pixStep(2);
-    track('pix_review', { value: v, currency: 'BRL', pix_key_type: S.pending.tipo });
+    track('form_submit', { form_id: 'pix', step: 'revisao', error_type: undefined, value: v, currency: 'BRL', pix_key_type: S.pending.tipo, transaction_id: undefined });
   });
-  $('#pix-corrigir').addEventListener('click', function () { pixStep(1); track('pix_edit', { step: 'revisao' }); });
+  $('#pix-corrigir').addEventListener('click', function () { pixStep(1); });
   $('#pix-confirmar').addEventListener('click', function () {
     var p = S.pending; if (!p) return;
     var id = 'E' + Date.now();
@@ -959,10 +979,10 @@ button { cursor: pointer; }
       ['Saldo atual', brl.format(S.balance)]
     ]);
     pixStep(3);
-    track('pix_success', { transaction_id: id, value: p.v, currency: 'BRL', pix_key_type: p.tipo });
+    track('form_submit', { form_id: 'pix', step: 'confirmado', error_type: undefined, value: p.v, currency: 'BRL', pix_key_type: p.tipo, transaction_id: id });
     S.pending = null;
   });
-  $('#pix-novo').addEventListener('click', function () { pixReset(); track('pix_restart', {}); });
+  $('#pix-novo').addEventListener('click', function () { pixReset(); });
 
   /* ---------- toast ---------- */
   var toastT = null;

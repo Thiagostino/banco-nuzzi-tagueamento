@@ -12,8 +12,11 @@ Siga a skill `taxonomia` para nomes, tipos e regras de dado pessoal. Esta skill 
 
 ## 1. Decida se precisa de evento novo
 
-- O gesto já é coberto por um evento existente? Um toque em link novo é `select_content` com `data-track`; um banner novo é `view_promotion` e `select_promotion` com `data-promo`. Nesses casos não crie evento, só adicione o atributo e a linha no catálogo.
-- Crie evento só para uma ação de negócio que entra num funil ou numa métrica. Se você não consegue dizer em uma frase qual pergunta ele responde, não crie.
+- Todo botão ou link novo recebe `data-click="<link_id>"` (e `data-click-type`). Isso basta para gerar `click`; não crie evento para o toque.
+- Um banner novo é `view_promotion` e `select_promotion` com `data-promo`. Também não precisa de evento novo.
+- Um formulário novo usa `form_start` e `form_submit` (resultado em `step`, erro em `error_type`).
+- Evento de negócio só com nome do catálogo de eventos GA4 do TagOps (automatic ou recommended), por exemplo `generate_lead`, `select_item`, `sign_up`, `search`. **Não crie evento personalizado.** Se nenhum nome do catálogo servir, use o evento mais próximo com um parâmetro que diferencie, e registre a decisão no plano.
+- Se você não consegue dizer em uma frase qual pergunta o evento responde, não crie.
 
 ## 2. Siga o padrão do código
 
@@ -31,9 +34,9 @@ Adicione um objeto em `trackingPlan` do `tracking-plan/tracking-plan.json`, no m
 
 ```json
 {
-  "id": "EV-24",
+  "id": "EV-10",
   "eventName": "nome_do_evento",
-  "category": "Área logada",
+  "category": "Produto",
   "status": "Em homologação",
   "owner": "Time responsável",
   "description": {

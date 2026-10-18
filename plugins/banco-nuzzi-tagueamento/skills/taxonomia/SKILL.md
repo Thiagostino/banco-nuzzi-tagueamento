@@ -49,10 +49,11 @@ Descrição ruim: "dispara no clique do botão". Descrição boa: "O cliente toc
 
 ## Nomenclatura
 
-- Eventos em `snake_case`, em inglês, no padrão dos eventos recomendados do GA4 quando há equivalente (`page_view`, `view_promotion`, `select_promotion`, `login`, `generate_lead`). Esta é a convenção do projeto e vale mais que qualquer padrão externo.
-- Um gesto do cliente gera um nome de evento. Variações vão em parâmetro (`card_tier`, `action_id`), não em eventos novos.
+- **Só nomes do catálogo de eventos GA4 do TagOps** (tipos automatic e recommended). O app usa 9: `page_view`, `click`, `view_promotion`, `select_promotion`, `form_start`, `form_submit`, `login`, `generate_lead` e `select_item`. Nenhum evento personalizado.
+- Todo toque em botão ou link é `click`, com o elemento em `link_id` (atributo `data-click`). O evento de negócio do mesmo toque sai logo depois.
+- Variações vão em parâmetro, não em evento novo: resultado do formulário em `step`, motivo da recusa em `error_type`, tipo de pedido em `lead_source`, elemento em `link_id`.
 - Parâmetros em `snake_case`, com o mesmo nome para o mesmo conceito em todos os eventos (`page_path`, `promotion_id`, `user_id`).
-- Nomes distintos para conceitos distintos: `filter` no extrato, `control` no carrossel, `state` no saldo.
+- Parâmetros do GA4 têm prioridade quando existem (`link_id`, `link_text`, `link_url`, `outbound`, `form_id`, `lead_source`, `items`).
 
 ## Tipos de parâmetro
 

@@ -1,19 +1,21 @@
 {
   "$schema": "./tracking-plan.schema.json",
   "name": "Banco Nuzzi",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "updatedAt": "2026-10-18",
   "owner": "Thiago D'Agostino · Governança de Dados Digitais",
   "trackingRequired": true,
-  "reasoning": "App fictício de banco para testar dataLayer e GTM. Os eventos cobrem a tela de acesso deslogada, o login por senha, a área logada com abas, banners internos, produtos e o funil de Pix.",
+  "reasoning": "App fictício de banco para testar dataLayer e GTM. Todo botão e link gera click; quando o toque conclui uma ação, o evento de negócio sai em seguida. Todos os nomes de evento seguem o catálogo de eventos GA4 do TagOps (automatic e recommended); nenhum evento é personalizado. Erros de validação são form_submit com step=recusado.",
+  "catalogAlignment": "v2.0.0: 23 eventos viraram 12. Ver catalogs.migration para o destino de cada evento removido.",
   "documentationPrinciple": "Cada evento responde o que ele significa, quando ele dispara e com o que ele se conecta, e separa os dois usos do dado pela IA: responder perguntas e tomar decisões.",
   "existingPattern": {
     "trackingFunction": "track",
     "importPath": "index.html (função interna track, que envolve window.dataLayer.push)",
-    "exampleCall": "track('login', { method: 'senha_eletronica', user_id: S.user.id, customer_segment: S.user.segment })"
+    "exampleCall": "track('click', { link_id: 'tab_extrato', link_text: 'Extrato', link_url: '/extrato', element_type: 'tab_bar', outbound: false, page_path: '/inicio' })"
   },
   "conventions": {
-    "eventNames": "snake_case em inglês, seguindo os eventos recomendados do GA4 quando há equivalente",
+    "eventNames": "nome do catálogo de eventos GA4 do TagOps (automatic ou recommended) sempre que o significado bate; personalizado só quando não há equivalente",
+    "clicks": "todo botão e link do app tem data-click e gera click (fase de captura) antes do evento de negócio do mesmo toque; teclas da senha não têm data-click",
     "propertyNames": "snake_case, o mesmo nome para o mesmo conceito em todos os eventos (page_path, user_id, promotion_id)",
     "ids": "sempre string",
     "amounts": "número com ponto decimal, moeda em currency",
@@ -26,6 +28,7 @@
       "id": "EV-01",
       "eventName": "page_view",
       "category": "Navegação",
+      "catalogType": "automatic",
       "amplitudeCategory": "Engagement",
       "status": "Implementado",
       "amplitudeStatus": "Live",
@@ -33,12 +36,12 @@
       "description": {
         "behavior": "O cliente passou a ver uma tela do app. Cada tela é uma página virtual (rota por #hash).",
         "trigger": "Ao abrir o app e a cada troca de #hash, depois da checagem de login. Sem #hash, abre /acesso (deslogado) ou /inicio (logado). Se a tela exige login e o cliente está deslogado, dispara para /entrar, e não para a tela pedida.",
-        "disambiguation": "Registra a tela vista. O clique que levou até ela é select_content ou select_promotion.",
+        "disambiguation": "Registra a tela vista. O toque que levou até ela é click (e select_promotion, quando veio de um banner).",
         "useCases": "Base de todos os funis por tela e denominador das taxas por tela.",
         "keyProperties": "page_path, page_title, page_type",
         "technical": "window.hashchange + abertura do app em Todas"
       },
-      "aiDescription": "O que é: O cliente passou a ver uma tela do app. Cada tela é uma página virtual (rota por #hash).\nQuando dispara: Ao abrir o app e a cada troca de #hash, depois da checagem de login. Sem #hash, abre /acesso (deslogado) ou /inicio (logado). Se a tela exige login e o cliente está deslogado, dispara para /entrar, e não para a tela pedida.\nDiferença para eventos parecidos: Registra a tela vista. O clique que levou até ela é select_content ou select_promotion.\nUso em análise: Base de todos os funis por tela e denominador das taxas por tela.\nPropriedades principais: page_path, page_title, page_type.\nTécnico: window.hashchange + abertura do app em Todas; route(), depois de mostrar a tela.",
+      "aiDescription": "O que é: O cliente passou a ver uma tela do app. Cada tela é uma página virtual (rota por #hash).\nQuando dispara: Ao abrir o app e a cada troca de #hash, depois da checagem de login. Sem #hash, abre /acesso (deslogado) ou /inicio (logado). Se a tela exige login e o cliente está deslogado, dispara para /entrar, e não para a tela pedida.\nDiferença para eventos parecidos: Registra a tela vista. O toque que levou até ela é click (e select_promotion, quando veio de um banner).\nUso em análise: Base de todos os funis por tela e denominador das taxas por tela.\nPropriedades principais: page_path, page_title, page_type.\nTécnico: window.hashchange + abertura do app em Todas; route(), depois de mostrar a tela.",
       "aiUses": {
         "answerQuestions": "Quantos clientes logados abriram a tela de Pix nesta semana?",
         "makeDecisions": "Escolher o conteúdo e as ofertas da tela conforme page_type e login_status."
@@ -109,7 +112,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 602,
+          "originalLineNumberPreChanges": 601,
           "codeContext": "route(), depois de mostrar a tela",
           "trackingCode": "track('page_view', { page_path: '/' + r, page_title: ROUTES[r].title, page_type: ROUTES[r].type, login_status: S.logged ? 'logged_in' : 'logged_out', user_id: S.logged ? S.user.id : undefined })"
         }
@@ -117,21 +120,126 @@
     },
     {
       "id": "EV-02",
+      "eventName": "click",
+      "category": "Navegação",
+      "catalogType": "automatic",
+      "amplitudeCategory": "Engagement",
+      "status": "Implementado",
+      "amplitudeStatus": "Live",
+      "owner": "Produto Digital",
+      "description": {
+        "behavior": "O cliente tocou num botão ou link do app. Todo elemento com data-click gera click, e o link_id diz qual foi.",
+        "trigger": "No toque em qualquer elemento com data-click, na fase de captura do clique: sai antes de qualquer outro evento do mesmo toque (page_view, login, generate_lead, select_promotion, form_submit). As teclas numéricas da senha não geram click.",
+        "disambiguation": "Todo toque em botão ou link. Quando o toque também conclui uma ação, o evento de negócio sai logo depois, no mesmo toque (login, generate_lead, select_item, form_submit, select_promotion). Não confundir com o click automático do GA4 para links externos: esse vem com outbound=true; os do app vêm com outbound=false.",
+        "useCases": "Uso de cada botão e link por tela (link_id × page_path), caminhos de navegação e demanda por atalhos ainda sem fluxo.",
+        "keyProperties": "link_id, link_text, link_url",
+        "technical": "[data-click] (lista na aba Elementos) em Todas"
+      },
+      "aiDescription": "O que é: O cliente tocou num botão ou link do app. Todo elemento com data-click gera click, e o link_id diz qual foi.\nQuando dispara: No toque em qualquer elemento com data-click, na fase de captura do clique: sai antes de qualquer outro evento do mesmo toque (page_view, login, generate_lead, select_promotion, form_submit). As teclas numéricas da senha não geram click.\nDiferença para eventos parecidos: Todo toque em botão ou link. Quando o toque também conclui uma ação, o evento de negócio sai logo depois, no mesmo toque (login, generate_lead, select_item, form_submit, select_promotion). Não confundir com o click automático do GA4 para links externos: esse vem com outbound=true; os do app vêm com outbound=false.\nUso em análise: Uso de cada botão e link por tela (link_id × page_path), caminhos de navegação e demanda por atalhos ainda sem fluxo.\nPropriedades principais: link_id, link_text, link_url.\nTécnico: [data-click] (lista na aba Elementos) em Todas; listener global de clique na fase de captura, [data-click].",
+      "aiUses": {
+        "answerQuestions": "Qual botão do Início é mais tocado depois do login?",
+        "makeDecisions": "Reordenar atalhos, abas e botões pelo uso e priorizar os fluxos dos atalhos que ainda não existem."
+      },
+      "connectsTo": "Elemento (link_id, aba Elementos) · Tela de origem (page_path) · Destino (link_url)",
+      "screens": "Todas",
+      "selector": "[data-click] (lista na aba Elementos)",
+      "containsPersonalData": "Não. link_text vem de data-click-text, aria-label ou texto fixo; cartões com valores usam data-click-text. As teclas da senha não têm data-click.",
+      "eventProperties": [
+        {
+          "name": "link_id",
+          "type": "string",
+          "required": "Sim",
+          "description": "Código fixo do elemento tocado.",
+          "possibleValues": "Ver aba Elementos",
+          "example": "tab_extrato",
+          "source": "data-click",
+          "lgpd": "Não pessoal"
+        },
+        {
+          "name": "link_text",
+          "type": "string",
+          "required": "Sim",
+          "description": "Texto do elemento, até 60 caracteres. Vem de data-click-text, aria-label ou texto visível, nessa ordem.",
+          "possibleValues": "Texto fixo do app",
+          "example": "Extrato",
+          "source": "data-click-text, aria-label ou textContent",
+          "lgpd": "Não pessoal (texto fixo)"
+        },
+        {
+          "name": "link_url",
+          "type": "string",
+          "required": "Não",
+          "description": "Destino do link, no formato /rota. Botões sem link vão como undefined.",
+          "possibleValues": "/acesso, /entrar, /inicio, /extrato, /pix, /cartoes, /investimentos",
+          "example": "/extrato",
+          "source": "href do elemento",
+          "lgpd": "Não pessoal"
+        },
+        {
+          "name": "element_type",
+          "type": "string",
+          "required": "Sim",
+          "description": "Tipo de elemento tocado.",
+          "possibleValues": "cta, link, shortcut, icon, tab_bar, card, banner_cta, carousel_indicator, chip, action, product",
+          "example": "tab_bar",
+          "source": "data-click-type",
+          "lgpd": "Não pessoal"
+        },
+        {
+          "name": "outbound",
+          "type": "boolean",
+          "required": "Sim",
+          "description": "Sempre false: clique interno do app. Separa estes eventos do click automático de link externo do GA4, que vem com outbound=true.",
+          "possibleValues": "false",
+          "example": false,
+          "source": "Fixo",
+          "lgpd": "Não pessoal"
+        },
+        {
+          "name": "page_path",
+          "type": "string",
+          "required": "Sim",
+          "description": "Tela onde o toque ou o formulário aconteceu.",
+          "possibleValues": "/acesso, /entrar, /inicio, /extrato, /pix, /cartoes, /investimentos",
+          "example": "/inicio",
+          "source": "Rota atual",
+          "lgpd": "Não pessoal"
+        }
+      ],
+      "dataLayerPush": "// Quando: No toque em qualquer elemento com data-click, na fase de captura do clique: sai antes de qualquer outro evento do mesmo toque (page_view, login, generate_lead, select_promotion, form_submit).\nwindow.dataLayer.push({\n  event: 'click',\n  link_id: 'tab_extrato',\n  link_text: 'Extrato',\n  link_url: '/extrato',\n  element_type: 'tab_bar',\n  outbound: false,\n  page_path: '/inicio'\n});",
+      "gtm": {
+        "trigger": "CE · click",
+        "tag": "GA4 · click",
+        "triggerType": "Evento personalizado",
+        "eventNameMatch": "click"
+      },
+      "implementationLocations": [
+        {
+          "filePath": "index.html",
+          "originalLineNumberPreChanges": 669,
+          "codeContext": "listener global de clique na fase de captura, [data-click]",
+          "trackingCode": "track('click', { link_id: c.getAttribute('data-click'), link_text: (c.getAttribute('data-click-text') || c.getAttribute('aria-label') || c.textContent || '').replace(/\\s+/g, ' ').trim().slice(0, 60), link_url: href && href.charAt(0) === '#' ? '/' + href.slice(1) : undefined, element_type: c.getAttribute('data-click-type'), outbound: false, page_path: '/' + S.route })"
+        }
+      ]
+    },
+    {
+      "id": "EV-03",
       "eventName": "view_promotion",
       "category": "Banners",
+      "catalogType": "recommended",
       "amplitudeCategory": "Engagement",
       "status": "Implementado",
       "amplitudeStatus": "Live",
       "owner": "Marketing Digital",
       "description": {
         "behavior": "Um banner interno apareceu de fato na tela do cliente. Mede exposição, não carregamento.",
-        "trigger": "Quando ao menos 60% do banner fica visível (IntersectionObserver), inclusive ao arrastar o carrossel até ele. Uma vez por banner a cada page_view.",
-        "disambiguation": "Exposição do banner, não clique (select_promotion). Não conta carregamento da página: o banner precisa aparecer na tela.",
-        "useCases": "Denominador da taxa de clique de banner (CTR) por promotion_id e creative_slot.",
+        "trigger": "Quando ao menos 60% do banner fica visível (IntersectionObserver), inclusive ao arrastar o carrossel ou tocar num indicador. Uma vez por banner a cada page_view.",
+        "disambiguation": "Exposição do banner, não toque (select_promotion). Não conta carregamento da página: o banner precisa aparecer na tela.",
+        "useCases": "Denominador da taxa de toque de banner (CTR) por promotion_id e creative_slot.",
         "keyProperties": "promotion_id, promotion_name, creative_slot",
         "technical": "[data-promo] em /acesso, /inicio, /cartoes"
       },
-      "aiDescription": "O que é: Um banner interno apareceu de fato na tela do cliente. Mede exposição, não carregamento.\nQuando dispara: Quando ao menos 60% do banner fica visível (IntersectionObserver), inclusive ao arrastar o carrossel até ele. Uma vez por banner a cada page_view.\nDiferença para eventos parecidos: Exposição do banner, não clique (select_promotion). Não conta carregamento da página: o banner precisa aparecer na tela.\nUso em análise: Denominador da taxa de clique de banner (CTR) por promotion_id e creative_slot.\nPropriedades principais: promotion_id, promotion_name, creative_slot.\nTécnico: [data-promo] em /acesso, /inicio, /cartoes; impression(), chamada pelo IntersectionObserver.",
+      "aiDescription": "O que é: Um banner interno apareceu de fato na tela do cliente. Mede exposição, não carregamento.\nQuando dispara: Quando ao menos 60% do banner fica visível (IntersectionObserver), inclusive ao arrastar o carrossel ou tocar num indicador. Uma vez por banner a cada page_view.\nDiferença para eventos parecidos: Exposição do banner, não toque (select_promotion). Não conta carregamento da página: o banner precisa aparecer na tela.\nUso em análise: Denominador da taxa de toque de banner (CTR) por promotion_id e creative_slot.\nPropriedades principais: promotion_id, promotion_name, creative_slot.\nTécnico: [data-promo] em /acesso, /inicio, /cartoes; impression(), chamada pelo IntersectionObserver.",
       "aiUses": {
         "answerQuestions": "Qual banner da tela de acesso foi mais visto ontem, e em qual posição?",
         "makeDecisions": "Decidir qual banner mostrar primeiro, usando select_promotion como resultado."
@@ -182,7 +290,7 @@
           "lgpd": "Não pessoal"
         }
       ],
-      "dataLayerPush": "// Quando: Quando ao menos 60% do banner fica visível (IntersectionObserver), inclusive ao arrastar o carrossel até ele.\nwindow.dataLayer.push({\n  event: 'view_promotion',\n  promotion_id: 'bnr_credito_preaprovado',\n  promotion_name: 'Crédito pessoal pré-aprovado',\n  creative_slot: 'inicio_oferta_1',\n  location_id: '/inicio'\n});",
+      "dataLayerPush": "// Quando: Quando ao menos 60% do banner fica visível (IntersectionObserver), inclusive ao arrastar o carrossel ou tocar num indicador.\nwindow.dataLayer.push({\n  event: 'view_promotion',\n  promotion_id: 'bnr_credito_preaprovado',\n  promotion_name: 'Crédito pessoal pré-aprovado',\n  creative_slot: 'inicio_oferta_1',\n  location_id: '/inicio'\n});",
       "gtm": {
         "trigger": "CE · view_promotion",
         "tag": "GA4 · view_promotion",
@@ -192,34 +300,35 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 621,
+          "originalLineNumberPreChanges": 620,
           "codeContext": "impression(), chamada pelo IntersectionObserver",
           "trackingCode": "track('view_promotion', promoData(el))"
         }
       ]
     },
     {
-      "id": "EV-03",
+      "id": "EV-04",
       "eventName": "select_promotion",
       "category": "Banners",
+      "catalogType": "recommended",
       "amplitudeCategory": "Engagement",
       "status": "Implementado",
       "amplitudeStatus": "Live",
       "owner": "Marketing Digital",
       "description": {
         "behavior": "O cliente tocou no botão de um banner interno.",
-        "trigger": "No toque em .promo-cta dentro de [data-promo]. Dispara antes da troca de tela e antes do evento da ação do botão (generate_lead, offer_click ou card_request).",
-        "disambiguation": "Só botões dentro de um banner [data-promo]. Links comuns são select_content. offer_click e generate_lead registram a intenção específica no mesmo clique.",
+        "trigger": "No toque em .promo-cta dentro de [data-promo], logo depois do click do mesmo botão. Sai antes da troca de tela e antes de generate_lead, quando o botão também gera lead.",
+        "disambiguation": "Só botões dentro de um banner [data-promo], sempre depois do click do mesmo botão. Use select_promotion para a taxa de toque do banner; o click é o mesmo toque visto como elemento.",
         "useCases": "Numerador do CTR de banner e início dos funis de campanha.",
         "keyProperties": "promotion_id, promotion_name, creative_slot",
         "technical": "[data-promo] .promo-cta em /acesso, /inicio, /cartoes"
       },
-      "aiDescription": "O que é: O cliente tocou no botão de um banner interno.\nQuando dispara: No toque em .promo-cta dentro de [data-promo]. Dispara antes da troca de tela e antes do evento da ação do botão (generate_lead, offer_click ou card_request).\nDiferença para eventos parecidos: Só botões dentro de um banner [data-promo]. Links comuns são select_content. offer_click e generate_lead registram a intenção específica no mesmo clique.\nUso em análise: Numerador do CTR de banner e início dos funis de campanha.\nPropriedades principais: promotion_id, promotion_name, creative_slot.\nTécnico: [data-promo] .promo-cta em /acesso, /inicio, /cartoes; listener global de clique, ramo .promo-cta.",
+      "aiDescription": "O que é: O cliente tocou no botão de um banner interno.\nQuando dispara: No toque em .promo-cta dentro de [data-promo], logo depois do click do mesmo botão. Sai antes da troca de tela e antes de generate_lead, quando o botão também gera lead.\nDiferença para eventos parecidos: Só botões dentro de um banner [data-promo], sempre depois do click do mesmo botão. Use select_promotion para a taxa de toque do banner; o click é o mesmo toque visto como elemento.\nUso em análise: Numerador do CTR de banner e início dos funis de campanha.\nPropriedades principais: promotion_id, promotion_name, creative_slot.\nTécnico: [data-promo] .promo-cta em /acesso, /inicio, /cartoes; listener global de clique, ramo .promo-cta.",
       "aiUses": {
         "answerQuestions": "Qual a taxa de toque do banner de crédito pré-aprovado?",
         "makeDecisions": "Pausar ou trocar banner com taxa de toque baixa."
       },
-      "connectsTo": "Banner (promotion_id) · Posição (creative_slot) · Tela (location_id)",
+      "connectsTo": "Banner (promotion_id) · Posição (creative_slot) · Tela (location_id) · Elemento (via click)",
       "screens": "/acesso, /inicio, /cartoes",
       "selector": "[data-promo] .promo-cta",
       "containsPersonalData": "Não",
@@ -265,7 +374,7 @@
           "lgpd": "Não pessoal"
         }
       ],
-      "dataLayerPush": "// Quando: No toque em .promo-cta dentro de [data-promo].\nwindow.dataLayer.push({\n  event: 'select_promotion',\n  promotion_id: 'bnr_credito_preaprovado',\n  promotion_name: 'Crédito pessoal pré-aprovado',\n  creative_slot: 'inicio_oferta_1',\n  location_id: '/inicio'\n});",
+      "dataLayerPush": "// Quando: No toque em .promo-cta dentro de [data-promo], logo depois do click do mesmo botão.\nwindow.dataLayer.push({\n  event: 'select_promotion',\n  promotion_id: 'bnr_credito_preaprovado',\n  promotion_name: 'Crédito pessoal pré-aprovado',\n  creative_slot: 'inicio_oferta_1',\n  location_id: '/inicio'\n});",
       "gtm": {
         "trigger": "CE · select_promotion",
         "tag": "GA4 · select_promotion",
@@ -275,280 +384,46 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 667,
+          "originalLineNumberPreChanges": 688,
           "codeContext": "listener global de clique, ramo .promo-cta",
           "trackingCode": "track('select_promotion', promoData(promoCta.closest('[data-promo]')))"
         }
       ]
     },
     {
-      "id": "EV-04",
-      "eventName": "carousel_navigate",
-      "category": "Banners",
-      "amplitudeCategory": "Engagement",
-      "status": "Implementado",
-      "amplitudeStatus": "Live",
-      "owner": "Marketing Digital",
-      "description": {
-        "behavior": "O cliente passou para outro banner do carrossel por conta própria.",
-        "trigger": "Quando o cliente arrasta o carrossel e a rolagem para em outro banner, ou toca num indicador (.dot). O arrasto dispara uma vez, no banner em que a rolagem parou.",
-        "disambiguation": "Mede a ação do cliente no controle do carrossel. A exposição do slide é view_promotion.",
-        "useCases": "Engajamento com os carrosséis da tela de acesso e do Início.",
-        "keyProperties": "carousel_id, control, slide_index",
-        "technical": "[data-carousel] .track, .dot em /acesso, /inicio"
-      },
-      "aiDescription": "O que é: O cliente passou para outro banner do carrossel por conta própria.\nQuando dispara: Quando o cliente arrasta o carrossel e a rolagem para em outro banner, ou toca num indicador (.dot). O arrasto dispara uma vez, no banner em que a rolagem parou.\nDiferença para eventos parecidos: Mede a ação do cliente no controle do carrossel. A exposição do slide é view_promotion.\nUso em análise: Engajamento com os carrosséis da tela de acesso e do Início.\nPropriedades principais: carousel_id, control, slide_index.\nTécnico: [data-carousel] .track, .dot em /acesso, /inicio; clique num indicador (.dot) do carrossel.",
-      "aiUses": {
-        "answerQuestions": "Os clientes passam do primeiro banner do Início ou ficam nele?",
-        "makeDecisions": "Definir a ordem dos banners em cada carrossel."
-      },
-      "connectsTo": "Carrossel (carousel_id) · Banner exibido (promotion_id) · Ordem do banner",
-      "screens": "/acesso, /inicio",
-      "selector": "[data-carousel] .track, .dot",
-      "containsPersonalData": "Não",
-      "eventProperties": [
-        {
-          "name": "carousel_id",
-          "type": "string",
-          "required": "Sim",
-          "description": "Carrossel em que o cliente navegou.",
-          "possibleValues": "acesso_destaques, inicio_ofertas",
-          "example": "inicio_ofertas",
-          "source": "data-carousel",
-          "lgpd": "Não pessoal"
-        },
-        {
-          "name": "control",
-          "type": "string",
-          "required": "Sim",
-          "description": "Como o cliente trocou de banner.",
-          "possibleValues": "arrastar, indicador",
-          "example": "arrastar",
-          "source": "Gesto ou botão",
-          "lgpd": "Não pessoal"
-        },
-        {
-          "name": "slide_index",
-          "type": "number",
-          "required": "Sim",
-          "description": "Posição do banner exibido depois da troca, começando em 1.",
-          "possibleValues": "1 a 3",
-          "example": 2,
-          "source": "Estado do carrossel",
-          "lgpd": "Não pessoal"
-        },
-        {
-          "name": "promotion_id",
-          "type": "string",
-          "required": "Sim",
-          "description": "Banner exibido depois da troca.",
-          "possibleValues": "Ver aba Banners",
-          "example": "bnr_seguro_cartao",
-          "source": "data-promo do banner",
-          "lgpd": "Não pessoal"
-        }
-      ],
-      "dataLayerPush": "// Quando: Quando o cliente arrasta o carrossel e a rolagem para em outro banner, ou toca num indicador (.dot).\nwindow.dataLayer.push({\n  event: 'carousel_navigate',\n  carousel_id: 'inicio_ofertas',\n  control: 'arrastar',\n  slide_index: 2,\n  promotion_id: 'bnr_seguro_cartao'\n});",
-      "gtm": {
-        "trigger": "CE · carousel_navigate",
-        "tag": "GA4 · carousel_navigate",
-        "triggerType": "Evento personalizado",
-        "eventNameMatch": "carousel_navigate"
-      },
-      "implementationLocations": [
-        {
-          "filePath": "index.html",
-          "originalLineNumberPreChanges": 646,
-          "codeContext": "clique num indicador (.dot) do carrossel",
-          "trackingCode": "track('carousel_navigate', { carousel_id: id, control: 'indicador', slide_index: i + 1, promotion_id: slides[i].getAttribute('data-promo') })"
-        },
-        {
-          "filePath": "index.html",
-          "originalLineNumberPreChanges": 658,
-          "codeContext": "fim da rolagem do carrossel (.track), quando não veio de um indicador",
-          "trackingCode": "track('carousel_navigate', { carousel_id: id, control: 'arrastar', slide_index: cur + 1, promotion_id: slides[cur].getAttribute('data-promo') })"
-        }
-      ]
-    },
-    {
       "id": "EV-05",
-      "eventName": "select_content",
-      "category": "Navegação",
-      "amplitudeCategory": "Engagement",
-      "status": "Implementado",
-      "amplitudeStatus": "Live",
-      "owner": "Produto Digital",
-      "description": {
-        "behavior": "O cliente tocou num elemento de navegação marcado para medição: aba, atalho com link, cartão ou botão.",
-        "trigger": "No toque em qualquer elemento com data-track. Dispara antes da troca de tela.",
-        "disambiguation": "Abas, atalhos com link, cartões e botões de navegação. Botões de banner são select_promotion; atalhos sem link são quick_action.",
-        "useCases": "Análise de navegação e caminhos entre telas.",
-        "keyProperties": "content_type, item_id, link_text",
-        "technical": "[data-track] (lista na aba Elementos) em Todas"
-      },
-      "aiDescription": "O que é: O cliente tocou num elemento de navegação marcado para medição: aba, atalho com link, cartão ou botão.\nQuando dispara: No toque em qualquer elemento com data-track. Dispara antes da troca de tela.\nDiferença para eventos parecidos: Abas, atalhos com link, cartões e botões de navegação. Botões de banner são select_promotion; atalhos sem link são quick_action.\nUso em análise: Análise de navegação e caminhos entre telas.\nPropriedades principais: content_type, item_id, link_text.\nTécnico: [data-track] (lista na aba Elementos) em Todas; listener global de clique, ramo [data-track].",
-      "aiUses": {
-        "answerQuestions": "Qual aba da barra inferior é mais usada depois do login?",
-        "makeDecisions": "Reordenar atalhos e abas pelo uso."
-      },
-      "connectsTo": "Elemento (item_id, aba Elementos) · Tela de origem (page_path)",
-      "screens": "Todas",
-      "selector": "[data-track] (lista na aba Elementos)",
-      "containsPersonalData": "Não. link_text vem de data-track-text, aria-label ou texto fixo; cartões com valores usam data-track-text para não enviar fatura ou saldo.",
-      "eventProperties": [
-        {
-          "name": "content_type",
-          "type": "string",
-          "required": "Sim",
-          "description": "Tipo de elemento tocado.",
-          "possibleValues": "cta, shortcut, tab_bar, card",
-          "example": "tab_bar",
-          "source": "data-track-type",
-          "lgpd": "Não pessoal"
-        },
-        {
-          "name": "item_id",
-          "type": "string",
-          "required": "Sim",
-          "description": "Código do elemento tocado.",
-          "possibleValues": "Ver aba Elementos",
-          "example": "tab_extrato",
-          "source": "data-track",
-          "lgpd": "Não pessoal"
-        },
-        {
-          "name": "link_text",
-          "type": "string",
-          "required": "Sim",
-          "description": "Texto do elemento, até 60 caracteres. Vem de data-track-text, aria-label ou texto visível, nessa ordem.",
-          "possibleValues": "Texto fixo do app",
-          "example": "Extrato",
-          "source": "data-track-text, aria-label ou textContent",
-          "lgpd": "Não pessoal (texto fixo)"
-        },
-        {
-          "name": "page_path",
-          "type": "string",
-          "required": "Sim",
-          "description": "Tela onde o toque aconteceu.",
-          "possibleValues": "/acesso, /entrar, /inicio, /extrato, /pix, /cartoes, /investimentos",
-          "example": "/inicio",
-          "source": "Rota atual",
-          "lgpd": "Não pessoal"
-        }
-      ],
-      "dataLayerPush": "// Quando: No toque em qualquer elemento com data-track.\nwindow.dataLayer.push({\n  event: 'select_content',\n  content_type: 'tab_bar',\n  item_id: 'tab_extrato',\n  link_text: 'Extrato',\n  page_path: '/inicio'\n});",
-      "gtm": {
-        "trigger": "CE · select_content",
-        "tag": "GA4 · select_content",
-        "triggerType": "Evento personalizado",
-        "eventNameMatch": "select_content"
-      },
-      "implementationLocations": [
-        {
-          "filePath": "index.html",
-          "originalLineNumberPreChanges": 670,
-          "codeContext": "listener global de clique, ramo [data-track]",
-          "trackingCode": "track('select_content', { content_type: t.getAttribute('data-track-type') || 'link', item_id: t.getAttribute('data-track'), link_text: (t.getAttribute('data-track-text') || t.getAttribute('aria-label') || t.textContent || '').replace(/\\s+/g, ' ').trim().slice(0, 60), page_path: '/' + S.route })"
-        }
-      ]
-    },
-    {
-      "id": "EV-06",
-      "eventName": "auth_required",
-      "category": "Login",
-      "amplitudeCategory": "Lifecycle",
-      "status": "Implementado",
-      "amplitudeStatus": "Live",
-      "owner": "Produto Digital",
-      "description": {
-        "behavior": "O cliente tentou abrir uma tela logada sem estar logado. O app guarda o destino e leva o cliente para lá depois do login.",
-        "trigger": "Ao abrir uma tela logada deslogado: pelo atalho Pix da tela de acesso, pelos banners de Cartões e Investimentos ou por link direto. Dispara antes do page_view de /entrar.",
-        "disambiguation": "O cliente ainda não tentou entrar, só pediu uma tela logada. Tentativa recusada é login_error.",
-        "useCases": "Topo do funil de login a partir de uma intenção (target_path).",
-        "keyProperties": "target_path, page_path",
-        "technical": "Rotas protegidas (#inicio, #extrato, #pix, #cartoes, #investimentos) em /acesso e telas logadas"
-      },
-      "aiDescription": "O que é: O cliente tentou abrir uma tela logada sem estar logado. O app guarda o destino e leva o cliente para lá depois do login.\nQuando dispara: Ao abrir uma tela logada deslogado: pelo atalho Pix da tela de acesso, pelos banners de Cartões e Investimentos ou por link direto. Dispara antes do page_view de /entrar.\nDiferença para eventos parecidos: O cliente ainda não tentou entrar, só pediu uma tela logada. Tentativa recusada é login_error.\nUso em análise: Topo do funil de login a partir de uma intenção (target_path).\nPropriedades principais: target_path, page_path.\nTécnico: Rotas protegidas (#inicio, #extrato, #pix, #cartoes, #investimentos) em /acesso e telas logadas; route(), tela logada aberta sem login.",
-      "aiUses": {
-        "answerQuestions": "Para quais telas os clientes deslogados mais tentam ir?",
-        "makeDecisions": "Levar o cliente direto ao destino depois do login."
-      },
-      "connectsTo": "Destino desejado (target_path) · Tela de origem (page_path)",
-      "screens": "/acesso e telas logadas",
-      "selector": "Rotas protegidas (#inicio, #extrato, #pix, #cartoes, #investimentos)",
-      "containsPersonalData": "Não",
-      "eventProperties": [
-        {
-          "name": "target_path",
-          "type": "string",
-          "required": "Sim",
-          "description": "Tela logada que o cliente queria abrir.",
-          "possibleValues": "/inicio, /extrato, /pix, /cartoes, /investimentos",
-          "example": "/pix",
-          "source": "Rota pedida",
-          "lgpd": "Não pessoal"
-        },
-        {
-          "name": "page_path",
-          "type": "string",
-          "required": "Não",
-          "description": "Tela de onde o cliente veio. Vai como undefined quando o app já abre numa tela logada.",
-          "possibleValues": "/acesso, /entrar, /inicio, /extrato, /pix, /cartoes, /investimentos",
-          "example": "/acesso",
-          "source": "Rota atual",
-          "lgpd": "Não pessoal"
-        }
-      ],
-      "dataLayerPush": "// Quando: Ao abrir uma tela logada deslogado: pelo atalho Pix da tela de acesso, pelos banners de Cartões e Investimentos ou por link direto.\nwindow.dataLayer.push({\n  event: 'auth_required',\n  target_path: '/pix',\n  page_path: '/acesso'\n});",
-      "gtm": {
-        "trigger": "CE · auth_required",
-        "tag": "GA4 · auth_required",
-        "triggerType": "Evento personalizado",
-        "eventNameMatch": "auth_required"
-      },
-      "implementationLocations": [
-        {
-          "filePath": "index.html",
-          "originalLineNumberPreChanges": 589,
-          "codeContext": "route(), tela logada aberta sem login",
-          "trackingCode": "track('auth_required', { target_path: '/' + r, page_path: S.route ? '/' + S.route : undefined })"
-        }
-      ]
-    },
-    {
-      "id": "EV-07",
       "eventName": "form_start",
-      "category": "Login",
-      "amplitudeCategory": "Lifecycle",
+      "category": "Formulários",
+      "catalogType": "automatic",
+      "amplitudeCategory": "Transaction",
       "status": "Implementado",
       "amplitudeStatus": "Live",
       "owner": "Produto Digital",
       "description": {
-        "behavior": "O cliente começou a digitar a senha.",
-        "trigger": "No primeiro dígito da senha (teclado da tela ou do computador), uma vez a cada visita a /entrar.",
-        "disambiguation": "Primeiro dígito da senha. O início do Pix é pix_start.",
-        "useCases": "Etapa 1 do funil de login.",
+        "behavior": "O cliente começou a preencher um formulário: a senha (form_id=login) ou o Pix (form_id=pix).",
+        "trigger": "No primeiro gesto de preenchimento do formulário, uma vez por abertura da tela. Login: no primeiro dígito da senha, uma vez a cada visita a /entrar. Pix: no primeiro foco num campo de #pix-form, uma vez a cada abertura do Pix.",
+        "disambiguation": "Início do preenchimento (login ou Pix). A abertura da tela é page_view; o envio é form_submit.",
+        "useCases": "Etapa 1 dos funis de login (form_id=login) e de Pix (form_id=pix).",
         "keyProperties": "form_id, page_path",
-        "technical": "#keypad [data-key] em /entrar"
+        "technical": "#keypad [data-key] (login) · #pix-form focusin (Pix) em /entrar, /pix"
       },
-      "aiDescription": "O que é: O cliente começou a digitar a senha.\nQuando dispara: No primeiro dígito da senha (teclado da tela ou do computador), uma vez a cada visita a /entrar.\nDiferença para eventos parecidos: Primeiro dígito da senha. O início do Pix é pix_start.\nUso em análise: Etapa 1 do funil de login.\nPropriedades principais: form_id, page_path.\nTécnico: #keypad [data-key] em /entrar; pressKey(), primeiro dígito da senha.",
+      "aiDescription": "O que é: O cliente começou a preencher um formulário: a senha (form_id=login) ou o Pix (form_id=pix).\nQuando dispara: No primeiro gesto de preenchimento do formulário, uma vez por abertura da tela. Login: no primeiro dígito da senha, uma vez a cada visita a /entrar. Pix: no primeiro foco num campo de #pix-form, uma vez a cada abertura do Pix.\nDiferença para eventos parecidos: Início do preenchimento (login ou Pix). A abertura da tela é page_view; o envio é form_submit.\nUso em análise: Etapa 1 dos funis de login (form_id=login) e de Pix (form_id=pix).\nPropriedades principais: form_id, page_path.\nTécnico: #keypad [data-key] (login) · #pix-form focusin (Pix) em /entrar, /pix; pressKey(), primeiro dígito da senha.",
       "aiUses": {
-        "answerQuestions": "Quantos clientes começam a digitar a senha e não entram?",
-        "makeDecisions": "Identificar abandono no login e oferecer ajuda."
+        "answerQuestions": "Quantos clientes começam a digitar a senha ou o Pix e não terminam?",
+        "makeDecisions": "Identificar abandono no login e no Pix e oferecer ajuda."
       },
-      "connectsTo": "Formulário (form_id)",
-      "screens": "/entrar",
-      "selector": "#keypad [data-key]",
-      "containsPersonalData": "Não",
+      "connectsTo": "Formulário (form_id) · Tela (page_path)",
+      "screens": "/entrar, /pix",
+      "selector": "#keypad [data-key] (login) · #pix-form focusin (Pix)",
+      "containsPersonalData": "Não. Nenhum dígito da senha nem campo do Pix é enviado.",
       "eventProperties": [
         {
           "name": "form_id",
           "type": "string",
           "required": "Sim",
           "description": "Formulário em uso.",
-          "possibleValues": "login",
-          "example": "login",
+          "possibleValues": "login, pix",
+          "example": "pix",
           "source": "Fixo",
           "lgpd": "Não pessoal"
         },
@@ -556,14 +431,14 @@
           "name": "page_path",
           "type": "string",
           "required": "Sim",
-          "description": "Tela onde a senha começou a ser digitada.",
-          "possibleValues": "/entrar",
-          "example": "/entrar",
-          "source": "Fixo",
+          "description": "Tela onde o toque ou o formulário aconteceu.",
+          "possibleValues": "/acesso, /entrar, /inicio, /extrato, /pix, /cartoes, /investimentos",
+          "example": "/pix",
+          "source": "Rota atual",
           "lgpd": "Não pessoal"
         }
       ],
-      "dataLayerPush": "// Quando: No primeiro dígito da senha (teclado da tela ou do computador), uma vez a cada visita a /entrar.\nwindow.dataLayer.push({\n  event: 'form_start',\n  form_id: 'login',\n  page_path: '/entrar'\n});",
+      "dataLayerPush": "// Quando: No primeiro gesto de preenchimento do formulário, uma vez por abertura da tela.\nwindow.dataLayer.push({\n  event: 'form_start',\n  form_id: 'pix',\n  page_path: '/pix'\n});",
       "gtm": {
         "trigger": "CE · form_start",
         "tag": "GA4 · form_start",
@@ -573,92 +448,36 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 704,
+          "originalLineNumberPreChanges": 723,
           "codeContext": "pressKey(), primeiro dígito da senha",
           "trackingCode": "track('form_start', { form_id: 'login', page_path: '/entrar' })"
-        }
-      ]
-    },
-    {
-      "id": "EV-08",
-      "eventName": "login_error",
-      "category": "Login",
-      "amplitudeCategory": "Lifecycle",
-      "status": "Implementado",
-      "amplitudeStatus": "Live",
-      "owner": "Produto Digital",
-      "description": {
-        "behavior": "O login foi recusado.",
-        "trigger": "No toque em Entrar com menos de 6 dígitos (senha_incompleta) ou com a senha 000000, que simula senha incorreta (senha_incorreta).",
-        "disambiguation": "Recusa do login (senha incompleta ou incorreta). Erro do Pix é pix_error.",
-        "useCases": "Taxa de erro do login por error_type.",
-        "keyProperties": "form_id, error_type",
-        "technical": "#btn-entrar em /entrar"
-      },
-      "aiDescription": "O que é: O login foi recusado.\nQuando dispara: No toque em Entrar com menos de 6 dígitos (senha_incompleta) ou com a senha 000000, que simula senha incorreta (senha_incorreta).\nDiferença para eventos parecidos: Recusa do login (senha incompleta ou incorreta). Erro do Pix é pix_error.\nUso em análise: Taxa de erro do login por error_type.\nPropriedades principais: form_id, error_type.\nTécnico: #btn-entrar em /entrar; loginFail(), chamada por submitLogin() quando a senha é recusada.",
-      "aiUses": {
-        "answerQuestions": "Qual erro de login é mais comum?",
-        "makeDecisions": "Mudar a mensagem ou o fluxo do erro que mais acontece."
-      },
-      "connectsTo": "Formulário (form_id) · Tipo de erro",
-      "screens": "/entrar",
-      "selector": "#btn-entrar",
-      "containsPersonalData": "Não. A senha nunca entra no dataLayer.",
-      "eventProperties": [
-        {
-          "name": "form_id",
-          "type": "string",
-          "required": "Sim",
-          "description": "Formulário em uso.",
-          "possibleValues": "login",
-          "example": "login",
-          "source": "Fixo",
-          "lgpd": "Não pessoal"
         },
         {
-          "name": "error_type",
-          "type": "string",
-          "required": "Sim",
-          "description": "Motivo da recusa.",
-          "possibleValues": "senha_incompleta, senha_incorreta",
-          "example": "senha_incorreta",
-          "source": "Validação",
-          "lgpd": "Não pessoal"
-        }
-      ],
-      "dataLayerPush": "// Quando: No toque em Entrar com menos de 6 dígitos (senha_incompleta) ou com a senha 000000, que simula senha incorreta (senha_incorreta).\nwindow.dataLayer.push({\n  event: 'login_error',\n  form_id: 'login',\n  error_type: 'senha_incorreta'\n});",
-      "gtm": {
-        "trigger": "CE · login_error",
-        "tag": "GA4 · login_error",
-        "triggerType": "Evento personalizado",
-        "eventNameMatch": "login_error"
-      },
-      "implementationLocations": [
-        {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 713,
-          "codeContext": "loginFail(), chamada por submitLogin() quando a senha é recusada",
-          "trackingCode": "track('login_error', { form_id: 'login', error_type: type })"
+          "originalLineNumberPreChanges": 833,
+          "codeContext": "listener focusin de #pix-form",
+          "trackingCode": "track('form_start', { form_id: 'pix', page_path: '/pix' })"
         }
       ]
     },
     {
-      "id": "EV-09",
+      "id": "EV-06",
       "eventName": "login",
       "category": "Login",
+      "catalogType": "recommended",
       "amplitudeCategory": "Lifecycle",
       "status": "Implementado",
       "amplitudeStatus": "Live",
       "owner": "Governança de Dados Digitais",
       "description": {
         "behavior": "O cliente entrou na área logada.",
-        "trigger": "No toque em Entrar com 6 dígitos aceitos, antes de ir para o destino guardado (ou /inicio).",
-        "disambiguation": "Só login bem-sucedido. Tentativas recusadas são login_error.",
+        "trigger": "No toque em Entrar com 6 dígitos aceitos, logo depois do click btn_entrar e antes de ir para o destino guardado (ou /inicio).",
+        "disambiguation": "Só login bem-sucedido, logo depois do form_submit step=aprovado. Tentativas recusadas são form_submit step=recusado. A saída é o click link_id=sair.",
         "useCases": "Conversão do funil de login e início da sessão identificada.",
         "keyProperties": "method, user_id, customer_segment",
         "technical": "#btn-entrar em /entrar"
       },
-      "aiDescription": "O que é: O cliente entrou na área logada.\nQuando dispara: No toque em Entrar com 6 dígitos aceitos, antes de ir para o destino guardado (ou /inicio).\nDiferença para eventos parecidos: Só login bem-sucedido. Tentativas recusadas são login_error.\nUso em análise: Conversão do funil de login e início da sessão identificada.\nPropriedades principais: method, user_id, customer_segment.\nTécnico: #btn-entrar em /entrar; submitLogin(), ramo de sucesso.",
+      "aiDescription": "O que é: O cliente entrou na área logada.\nQuando dispara: No toque em Entrar com 6 dígitos aceitos, logo depois do click btn_entrar e antes de ir para o destino guardado (ou /inicio).\nDiferença para eventos parecidos: Só login bem-sucedido, logo depois do form_submit step=aprovado. Tentativas recusadas são form_submit step=recusado. A saída é o click link_id=sair.\nUso em análise: Conversão do funil de login e início da sessão identificada.\nPropriedades principais: method, user_id, customer_segment.\nTécnico: #btn-entrar em /entrar; submitLogin(), ramo de sucesso.",
       "aiUses": {
         "answerQuestions": "Quantos logins por segmento de cliente houve hoje?",
         "makeDecisions": "Escolher as ofertas da área logada conforme o segmento."
@@ -699,7 +518,7 @@
           "lgpd": "Não pessoal (segmento)"
         }
       ],
-      "dataLayerPush": "// Quando: No toque em Entrar com 6 dígitos aceitos, antes de ir para o destino guardado (ou /inicio).\nwindow.dataLayer.push({\n  event: 'login',\n  method: 'senha_eletronica',\n  user_id: 'u_8f2c41a9',\n  customer_segment: 'pf_alta_renda'\n});",
+      "dataLayerPush": "// Quando: No toque em Entrar com 6 dígitos aceitos, logo depois do click btn_entrar e antes de ir para o destino guardado (ou /inicio).\nwindow.dataLayer.push({\n  event: 'login',\n  method: 'senha_eletronica',\n  user_id: 'u_8f2c41a9',\n  customer_segment: 'pf_alta_renda'\n});",
       "gtm": {
         "trigger": "CE · login",
         "tag": "GA4 · login",
@@ -709,426 +528,184 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 721,
+          "originalLineNumberPreChanges": 741,
           "codeContext": "submitLogin(), ramo de sucesso",
           "trackingCode": "track('login', { method: 'senha_eletronica', user_id: S.user.id, customer_segment: S.user.segment })"
         }
       ]
     },
     {
-      "id": "EV-10",
-      "eventName": "logout",
-      "category": "Login",
-      "amplitudeCategory": "Lifecycle",
-      "status": "Implementado",
-      "amplitudeStatus": "Live",
-      "owner": "Governança de Dados Digitais",
-      "description": {
-        "behavior": "O cliente saiu da área logada.",
-        "trigger": "No toque no ícone Sair (#btn-sair), no topo do Início. Dispara antes do page_view de /acesso.",
-        "disambiguation": "Só a saída pelo ícone Sair. Fechar o app não gera logout.",
-        "useCases": "Fim da sessão identificada.",
-        "keyProperties": "user_id",
-        "technical": "#btn-sair em /inicio"
-      },
-      "aiDescription": "O que é: O cliente saiu da área logada.\nQuando dispara: No toque no ícone Sair (#btn-sair), no topo do Início. Dispara antes do page_view de /acesso.\nDiferença para eventos parecidos: Só a saída pelo ícone Sair. Fechar o app não gera logout.\nUso em análise: Fim da sessão identificada.\nPropriedades principais: user_id.\nTécnico: #btn-sair em /inicio; listener de clique de #btn-sair.",
-      "aiUses": {
-        "answerQuestions": "Quanto tempo dura uma sessão logada, do login ao logout?",
-        "makeDecisions": "Encerrar a experiência personalizada da sessão."
-      },
-      "connectsTo": "Cliente (user_id)",
-      "screens": "/inicio",
-      "selector": "#btn-sair",
-      "containsPersonalData": "Não",
-      "eventProperties": [
-        {
-          "name": "user_id",
-          "type": "string",
-          "required": "Sim",
-          "description": "Identificador pseudonimizado do cliente. Liga eventos ao mesmo cliente sem expor quem ele é.",
-          "possibleValues": "u_ + hash",
-          "example": "u_8f2c41a9",
-          "source": "Sessão de login",
-          "lgpd": "Pseudonimizado"
-        }
-      ],
-      "dataLayerPush": "// Quando: No toque no ícone Sair (#btn-sair), no topo do Início.\nwindow.dataLayer.push({\n  event: 'logout',\n  user_id: 'u_8f2c41a9'\n});",
-      "gtm": {
-        "trigger": "CE · logout",
-        "tag": "GA4 · logout",
-        "triggerType": "Evento personalizado",
-        "eventNameMatch": "logout"
-      },
-      "implementationLocations": [
-        {
-          "filePath": "index.html",
-          "originalLineNumberPreChanges": 735,
-          "codeContext": "listener de clique de #btn-sair",
-          "trackingCode": "track('logout', { user_id: S.user && S.user.id })"
-        }
-      ]
-    },
-    {
-      "id": "EV-11",
-      "eventName": "toggle_balance",
-      "category": "Área logada",
-      "amplitudeCategory": "Feature",
+      "id": "EV-07",
+      "eventName": "form_submit",
+      "category": "Formulários",
+      "catalogType": "automatic",
+      "amplitudeCategory": "Transaction",
       "status": "Implementado",
       "amplitudeStatus": "Live",
       "owner": "Produto Digital",
       "description": {
-        "behavior": "O cliente escondeu ou mostrou o saldo e o total investido.",
-        "trigger": "No toque no ícone de olho (#btn-saldo), no topo do Início.",
-        "disambiguation": "Preferência de exibição do saldo. O valor do saldo não é enviado.",
-        "useCases": "Preferência de privacidade na área logada.",
-        "keyProperties": "state",
-        "technical": "#btn-saldo em /inicio"
+        "behavior": "O cliente enviou um formulário: a senha (form_id=login) ou o Pix (form_id=pix). O step diz o resultado: aprovado ou recusado no login; recusado, revisao ou confirmado no Pix.",
+        "trigger": "No toque no botão que envia o formulário (Entrar, Continuar ou Confirmar Pix), logo depois do click do mesmo botão. Login: step=recusado com menos de 6 dígitos (senha_incompleta) ou com 000000 (senha_incorreta); step=aprovado com 6 dígitos aceitos, antes do evento login. Pix: no toque em Continuar, logo depois do click pix_continuar, com step=recusado (sem chave, valor inválido ou acima do saldo) ou step=revisao (dados válidos); no toque em Confirmar Pix, depois de debitar o saldo, com step=confirmado.",
+        "disambiguation": "Envio de formulário com o resultado em step. Erro de validação é step=recusado (com error_type), não um evento separado. No Pix, step=revisao ainda não é Pix enviado; só step=confirmado conta como Pix concluído. Não é purchase: Pix não é receita do banco.",
+        "useCases": "Taxa de erro do login e do Pix por error_type (step=recusado); etapas 2 (revisao) e 3 (confirmado) do funil de Pix; volume e valor de Pix concluídos.",
+        "keyProperties": "form_id, step, error_type",
+        "technical": "#btn-entrar · #pix-form submit · #pix-confirmar em /entrar, /pix"
       },
-      "aiDescription": "O que é: O cliente escondeu ou mostrou o saldo e o total investido.\nQuando dispara: No toque no ícone de olho (#btn-saldo), no topo do Início.\nDiferença para eventos parecidos: Preferência de exibição do saldo. O valor do saldo não é enviado.\nUso em análise: Preferência de privacidade na área logada.\nPropriedades principais: state.\nTécnico: #btn-saldo em /inicio; listener global de clique, ramo data-action=toggle_balance.",
+      "aiDescription": "O que é: O cliente enviou um formulário: a senha (form_id=login) ou o Pix (form_id=pix). O step diz o resultado: aprovado ou recusado no login; recusado, revisao ou confirmado no Pix.\nQuando dispara: No toque no botão que envia o formulário (Entrar, Continuar ou Confirmar Pix), logo depois do click do mesmo botão. Login: step=recusado com menos de 6 dígitos (senha_incompleta) ou com 000000 (senha_incorreta); step=aprovado com 6 dígitos aceitos, antes do evento login. Pix: no toque em Continuar, logo depois do click pix_continuar, com step=recusado (sem chave, valor inválido ou acima do saldo) ou step=revisao (dados válidos); no toque em Confirmar Pix, depois de debitar o saldo, com step=confirmado.\nDiferença para eventos parecidos: Envio de formulário com o resultado em step. Erro de validação é step=recusado (com error_type), não um evento separado. No Pix, step=revisao ainda não é Pix enviado; só step=confirmado conta como Pix concluído. Não é purchase: Pix não é receita do banco.\nUso em análise: Taxa de erro do login e do Pix por error_type (step=recusado); etapas 2 (revisao) e 3 (confirmado) do funil de Pix; volume e valor de Pix concluídos.\nPropriedades principais: form_id, step, error_type.\nTécnico: #btn-entrar · #pix-form submit · #pix-confirmar em /entrar, /pix; loginFail(), senha recusada (step=recusado).",
       "aiUses": {
-        "answerQuestions": "Quantos clientes preferem esconder o saldo?",
-        "makeDecisions": "Lembrar a preferência de privacidade do cliente."
+        "answerQuestions": "Qual erro mais trava o login e o Pix, e quantos Pix foram confirmados hoje?",
+        "makeDecisions": "Mudar a mensagem do erro mais comum e medir a conversão dos funis de login e Pix."
       },
-      "connectsTo": "Cliente (via login da sessão)",
-      "screens": "/inicio",
-      "selector": "#btn-saldo",
-      "containsPersonalData": "Não. O valor do saldo não é enviado.",
+      "connectsTo": "Formulário (form_id) · Resultado (step, error_type) · Transação (transaction_id, só Pix confirmado) · Cliente (via login)",
+      "screens": "/entrar, /pix",
+      "selector": "#btn-entrar · #pix-form submit · #pix-confirmar",
+      "containsPersonalData": "Não. A senha e a chave Pix nunca são enviadas; do Pix vai só o tipo da chave. transaction_id é técnico.",
       "eventProperties": [
         {
-          "name": "state",
+          "name": "form_id",
           "type": "string",
           "required": "Sim",
-          "description": "Se o saldo ficou escondido ou visível.",
-          "possibleValues": "hidden, visible",
-          "example": "hidden",
-          "source": "Estado do botão",
-          "lgpd": "Não pessoal"
-        }
-      ],
-      "dataLayerPush": "// Quando: No toque no ícone de olho (#btn-saldo), no topo do Início.\nwindow.dataLayer.push({\n  event: 'toggle_balance',\n  state: 'hidden'\n});",
-      "gtm": {
-        "trigger": "CE · toggle_balance",
-        "tag": "GA4 · toggle_balance",
-        "triggerType": "Evento personalizado",
-        "eventNameMatch": "toggle_balance"
-      },
-      "implementationLocations": [
-        {
-          "filePath": "index.html",
-          "originalLineNumberPreChanges": 680,
-          "codeContext": "listener global de clique, ramo data-action=toggle_balance",
-          "trackingCode": "track('toggle_balance', { state: S.hideBal ? 'hidden' : 'visible' })"
-        }
-      ]
-    },
-    {
-      "id": "EV-12",
-      "eventName": "statement_filter",
-      "category": "Área logada",
-      "amplitudeCategory": "Feature",
-      "status": "Implementado",
-      "amplitudeStatus": "Live",
-      "owner": "Produto Digital",
-      "description": {
-        "behavior": "O cliente filtrou o extrato por tipo de lançamento.",
-        "trigger": "No toque num filtro do extrato (Tudo, Entradas, Saídas) diferente do filtro atual.",
-        "disambiguation": "Só a troca de filtro do extrato. Abrir o extrato é page_view de /extrato.",
-        "useCases": "Como os clientes leem o extrato (entradas ou saídas).",
-        "keyProperties": "filter",
-        "technical": "[data-filter] em /extrato"
-      },
-      "aiDescription": "O que é: O cliente filtrou o extrato por tipo de lançamento.\nQuando dispara: No toque num filtro do extrato (Tudo, Entradas, Saídas) diferente do filtro atual.\nDiferença para eventos parecidos: Só a troca de filtro do extrato. Abrir o extrato é page_view de /extrato.\nUso em análise: Como os clientes leem o extrato (entradas ou saídas).\nPropriedades principais: filter.\nTécnico: [data-filter] em /extrato; listener de clique de [data-filter].",
-      "aiUses": {
-        "answerQuestions": "Os clientes procuram mais entradas ou saídas no extrato?",
-        "makeDecisions": "Abrir o extrato no filtro mais usado."
-      },
-      "connectsTo": "Extrato · Filtro escolhido",
-      "screens": "/extrato",
-      "selector": "[data-filter]",
-      "containsPersonalData": "Não. Os lançamentos não são enviados.",
-      "eventProperties": [
-        {
-          "name": "filter",
-          "type": "string",
-          "required": "Sim",
-          "description": "Filtro escolhido no extrato.",
-          "possibleValues": "todos, entradas, saidas",
-          "example": "entradas",
-          "source": "data-filter",
-          "lgpd": "Não pessoal"
-        }
-      ],
-      "dataLayerPush": "// Quando: No toque num filtro do extrato (Tudo, Entradas, Saídas) diferente do filtro atual.\nwindow.dataLayer.push({\n  event: 'statement_filter',\n  filter: 'entradas'\n});",
-      "gtm": {
-        "trigger": "CE · statement_filter",
-        "tag": "GA4 · statement_filter",
-        "triggerType": "Evento personalizado",
-        "eventNameMatch": "statement_filter"
-      },
-      "implementationLocations": [
-        {
-          "filePath": "index.html",
-          "originalLineNumberPreChanges": 778,
-          "codeContext": "listener de clique de [data-filter]",
-          "trackingCode": "track('statement_filter', { filter: f })"
-        }
-      ]
-    },
-    {
-      "id": "EV-13",
-      "eventName": "quick_action",
-      "category": "Área logada",
-      "amplitudeCategory": "Feature",
-      "status": "Implementado",
-      "amplitudeStatus": "Live",
-      "owner": "Produto Digital",
-      "description": {
-        "behavior": "O cliente tocou num atalho que ainda não tem fluxo próprio no app.",
-        "trigger": "No toque em Ajuda, Trocar conta, Token, Bloquear cartão, Esqueci, Notificações, Pagar, Transferir, Recarga, Cartão virtual ou Ajustar limite. Os atalhos com link (Pix, Cartões, Investir) geram select_content.",
-        "disambiguation": "Só atalhos sem fluxo próprio. Atalhos com link (Pix, Cartões, Investir) geram select_content.",
-        "useCases": "Demanda por atalhos que ainda não têm fluxo.",
-        "keyProperties": "action_id, page_path",
-        "technical": "[data-action=quick_action] em /acesso, /entrar, /inicio, /cartoes"
-      },
-      "aiDescription": "O que é: O cliente tocou num atalho que ainda não tem fluxo próprio no app.\nQuando dispara: No toque em Ajuda, Trocar conta, Token, Bloquear cartão, Esqueci, Notificações, Pagar, Transferir, Recarga, Cartão virtual ou Ajustar limite. Os atalhos com link (Pix, Cartões, Investir) geram select_content.\nDiferença para eventos parecidos: Só atalhos sem fluxo próprio. Atalhos com link (Pix, Cartões, Investir) geram select_content.\nUso em análise: Demanda por atalhos que ainda não têm fluxo.\nPropriedades principais: action_id, page_path.\nTécnico: [data-action=quick_action] em /acesso, /entrar, /inicio, /cartoes; listener global de clique, ramo data-action=quick_action.",
-      "aiUses": {
-        "answerQuestions": "Quais atalhos sem fluxo são mais tocados, deslogado e logado?",
-        "makeDecisions": "Priorizar quais fluxos construir primeiro."
-      },
-      "connectsTo": "Atalho (action_id) · Tela (page_path)",
-      "screens": "/acesso, /entrar, /inicio, /cartoes",
-      "selector": "[data-action=quick_action]",
-      "containsPersonalData": "Não",
-      "eventProperties": [
-        {
-          "name": "action_id",
-          "type": "string",
-          "required": "Sim",
-          "description": "Atalho tocado.",
-          "possibleValues": "ajuda, trocar_conta, token, bloquear_cartao, esqueci_senha, notificacoes, pagar_boleto, transferir, recarga, cartao_virtual, ajustar_limite",
-          "example": "pagar_boleto",
-          "source": "data-item",
+          "description": "Formulário em uso.",
+          "possibleValues": "login, pix",
+          "example": "pix",
+          "source": "Fixo",
           "lgpd": "Não pessoal"
         },
         {
-          "name": "page_path",
+          "name": "step",
           "type": "string",
           "required": "Sim",
-          "description": "Tela onde o toque aconteceu.",
-          "possibleValues": "/acesso, /entrar, /inicio, /extrato, /pix, /cartoes, /investimentos",
-          "example": "/inicio",
-          "source": "Rota atual",
+          "description": "Resultado do envio. No Pix, só confirmado é Pix concluído.",
+          "possibleValues": "login: aprovado, recusado · pix: recusado, revisao, confirmado",
+          "example": "confirmado",
+          "source": "Fixo por etapa",
           "lgpd": "Não pessoal"
+        },
+        {
+          "name": "error_type",
+          "type": "string",
+          "required": "Só em step=recusado",
+          "description": "Motivo da recusa. Nos outros steps vai como undefined.",
+          "possibleValues": "login: senha_incompleta, senha_incorreta · pix: chave_vazia, valor_invalido, saldo_insuficiente",
+          "example": null,
+          "source": "Validação",
+          "lgpd": "Não pessoal"
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "required": "Só no Pix (revisao, confirmado)",
+          "description": "Valor do Pix em reais, com ponto decimal. Não é receita: o evento não é purchase.",
+          "possibleValues": "> 0 e ≤ saldo",
+          "example": 150.0,
+          "source": "Campo valor",
+          "lgpd": "Dado financeiro (não identifica o cliente sozinho)"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "required": "Só no Pix (revisao, confirmado)",
+          "description": "Moeda do valor.",
+          "possibleValues": "BRL",
+          "example": "BRL",
+          "source": "Fixo",
+          "lgpd": "Não pessoal"
+        },
+        {
+          "name": "pix_key_type",
+          "type": "string",
+          "required": "Só no Pix (revisao, confirmado)",
+          "description": "Tipo da chave do recebedor. A chave em si nunca é enviada.",
+          "possibleValues": "email, telefone, cpf, cnpj, aleatoria",
+          "example": "email",
+          "source": "Inferido da chave",
+          "lgpd": "Não pessoal"
+        },
+        {
+          "name": "transaction_id",
+          "type": "string",
+          "required": "Só em step=confirmado",
+          "description": "Identificador do Pix. Liga o evento à transação no core. Em step=revisao vai como undefined.",
+          "possibleValues": "E + timestamp (teste)",
+          "example": "E1792334211000",
+          "source": "Gerado na confirmação",
+          "lgpd": "Não pessoal (técnico)"
         }
       ],
-      "dataLayerPush": "// Quando: No toque em Ajuda, Trocar conta, Token, Bloquear cartão, Esqueci, Notificações, Pagar, Transferir, Recarga, Cartão virtual ou Ajustar limite.\nwindow.dataLayer.push({\n  event: 'quick_action',\n  action_id: 'pagar_boleto',\n  page_path: '/inicio'\n});",
+      "dataLayerPush": "// Quando: No toque no botão que envia o formulário (Entrar, Continuar ou Confirmar Pix), logo depois do click do mesmo botão.\nwindow.dataLayer.push({\n  event: 'form_submit',\n  form_id: 'pix',\n  step: 'confirmado',\n  error_type: undefined,\n  value: 150.00,\n  currency: 'BRL',\n  pix_key_type: 'email',\n  transaction_id: 'E1792334211000'\n});",
       "gtm": {
-        "trigger": "CE · quick_action",
-        "tag": "GA4 · quick_action",
+        "trigger": "CE · form_submit",
+        "tag": "GA4 · form_submit",
         "triggerType": "Evento personalizado",
-        "eventNameMatch": "quick_action"
+        "eventNameMatch": "form_submit"
       },
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 676,
-          "codeContext": "listener global de clique, ramo data-action=quick_action",
-          "trackingCode": "track('quick_action', { action_id: item, page_path: '/' + S.route })"
-        }
-      ]
-    },
-    {
-      "id": "EV-14",
-      "eventName": "offer_click",
-      "category": "Área logada",
-      "amplitudeCategory": "Feature",
-      "status": "Ajustar",
-      "amplitudeStatus": "Live (ajustar)",
-      "owner": "Marketing Digital",
-      "description": {
-        "behavior": "O cliente demonstrou interesse numa oferta personalizada do Início.",
-        "trigger": "No toque em 'Simular parcelas' ou 'Contratar seguro' nos banners do Início, logo depois de select_promotion.",
-        "disambiguation": "Dispara no mesmo clique que select_promotion. Ver ponto de atenção na aba Leia-me.",
-        "useCases": "Conversão de oferta personalizada da área logada.",
-        "keyProperties": "offer_id",
-        "technical": "[data-action=offer_accept] em /inicio"
-      },
-      "aiDescription": "O que é: O cliente demonstrou interesse numa oferta personalizada do Início.\nQuando dispara: No toque em 'Simular parcelas' ou 'Contratar seguro' nos banners do Início, logo depois de select_promotion.\nDiferença para eventos parecidos: Dispara no mesmo clique que select_promotion. Ver ponto de atenção na aba Leia-me.\nUso em análise: Conversão de oferta personalizada da área logada.\nPropriedades principais: offer_id.\nTécnico: [data-action=offer_accept] em /inicio; listener global de clique, ramo data-action=offer_accept.",
-      "aiUses": {
-        "answerQuestions": "Quantos clientes tocaram no crédito pré-aprovado?",
-        "makeDecisions": "Acionar o fluxo de contratação ou parar de mostrar a oferta."
-      },
-      "connectsTo": "Oferta (offer_id) · Banner (via select_promotion)",
-      "screens": "/inicio",
-      "selector": "[data-action=offer_accept]",
-      "containsPersonalData": "Não",
-      "eventProperties": [
-        {
-          "name": "offer_id",
-          "type": "string",
-          "required": "Sim",
-          "description": "Oferta tocada.",
-          "possibleValues": "credito_preaprovado, seguro_cartao",
-          "example": "credito_preaprovado",
-          "source": "data-item",
-          "lgpd": "Não pessoal"
-        }
-      ],
-      "dataLayerPush": "// Quando: No toque em 'Simular parcelas' ou 'Contratar seguro' nos banners do Início, logo depois de select_promotion.\nwindow.dataLayer.push({\n  event: 'offer_click',\n  offer_id: 'credito_preaprovado'\n});",
-      "gtm": {
-        "trigger": "CE · offer_click",
-        "tag": "GA4 · offer_click",
-        "triggerType": "Evento personalizado",
-        "eventNameMatch": "offer_click"
-      },
-      "implementationLocations": [
+          "originalLineNumberPreChanges": 732,
+          "codeContext": "loginFail(), senha recusada (step=recusado)",
+          "trackingCode": "track('form_submit', { form_id: 'login', step: 'recusado', error_type: type, value: undefined, currency: undefined, pix_key_type: undefined, transaction_id: undefined })"
+        },
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 682,
-          "codeContext": "listener global de clique, ramo data-action=offer_accept",
-          "trackingCode": "track('offer_click', { offer_id: item })"
-        }
-      ]
-    },
-    {
-      "id": "EV-15",
-      "eventName": "card_request",
-      "category": "Produto",
-      "amplitudeCategory": "Transaction",
-      "status": "Implementado",
-      "amplitudeStatus": "Live",
-      "owner": "Produto Cartões",
-      "description": {
-        "behavior": "O cliente pediu um cartão novo ou adicional.",
-        "trigger": "No toque em 'Pedir o Black' (banner, logo depois de select_promotion) ou em 'Pedir adicional' na tela Cartões.",
-        "disambiguation": "Pedido de cartão na área logada. O banner do Black na tela de acesso só leva ao login (auth_required).",
-        "useCases": "Conversão do produto cartões por card_tier.",
-        "keyProperties": "card_tier",
-        "technical": "[data-action=card_request] em /cartoes"
-      },
-      "aiDescription": "O que é: O cliente pediu um cartão novo ou adicional.\nQuando dispara: No toque em 'Pedir o Black' (banner, logo depois de select_promotion) ou em 'Pedir adicional' na tela Cartões.\nDiferença para eventos parecidos: Pedido de cartão na área logada. O banner do Black na tela de acesso só leva ao login (auth_required).\nUso em análise: Conversão do produto cartões por card_tier.\nPropriedades principais: card_tier.\nTécnico: [data-action=card_request] em /cartoes; listener global de clique, ramo data-action=card_request.",
-      "aiUses": {
-        "answerQuestions": "Quantos pedidos de upgrade para o Black vieram do banner?",
-        "makeDecisions": "Encaminhar o pedido para análise de crédito."
-      },
-      "connectsTo": "Produto (card_tier) · Cliente (via login)",
-      "screens": "/cartoes",
-      "selector": "[data-action=card_request]",
-      "containsPersonalData": "Não",
-      "eventProperties": [
-        {
-          "name": "card_tier",
-          "type": "string",
-          "required": "Sim",
-          "description": "Cartão pedido.",
-          "possibleValues": "black, adicional",
-          "example": "black",
-          "source": "data-item",
-          "lgpd": "Não pessoal"
-        }
-      ],
-      "dataLayerPush": "// Quando: No toque em 'Pedir o Black' (banner, logo depois de select_promotion) ou em 'Pedir adicional' na tela Cartões.\nwindow.dataLayer.push({\n  event: 'card_request',\n  card_tier: 'black'\n});",
-      "gtm": {
-        "trigger": "CE · card_request",
-        "tag": "GA4 · card_request",
-        "triggerType": "Evento personalizado",
-        "eventNameMatch": "card_request"
-      },
-      "implementationLocations": [
+          "originalLineNumberPreChanges": 740,
+          "codeContext": "submitLogin(), senha aceita (step=aprovado)",
+          "trackingCode": "track('form_submit', { form_id: 'login', step: 'aprovado', error_type: undefined, value: undefined, currency: undefined, pix_key_type: undefined, transaction_id: undefined })"
+        },
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 684,
-          "codeContext": "listener global de clique, ramo data-action=card_request",
-          "trackingCode": "track('card_request', { card_tier: item })"
-        }
-      ]
-    },
-    {
-      "id": "EV-16",
-      "eventName": "investment_intent",
-      "category": "Produto",
-      "amplitudeCategory": "Transaction",
-      "status": "Implementado",
-      "amplitudeStatus": "Live",
-      "owner": "Produto Investimentos",
-      "description": {
-        "behavior": "O cliente quis aplicar num produto de investimento.",
-        "trigger": "No toque em Investir num produto da tela Investimentos.",
-        "disambiguation": "Intenção de aplicar, não aplicação concluída.",
-        "useCases": "Intenção por produto de investimento.",
-        "keyProperties": "product_id",
-        "technical": "[data-action=investment_intent] em /investimentos"
-      },
-      "aiDescription": "O que é: O cliente quis aplicar num produto de investimento.\nQuando dispara: No toque em Investir num produto da tela Investimentos.\nDiferença para eventos parecidos: Intenção de aplicar, não aplicação concluída.\nUso em análise: Intenção por produto de investimento.\nPropriedades principais: product_id.\nTécnico: [data-action=investment_intent] em /investimentos; listener global de clique, ramo data-action=investment_intent.",
-      "aiUses": {
-        "answerQuestions": "Qual produto de investimento gera mais intenção de aplicar?",
-        "makeDecisions": "Mostrar o produto certo para cada perfil."
-      },
-      "connectsTo": "Produto (product_id) · Cliente (via login)",
-      "screens": "/investimentos",
-      "selector": "[data-action=investment_intent]",
-      "containsPersonalData": "Não",
-      "eventProperties": [
-        {
-          "name": "product_id",
-          "type": "string",
-          "required": "Sim",
-          "description": "Produto de investimento escolhido.",
-          "possibleValues": "cdb_liquidez, lci_90, cdb_ipca_2a, fundo_di",
-          "example": "cdb_liquidez",
-          "source": "data-item",
-          "lgpd": "Não pessoal"
-        }
-      ],
-      "dataLayerPush": "// Quando: No toque em Investir num produto da tela Investimentos.\nwindow.dataLayer.push({\n  event: 'investment_intent',\n  product_id: 'cdb_liquidez'\n});",
-      "gtm": {
-        "trigger": "CE · investment_intent",
-        "tag": "GA4 · investment_intent",
-        "triggerType": "Evento personalizado",
-        "eventNameMatch": "investment_intent"
-      },
-      "implementationLocations": [
+          "originalLineNumberPreChanges": 841,
+          "codeContext": "listener submit de #pix-form, ramo de erro (step=recusado)",
+          "trackingCode": "track('form_submit', { form_id: 'pix', step: 'recusado', error_type: err[0], value: undefined, currency: undefined, pix_key_type: undefined, transaction_id: undefined })"
+        },
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 686,
-          "codeContext": "listener global de clique, ramo data-action=investment_intent",
-          "trackingCode": "track('investment_intent', { product_id: item })"
+          "originalLineNumberPreChanges": 852,
+          "codeContext": "listener submit de #pix-form, ramo válido (step=revisao)",
+          "trackingCode": "track('form_submit', { form_id: 'pix', step: 'revisao', error_type: undefined, value: v, currency: 'BRL', pix_key_type: S.pending.tipo, transaction_id: undefined })"
+        },
+        {
+          "filePath": "index.html",
+          "originalLineNumberPreChanges": 869,
+          "codeContext": "listener de clique de #pix-confirmar (step=confirmado)",
+          "trackingCode": "track('form_submit', { form_id: 'pix', step: 'confirmado', error_type: undefined, value: p.v, currency: 'BRL', pix_key_type: p.tipo, transaction_id: id })"
         }
       ]
     },
     {
-      "id": "EV-17",
+      "id": "EV-08",
       "eventName": "generate_lead",
       "category": "Produto",
+      "catalogType": "recommended",
       "amplitudeCategory": "Transaction",
       "status": "Implementado",
       "amplitudeStatus": "Live",
       "owner": "Marketing Aquisição",
       "description": {
-        "behavior": "Uma pessoa que ainda não é cliente pediu para abrir conta.",
-        "trigger": "No toque em 'Abrir conta' (atalho) ou 'Quero abrir' (banner, logo depois de select_promotion) na tela de acesso.",
-        "disambiguation": "Pedido de quem ainda não é cliente. Interesse de cliente logado em oferta é offer_click.",
-        "useCases": "Métrica de aquisição de novos clientes.",
-        "keyProperties": "lead_type, page_path",
-        "technical": "[data-action=lead] em /acesso"
+        "behavior": "Alguém pediu um produto: abertura de conta (quem ainda não é cliente) ou cartão (cliente logado).",
+        "trigger": "No toque em 'Abrir conta' ou 'Quero abrir' na tela de acesso (abertura_conta) e em 'Pedir o Black' (cartao_black) ou 'Pedir adicional' (cartao_adicional) na tela Cartões. Sai depois do click e, nos banners, depois de select_promotion.",
+        "disambiguation": "Pedido de produto (conta ou cartão). Interesse em oferta de crédito ou seguro é só select_promotion, sem lead.",
+        "useCases": "Aquisição de novos clientes (abertura_conta) e pedidos de cartão por lead_source.",
+        "keyProperties": "lead_source, page_path",
+        "technical": "[data-action=lead] · [data-action=cartao] em /acesso, /cartoes"
       },
-      "aiDescription": "O que é: Uma pessoa que ainda não é cliente pediu para abrir conta.\nQuando dispara: No toque em 'Abrir conta' (atalho) ou 'Quero abrir' (banner, logo depois de select_promotion) na tela de acesso.\nDiferença para eventos parecidos: Pedido de quem ainda não é cliente. Interesse de cliente logado em oferta é offer_click.\nUso em análise: Métrica de aquisição de novos clientes.\nPropriedades principais: lead_type, page_path.\nTécnico: [data-action=lead] em /acesso; listener global de clique, ramo data-action=lead.",
+      "aiDescription": "O que é: Alguém pediu um produto: abertura de conta (quem ainda não é cliente) ou cartão (cliente logado).\nQuando dispara: No toque em 'Abrir conta' ou 'Quero abrir' na tela de acesso (abertura_conta) e em 'Pedir o Black' (cartao_black) ou 'Pedir adicional' (cartao_adicional) na tela Cartões. Sai depois do click e, nos banners, depois de select_promotion.\nDiferença para eventos parecidos: Pedido de produto (conta ou cartão). Interesse em oferta de crédito ou seguro é só select_promotion, sem lead.\nUso em análise: Aquisição de novos clientes (abertura_conta) e pedidos de cartão por lead_source.\nPropriedades principais: lead_source, page_path.\nTécnico: [data-action=lead] · [data-action=cartao] em /acesso, /cartoes; listener global de clique, ramo data-action=lead.",
       "aiUses": {
-        "answerQuestions": "Quantos pedidos de abertura de conta chegam pela tela de acesso?",
-        "makeDecisions": "Enviar o lead para o fluxo de abertura de conta."
+        "answerQuestions": "Quantos pedidos de abertura de conta e de cartão chegam por dia, e de qual tela?",
+        "makeDecisions": "Enviar o lead para o fluxo de abertura de conta ou para a análise de crédito do cartão."
       },
-      "connectsTo": "Banner (via select_promotion, quando vem do banner) · Tipo de lead",
-      "screens": "/acesso",
-      "selector": "[data-action=lead]",
+      "connectsTo": "Tipo de pedido (lead_source) · Banner (via select_promotion, quando vem do banner) · Tela (page_path)",
+      "screens": "/acesso, /cartoes",
+      "selector": "[data-action=lead] · [data-action=cartao]",
       "containsPersonalData": "Não",
       "eventProperties": [
         {
-          "name": "lead_type",
+          "name": "lead_source",
           "type": "string",
           "required": "Sim",
-          "description": "Tipo de pedido.",
-          "possibleValues": "abertura_conta",
-          "example": "abertura_conta",
+          "description": "Tipo de pedido. Nome de parâmetro do GA4 para generate_lead.",
+          "possibleValues": "abertura_conta, cartao_black, cartao_adicional",
+          "example": "cartao_black",
           "source": "data-item",
           "lgpd": "Não pessoal"
         },
@@ -1136,14 +713,14 @@
           "name": "page_path",
           "type": "string",
           "required": "Sim",
-          "description": "Tela onde o toque aconteceu.",
+          "description": "Tela onde o toque ou o formulário aconteceu.",
           "possibleValues": "/acesso, /entrar, /inicio, /extrato, /pix, /cartoes, /investimentos",
-          "example": "/acesso",
+          "example": "/cartoes",
           "source": "Rota atual",
           "lgpd": "Não pessoal"
         }
       ],
-      "dataLayerPush": "// Quando: No toque em 'Abrir conta' (atalho) ou 'Quero abrir' (banner, logo depois de select_promotion) na tela de acesso.\nwindow.dataLayer.push({\n  event: 'generate_lead',\n  lead_type: 'abertura_conta',\n  page_path: '/acesso'\n});",
+      "dataLayerPush": "// Quando: No toque em 'Abrir conta' ou 'Quero abrir' na tela de acesso (abertura_conta) e em 'Pedir o Black' (cartao_black) ou 'Pedir adicional' (cartao_adicional) na tela Cartões.\nwindow.dataLayer.push({\n  event: 'generate_lead',\n  lead_source: 'cartao_black',\n  page_path: '/cartoes'\n});",
       "gtm": {
         "trigger": "CE · generate_lead",
         "tag": "GA4 · generate_lead",
@@ -1153,366 +730,95 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 678,
+          "originalLineNumberPreChanges": 696,
           "codeContext": "listener global de clique, ramo data-action=lead",
-          "trackingCode": "track('generate_lead', { lead_type: item, page_path: '/' + S.route })"
-        }
-      ]
-    },
-    {
-      "id": "EV-18",
-      "eventName": "pix_start",
-      "category": "Pix",
-      "amplitudeCategory": "Transaction",
-      "status": "Implementado",
-      "amplitudeStatus": "Live",
-      "owner": "Produto Pix",
-      "description": {
-        "behavior": "O cliente começou a preencher um Pix.",
-        "trigger": "No primeiro foco em qualquer campo de #pix-form, uma vez a cada abertura do Pix.",
-        "disambiguation": "Começo do preenchimento. A abertura da tela do Pix é page_view de /pix.",
-        "useCases": "Etapa 1 do funil de Pix.",
-        "keyProperties": "page_path",
-        "technical": "#pix-form (focusin) em /pix"
-      },
-      "aiDescription": "O que é: O cliente começou a preencher um Pix.\nQuando dispara: No primeiro foco em qualquer campo de #pix-form, uma vez a cada abertura do Pix.\nDiferença para eventos parecidos: Começo do preenchimento. A abertura da tela do Pix é page_view de /pix.\nUso em análise: Etapa 1 do funil de Pix.\nPropriedades principais: page_path.\nTécnico: #pix-form (focusin) em /pix; listener focusin de #pix-form.",
-      "aiUses": {
-        "answerQuestions": "Quantos começam um Pix e não chegam à revisão?",
-        "makeDecisions": "Identificar abandono no início do Pix."
-      },
-      "connectsTo": "Cliente (via login) · Funil do Pix",
-      "screens": "/pix",
-      "selector": "#pix-form (focusin)",
-      "containsPersonalData": "Não",
-      "eventProperties": [
-        {
-          "name": "page_path",
-          "type": "string",
-          "required": "Sim",
-          "description": "Tela onde o Pix começou.",
-          "possibleValues": "/pix",
-          "example": "/pix",
-          "source": "Fixo",
-          "lgpd": "Não pessoal"
-        }
-      ],
-      "dataLayerPush": "// Quando: No primeiro foco em qualquer campo de #pix-form, uma vez a cada abertura do Pix.\nwindow.dataLayer.push({\n  event: 'pix_start',\n  page_path: '/pix'\n});",
-      "gtm": {
-        "trigger": "CE · pix_start",
-        "tag": "GA4 · pix_start",
-        "triggerType": "Evento personalizado",
-        "eventNameMatch": "pix_start"
-      },
-      "implementationLocations": [
-        {
-          "filePath": "index.html",
-          "originalLineNumberPreChanges": 813,
-          "codeContext": "listener focusin de #pix-form",
-          "trackingCode": "track('pix_start', { page_path: '/pix' })"
-        }
-      ]
-    },
-    {
-      "id": "EV-19",
-      "eventName": "pix_error",
-      "category": "Pix",
-      "amplitudeCategory": "Transaction",
-      "status": "Implementado",
-      "amplitudeStatus": "Live",
-      "owner": "Produto Pix",
-      "description": {
-        "behavior": "O Pix foi recusado pela validação antes da revisão.",
-        "trigger": "No toque em Continuar sem chave, com valor zero ou inválido, ou acima do saldo.",
-        "disambiguation": "Recusa da validação antes da revisão. Não é falha no envio.",
-        "useCases": "Perda no funil de Pix por error_type.",
-        "keyProperties": "error_type",
-        "technical": "#pix-form (submit) em /pix"
-      },
-      "aiDescription": "O que é: O Pix foi recusado pela validação antes da revisão.\nQuando dispara: No toque em Continuar sem chave, com valor zero ou inválido, ou acima do saldo.\nDiferença para eventos parecidos: Recusa da validação antes da revisão. Não é falha no envio.\nUso em análise: Perda no funil de Pix por error_type.\nPropriedades principais: error_type.\nTécnico: #pix-form (submit) em /pix; listener submit de #pix-form, ramo de erro.",
-      "aiUses": {
-        "answerQuestions": "Qual erro mais trava o Pix?",
-        "makeDecisions": "Mudar a validação ou mostrar o saldo antes do valor."
-      },
-      "connectsTo": "Funil do Pix · Tipo de erro",
-      "screens": "/pix",
-      "selector": "#pix-form (submit)",
-      "containsPersonalData": "Não",
-      "eventProperties": [
-        {
-          "name": "error_type",
-          "type": "string",
-          "required": "Sim",
-          "description": "Motivo da recusa do Pix.",
-          "possibleValues": "chave_vazia, valor_invalido, saldo_insuficiente",
-          "example": "saldo_insuficiente",
-          "source": "Validação",
-          "lgpd": "Não pessoal"
-        }
-      ],
-      "dataLayerPush": "// Quando: No toque em Continuar sem chave, com valor zero ou inválido, ou acima do saldo.\nwindow.dataLayer.push({\n  event: 'pix_error',\n  error_type: 'saldo_insuficiente'\n});",
-      "gtm": {
-        "trigger": "CE · pix_error",
-        "tag": "GA4 · pix_error",
-        "triggerType": "Evento personalizado",
-        "eventNameMatch": "pix_error"
-      },
-      "implementationLocations": [
-        {
-          "filePath": "index.html",
-          "originalLineNumberPreChanges": 821,
-          "codeContext": "listener submit de #pix-form, ramo de erro",
-          "trackingCode": "track('pix_error', { error_type: err[0] })"
-        }
-      ]
-    },
-    {
-      "id": "EV-20",
-      "eventName": "pix_review",
-      "category": "Pix",
-      "amplitudeCategory": "Transaction",
-      "status": "Implementado",
-      "amplitudeStatus": "Live",
-      "owner": "Produto Pix",
-      "description": {
-        "behavior": "O cliente chegou à tela de revisão do Pix.",
-        "trigger": "No toque em Continuar com chave e valor válidos.",
-        "disambiguation": "O Pix ainda não foi enviado. Envio concluído é pix_success.",
-        "useCases": "Etapa 2 do funil de Pix.",
-        "keyProperties": "value, currency, pix_key_type",
-        "technical": "#pix-form (submit válido) em /pix"
-      },
-      "aiDescription": "O que é: O cliente chegou à tela de revisão do Pix.\nQuando dispara: No toque em Continuar com chave e valor válidos.\nDiferença para eventos parecidos: O Pix ainda não foi enviado. Envio concluído é pix_success.\nUso em análise: Etapa 2 do funil de Pix.\nPropriedades principais: value, currency, pix_key_type.\nTécnico: #pix-form (submit válido) em /pix; listener submit de #pix-form, ramo de sucesso.",
-      "aiUses": {
-        "answerQuestions": "Qual o valor médio dos Pix que chegam à revisão?",
-        "makeDecisions": "Pedir confirmação extra acima de um valor."
-      },
-      "connectsTo": "Funil do Pix · Tipo de chave",
-      "screens": "/pix",
-      "selector": "#pix-form (submit válido)",
-      "containsPersonalData": "Não. Só o tipo da chave é enviado, nunca a chave.",
-      "eventProperties": [
-        {
-          "name": "value",
-          "type": "number",
-          "required": "Sim",
-          "description": "Valor do Pix em reais, com ponto decimal.",
-          "possibleValues": "> 0 e ≤ saldo",
-          "example": 150.0,
-          "source": "Campo valor",
-          "lgpd": "Dado financeiro (não identifica o cliente sozinho)"
+          "trackingCode": "track('generate_lead', { lead_source: item, page_path: '/' + S.route })"
         },
         {
-          "name": "currency",
+          "filePath": "index.html",
+          "originalLineNumberPreChanges": 702,
+          "codeContext": "listener global de clique, ramo data-action=cartao",
+          "trackingCode": "track('generate_lead', { lead_source: 'cartao_' + item, page_path: '/' + S.route })"
+        }
+      ]
+    },
+    {
+      "id": "EV-09",
+      "eventName": "select_item",
+      "category": "Produto",
+      "catalogType": "recommended",
+      "amplitudeCategory": "Transaction",
+      "status": "Implementado",
+      "amplitudeStatus": "Live",
+      "owner": "Produto Investimentos",
+      "description": {
+        "behavior": "O cliente escolheu um produto de investimento para aplicar.",
+        "trigger": "No toque em Investir num produto da tela Investimentos, logo depois do click do mesmo botão.",
+        "disambiguation": "Intenção de aplicar, não aplicação concluída.",
+        "useCases": "Intenção por produto de investimento.",
+        "keyProperties": "item_list_id, item_list_name, items",
+        "technical": "[data-action=investir] em /investimentos"
+      },
+      "aiDescription": "O que é: O cliente escolheu um produto de investimento para aplicar.\nQuando dispara: No toque em Investir num produto da tela Investimentos, logo depois do click do mesmo botão.\nDiferença para eventos parecidos: Intenção de aplicar, não aplicação concluída.\nUso em análise: Intenção por produto de investimento.\nPropriedades principais: item_list_id, item_list_name, items.\nTécnico: [data-action=investir] em /investimentos; listener global de clique, ramo data-action=investir.",
+      "aiUses": {
+        "answerQuestions": "Qual produto de investimento gera mais intenção de aplicar?",
+        "makeDecisions": "Mostrar o produto certo para cada perfil."
+      },
+      "connectsTo": "Produto (items[0].item_id) · Lista (item_list_id) · Cliente (via login)",
+      "screens": "/investimentos",
+      "selector": "[data-action=investir]",
+      "containsPersonalData": "Não",
+      "eventProperties": [
+        {
+          "name": "item_list_id",
           "type": "string",
           "required": "Sim",
-          "description": "Moeda do valor.",
-          "possibleValues": "BRL",
-          "example": "BRL",
+          "description": "Lista de produtos onde o cliente escolheu.",
+          "possibleValues": "renda_fixa",
+          "example": "renda_fixa",
           "source": "Fixo",
           "lgpd": "Não pessoal"
         },
         {
-          "name": "pix_key_type",
+          "name": "item_list_name",
           "type": "string",
           "required": "Sim",
-          "description": "Tipo da chave do recebedor. A chave em si nunca é enviada.",
-          "possibleValues": "email, telefone, cpf, cnpj, aleatoria",
-          "example": "email",
-          "source": "Inferido da chave",
-          "lgpd": "Não pessoal"
-        }
-      ],
-      "dataLayerPush": "// Quando: No toque em Continuar com chave e valor válidos.\nwindow.dataLayer.push({\n  event: 'pix_review',\n  value: 150.00,\n  currency: 'BRL',\n  pix_key_type: 'email'\n});",
-      "gtm": {
-        "trigger": "CE · pix_review",
-        "tag": "GA4 · pix_review",
-        "triggerType": "Evento personalizado",
-        "eventNameMatch": "pix_review"
-      },
-      "implementationLocations": [
-        {
-          "filePath": "index.html",
-          "originalLineNumberPreChanges": 832,
-          "codeContext": "listener submit de #pix-form, ramo de sucesso",
-          "trackingCode": "track('pix_review', { value: v, currency: 'BRL', pix_key_type: S.pending.tipo })"
-        }
-      ]
-    },
-    {
-      "id": "EV-21",
-      "eventName": "pix_edit",
-      "category": "Pix",
-      "amplitudeCategory": "Transaction",
-      "status": "Implementado",
-      "amplitudeStatus": "Live",
-      "owner": "Produto Pix",
-      "description": {
-        "behavior": "O cliente voltou da revisão para corrigir os dados.",
-        "trigger": "No toque em 'Corrigir dados' (#pix-corrigir).",
-        "disambiguation": "Volta da revisão para os dados. Não cancela o Pix.",
-        "useCases": "Atrito na tela de revisão do Pix.",
-        "keyProperties": "step",
-        "technical": "#pix-corrigir em /pix"
-      },
-      "aiDescription": "O que é: O cliente voltou da revisão para corrigir os dados.\nQuando dispara: No toque em 'Corrigir dados' (#pix-corrigir).\nDiferença para eventos parecidos: Volta da revisão para os dados. Não cancela o Pix.\nUso em análise: Atrito na tela de revisão do Pix.\nPropriedades principais: step.\nTécnico: #pix-corrigir em /pix; listener de clique de #pix-corrigir.",
-      "aiUses": {
-        "answerQuestions": "Com que frequência o cliente corrige o Pix na revisão?",
-        "makeDecisions": "Rever a tela de dados se a correção for frequente."
-      },
-      "connectsTo": "Funil do Pix",
-      "screens": "/pix",
-      "selector": "#pix-corrigir",
-      "containsPersonalData": "Não",
-      "eventProperties": [
-        {
-          "name": "step",
-          "type": "string",
-          "required": "Sim",
-          "description": "Etapa de onde o cliente voltou.",
-          "possibleValues": "revisao",
-          "example": "revisao",
-          "source": "Fixo",
-          "lgpd": "Não pessoal"
-        }
-      ],
-      "dataLayerPush": "// Quando: No toque em 'Corrigir dados' (#pix-corrigir).\nwindow.dataLayer.push({\n  event: 'pix_edit',\n  step: 'revisao'\n});",
-      "gtm": {
-        "trigger": "CE · pix_edit",
-        "tag": "GA4 · pix_edit",
-        "triggerType": "Evento personalizado",
-        "eventNameMatch": "pix_edit"
-      },
-      "implementationLocations": [
-        {
-          "filePath": "index.html",
-          "originalLineNumberPreChanges": 834,
-          "codeContext": "listener de clique de #pix-corrigir",
-          "trackingCode": "track('pix_edit', { step: 'revisao' })"
-        }
-      ]
-    },
-    {
-      "id": "EV-22",
-      "eventName": "pix_success",
-      "category": "Pix",
-      "amplitudeCategory": "Transaction",
-      "status": "Implementado",
-      "amplitudeStatus": "Live",
-      "owner": "Produto Pix",
-      "description": {
-        "behavior": "O Pix foi enviado e o comprovante apareceu.",
-        "trigger": "No toque em 'Confirmar Pix' (#pix-confirmar), depois de debitar o saldo e gerar o identificador.",
-        "disambiguation": "Única fonte de Pix concluído. Não usar pix_review como conversão.",
-        "useCases": "Métrica de sucesso do Pix (etapa 3 do funil).",
-        "keyProperties": "transaction_id, value, currency",
-        "technical": "#pix-confirmar em /pix"
-      },
-      "aiDescription": "O que é: O Pix foi enviado e o comprovante apareceu.\nQuando dispara: No toque em 'Confirmar Pix' (#pix-confirmar), depois de debitar o saldo e gerar o identificador.\nDiferença para eventos parecidos: Única fonte de Pix concluído. Não usar pix_review como conversão.\nUso em análise: Métrica de sucesso do Pix (etapa 3 do funil).\nPropriedades principais: transaction_id, value, currency.\nTécnico: #pix-confirmar em /pix; listener de clique de #pix-confirmar.",
-      "aiUses": {
-        "answerQuestions": "Quantos Pix foram concluídos pelo app hoje, e qual o valor total?",
-        "makeDecisions": "Conciliar com o core e medir a conversão do funil do Pix."
-      },
-      "connectsTo": "Transação (transaction_id, liga ao core bancário) · Cliente (via login)",
-      "screens": "/pix",
-      "selector": "#pix-confirmar",
-      "containsPersonalData": "Não. transaction_id é técnico; a chave não é enviada.",
-      "eventProperties": [
-        {
-          "name": "transaction_id",
-          "type": "string",
-          "required": "Sim",
-          "description": "Identificador do Pix. Liga o evento à transação no core.",
-          "possibleValues": "E + timestamp (teste)",
-          "example": "E1792334211000",
-          "source": "Gerado na confirmação",
-          "lgpd": "Não pessoal (técnico)"
-        },
-        {
-          "name": "value",
-          "type": "number",
-          "required": "Sim",
-          "description": "Valor do Pix em reais, com ponto decimal.",
-          "possibleValues": "> 0 e ≤ saldo",
-          "example": 150.0,
-          "source": "Campo valor",
-          "lgpd": "Dado financeiro (não identifica o cliente sozinho)"
-        },
-        {
-          "name": "currency",
-          "type": "string",
-          "required": "Sim",
-          "description": "Moeda do valor.",
-          "possibleValues": "BRL",
-          "example": "BRL",
+          "description": "Nome da lista para leitura humana.",
+          "possibleValues": "Renda fixa",
+          "example": "Renda fixa",
           "source": "Fixo",
           "lgpd": "Não pessoal"
         },
         {
-          "name": "pix_key_type",
-          "type": "string",
+          "name": "items",
+          "type": "array",
           "required": "Sim",
-          "description": "Tipo da chave do recebedor. A chave em si nunca é enviada.",
-          "possibleValues": "email, telefone, cpf, cnpj, aleatoria",
-          "example": "email",
-          "source": "Inferido da chave",
+          "description": "Produto escolhido, no formato de item do GA4: item_id, item_name e item_category.",
+          "possibleValues": "item_id: cdb_liquidez, lci_90, cdb_ipca_2a, fundo_di",
+          "example": [
+            {
+              "item_id": "cdb_liquidez",
+              "item_name": "CDB Liquidez Diária",
+              "item_category": "renda_fixa"
+            }
+          ],
+          "source": "Tabela INVEST no código",
           "lgpd": "Não pessoal"
         }
       ],
-      "dataLayerPush": "// Quando: No toque em 'Confirmar Pix' (#pix-confirmar), depois de debitar o saldo e gerar o identificador.\nwindow.dataLayer.push({\n  event: 'pix_success',\n  transaction_id: 'E1792334211000',\n  value: 150.00,\n  currency: 'BRL',\n  pix_key_type: 'email'\n});",
+      "dataLayerPush": "// Quando: No toque em Investir num produto da tela Investimentos, logo depois do click do mesmo botão.\nwindow.dataLayer.push({\n  event: 'select_item',\n  item_list_id: 'renda_fixa',\n  item_list_name: 'Renda fixa',\n  items: [{ item_id: 'cdb_liquidez', item_name: 'CDB Liquidez Diária', item_category: 'renda_fixa' }]\n});",
       "gtm": {
-        "trigger": "CE · pix_success",
-        "tag": "GA4 · pix_success",
+        "trigger": "CE · select_item",
+        "tag": "GA4 · select_item",
         "triggerType": "Evento personalizado",
-        "eventNameMatch": "pix_success"
+        "eventNameMatch": "select_item"
       },
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 849,
-          "codeContext": "listener de clique de #pix-confirmar",
-          "trackingCode": "track('pix_success', { transaction_id: id, value: p.v, currency: 'BRL', pix_key_type: p.tipo })"
-        }
-      ]
-    },
-    {
-      "id": "EV-23",
-      "eventName": "pix_restart",
-      "category": "Pix",
-      "amplitudeCategory": "Transaction",
-      "status": "Implementado",
-      "amplitudeStatus": "Live",
-      "owner": "Produto Pix",
-      "description": {
-        "behavior": "O cliente começou outro Pix a partir do comprovante.",
-        "trigger": "No toque em 'Fazer outro Pix' (#pix-novo).",
-        "disambiguation": "Novo Pix a partir do comprovante. Correção antes do envio é pix_edit.",
-        "useCases": "Recorrência de uso do Pix na mesma sessão.",
-        "keyProperties": "nenhuma",
-        "technical": "#pix-novo em /pix"
-      },
-      "aiDescription": "O que é: O cliente começou outro Pix a partir do comprovante.\nQuando dispara: No toque em 'Fazer outro Pix' (#pix-novo).\nDiferença para eventos parecidos: Novo Pix a partir do comprovante. Correção antes do envio é pix_edit.\nUso em análise: Recorrência de uso do Pix na mesma sessão.\nPropriedades principais: nenhuma.\nTécnico: #pix-novo em /pix; listener de clique de #pix-novo.",
-      "aiUses": {
-        "answerQuestions": "Quantos clientes fazem mais de um Pix seguido?",
-        "makeDecisions": "Oferecer favoritos ou Pix em lote."
-      },
-      "connectsTo": "Funil do Pix",
-      "screens": "/pix",
-      "selector": "#pix-novo",
-      "containsPersonalData": "Não",
-      "eventProperties": [],
-      "dataLayerPush": "// Quando: No toque em 'Fazer outro Pix' (#pix-novo).\nwindow.dataLayer.push({\n  event: 'pix_restart'\n});",
-      "gtm": {
-        "trigger": "CE · pix_restart",
-        "tag": "GA4 · pix_restart",
-        "triggerType": "Evento personalizado",
-        "eventNameMatch": "pix_restart"
-      },
-      "implementationLocations": [
-        {
-          "filePath": "index.html",
-          "originalLineNumberPreChanges": 852,
-          "codeContext": "listener de clique de #pix-novo",
-          "trackingCode": "track('pix_restart', {})"
+          "originalLineNumberPreChanges": 705,
+          "codeContext": "listener global de clique, ramo data-action=investir",
+          "trackingCode": "track('select_item', { item_list_id: 'renda_fixa', item_list_name: 'Renda fixa', items: [prod] })"
         }
       ]
     }
@@ -1526,7 +832,7 @@
         "screen": "/acesso",
         "cta_text": "Quero abrir",
         "cta_destination": "Registra o pedido na própria tela",
-        "events_on_click": "select_promotion → generate_lead",
+        "events_on_click": "click → select_promotion → generate_lead",
         "exposure": "Carrossel da tela de acesso, 1º banner"
       },
       {
@@ -1536,7 +842,7 @@
         "screen": "/acesso",
         "cta_text": "Conhecer o Black",
         "cta_destination": "/cartoes (pede login)",
-        "events_on_click": "select_promotion → auth_required → page_view (/entrar)",
+        "events_on_click": "click → select_promotion → page_view (/entrar)",
         "exposure": "Carrossel da tela de acesso, 2º banner"
       },
       {
@@ -1546,7 +852,7 @@
         "screen": "/acesso",
         "cta_text": "Ver investimentos",
         "cta_destination": "/investimentos (pede login)",
-        "events_on_click": "select_promotion → auth_required → page_view (/entrar)",
+        "events_on_click": "click → select_promotion → page_view (/entrar)",
         "exposure": "Carrossel da tela de acesso, 3º banner"
       },
       {
@@ -1556,7 +862,7 @@
         "screen": "/inicio",
         "cta_text": "Simular parcelas",
         "cta_destination": "Registra o interesse na própria tela",
-        "events_on_click": "select_promotion → offer_click",
+        "events_on_click": "click → select_promotion",
         "exposure": "Carrossel do Início, 1º banner"
       },
       {
@@ -1566,7 +872,7 @@
         "screen": "/inicio",
         "cta_text": "Contratar seguro",
         "cta_destination": "Registra o interesse na própria tela",
-        "events_on_click": "select_promotion → offer_click",
+        "events_on_click": "click → select_promotion",
         "exposure": "Carrossel do Início, 2º banner"
       },
       {
@@ -1576,7 +882,7 @@
         "screen": "/inicio",
         "cta_text": "Agendar um Pix",
         "cta_destination": "/pix",
-        "events_on_click": "select_promotion → page_view",
+        "events_on_click": "click → select_promotion → page_view",
         "exposure": "Carrossel do Início, 3º banner"
       },
       {
@@ -1586,7 +892,7 @@
         "screen": "/cartoes",
         "cta_text": "Pedir o Black",
         "cta_destination": "Registra o pedido na própria tela",
-        "events_on_click": "select_promotion → card_request",
+        "events_on_click": "click → select_promotion → generate_lead",
         "exposure": "Faixa no meio da tela Cartões"
       }
     ],
@@ -1597,7 +903,7 @@
         "page_type": "publico",
         "requires_login": "Não (logado vai para /inicio)",
         "banners": "bnr_abra_conta, bnr_cartao_black, bnr_cdb_liquidez",
-        "events": "page_view, view_promotion, select_promotion, carousel_navigate, select_content, quick_action, generate_lead, auth_required",
+        "events": "page_view, click, view_promotion, select_promotion, generate_lead",
         "screenshot": "docs/telas/01-acesso.png"
       },
       {
@@ -1606,7 +912,7 @@
         "page_type": "login",
         "requires_login": "Não (logado vai para /inicio)",
         "banners": "(nenhum)",
-        "events": "page_view, form_start, login_error, login, quick_action, select_content",
+        "events": "page_view, click, form_start, form_submit, login",
         "screenshot": "docs/telas/02-senha.png"
       },
       {
@@ -1615,7 +921,7 @@
         "page_type": "area_logada",
         "requires_login": "Sim",
         "banners": "bnr_credito_preaprovado, bnr_seguro_cartao, bnr_pix_agendado",
-        "events": "page_view, view_promotion, select_promotion, carousel_navigate, offer_click, toggle_balance, quick_action, select_content, logout",
+        "events": "page_view, click, view_promotion, select_promotion",
         "screenshot": "docs/telas/03-inicio.png"
       },
       {
@@ -1624,7 +930,7 @@
         "page_type": "area_logada",
         "requires_login": "Sim",
         "banners": "(nenhum)",
-        "events": "page_view, statement_filter, select_content",
+        "events": "page_view, click",
         "screenshot": "docs/telas/04-extrato.png"
       },
       {
@@ -1633,7 +939,7 @@
         "page_type": "area_logada",
         "requires_login": "Sim",
         "banners": "(nenhum)",
-        "events": "page_view, pix_start, pix_error, pix_review, pix_edit, pix_success, pix_restart, select_content",
+        "events": "page_view, click, form_start, form_submit",
         "screenshot": "docs/telas/05-pix.png"
       },
       {
@@ -1642,7 +948,7 @@
         "page_type": "area_logada",
         "requires_login": "Sim",
         "banners": "bnr_upgrade_black",
-        "events": "page_view, view_promotion, select_promotion, card_request, quick_action, select_content",
+        "events": "page_view, click, view_promotion, select_promotion, generate_lead",
         "screenshot": "docs/telas/06-cartoes.png"
       },
       {
@@ -1651,129 +957,475 @@
         "page_type": "area_logada",
         "requires_login": "Sim",
         "banners": "(nenhum)",
-        "events": "page_view, investment_intent, select_content",
+        "events": "page_view, click, select_item",
         "screenshot": "docs/telas/07-investimentos.png"
       }
     ],
     "elements": [
       {
-        "item_id": "acesso_entrar",
-        "content_type": "cta",
+        "link_id": "ajuda",
+        "element_type": "icon",
+        "link_text": "Ajuda",
+        "location": "Acesso, topo",
+        "destination": "Sem fluxo (simulação)"
+      },
+      {
+        "link_id": "trocar_conta",
+        "element_type": "link",
+        "link_text": "Trocar",
+        "location": "Acesso, conta salva",
+        "destination": "Sem fluxo (simulação)"
+      },
+      {
+        "link_id": "acesso_entrar",
+        "element_type": "cta",
         "link_text": "Acessar minha conta",
         "location": "Acesso",
         "destination": "/entrar"
       },
       {
-        "item_id": "acesso_pix",
-        "content_type": "shortcut",
+        "link_id": "acesso_pix",
+        "element_type": "shortcut",
         "link_text": "Pix",
         "location": "Acesso, atalhos",
         "destination": "/pix (pede login)"
       },
       {
-        "item_id": "senha_voltar",
-        "content_type": "cta",
+        "link_id": "acesso_token",
+        "element_type": "shortcut",
+        "link_text": "Token",
+        "location": "Acesso, atalhos",
+        "destination": "Sem fluxo (simulação)"
+      },
+      {
+        "link_id": "acesso_bloquear_cartao",
+        "element_type": "shortcut",
+        "link_text": "Bloquear cartão",
+        "location": "Acesso, atalhos",
+        "destination": "Sem fluxo (simulação)"
+      },
+      {
+        "link_id": "acesso_abrir_conta",
+        "element_type": "shortcut",
+        "link_text": "Abrir conta",
+        "location": "Acesso, atalhos",
+        "destination": "generate_lead (abertura_conta)"
+      },
+      {
+        "link_id": "acesso_destaques_indicador_1 a _3",
+        "element_type": "carousel_indicator",
+        "link_text": "Destaque 1 a 3",
+        "location": "Acesso, carrossel Para você",
+        "destination": "Banner do carrossel"
+      },
+      {
+        "link_id": "bnr_abra_conta_cta",
+        "element_type": "banner_cta",
+        "link_text": "Quero abrir",
+        "location": "Acesso, banner Abra sua conta",
+        "destination": "generate_lead (abertura_conta)"
+      },
+      {
+        "link_id": "bnr_cartao_black_cta",
+        "element_type": "banner_cta",
+        "link_text": "Conhecer o Black",
+        "location": "Acesso, banner Nuzzi Black",
+        "destination": "/cartoes (pede login)"
+      },
+      {
+        "link_id": "bnr_cdb_liquidez_cta",
+        "element_type": "banner_cta",
+        "link_text": "Ver investimentos",
+        "location": "Acesso, banner CDB",
+        "destination": "/investimentos (pede login)"
+      },
+      {
+        "link_id": "senha_voltar",
+        "element_type": "cta",
         "link_text": "Voltar",
         "location": "Senha, topo",
         "destination": "/acesso"
       },
       {
-        "item_id": "inicio_ver_extrato",
-        "content_type": "cta",
+        "link_id": "esqueci_senha",
+        "element_type": "link",
+        "link_text": "Esqueci",
+        "location": "Senha, teclado",
+        "destination": "Sem fluxo (simulação)"
+      },
+      {
+        "link_id": "btn_entrar",
+        "element_type": "cta",
+        "link_text": "Entrar",
+        "location": "Senha",
+        "destination": "form_submit (aprovado ou recusado) e login"
+      },
+      {
+        "link_id": "ocultar_saldo",
+        "element_type": "icon",
+        "link_text": "Ocultar saldo / Mostrar saldo",
+        "location": "Início, topo",
+        "destination": "Esconde ou mostra o saldo"
+      },
+      {
+        "link_id": "notificacoes",
+        "element_type": "icon",
+        "link_text": "Notificações",
+        "location": "Início, topo",
+        "destination": "Sem fluxo (simulação)"
+      },
+      {
+        "link_id": "sair",
+        "element_type": "icon",
+        "link_text": "Sair",
+        "location": "Início, topo",
+        "destination": "/acesso (encerra a sessão)"
+      },
+      {
+        "link_id": "inicio_ver_extrato",
+        "element_type": "cta",
         "link_text": "Ver extrato",
         "location": "Início, saldo",
         "destination": "/extrato"
       },
       {
-        "item_id": "atalho_pix",
-        "content_type": "shortcut",
+        "link_id": "atalho_pix",
+        "element_type": "shortcut",
         "link_text": "Pix",
         "location": "Início, atalhos",
         "destination": "/pix"
       },
       {
-        "item_id": "atalho_cartoes",
-        "content_type": "shortcut",
+        "link_id": "atalho_pagar",
+        "element_type": "shortcut",
+        "link_text": "Pagar",
+        "location": "Início, atalhos",
+        "destination": "Sem fluxo (simulação)"
+      },
+      {
+        "link_id": "atalho_transferir",
+        "element_type": "shortcut",
+        "link_text": "Transferir",
+        "location": "Início, atalhos",
+        "destination": "Sem fluxo (simulação)"
+      },
+      {
+        "link_id": "atalho_recarga",
+        "element_type": "shortcut",
+        "link_text": "Recarga",
+        "location": "Início, atalhos",
+        "destination": "Sem fluxo (simulação)"
+      },
+      {
+        "link_id": "atalho_cartoes",
+        "element_type": "shortcut",
         "link_text": "Cartões",
         "location": "Início, atalhos",
         "destination": "/cartoes"
       },
       {
-        "item_id": "atalho_investir",
-        "content_type": "shortcut",
+        "link_id": "atalho_investir",
+        "element_type": "shortcut",
         "link_text": "Investir",
         "location": "Início, atalhos",
         "destination": "/investimentos"
       },
       {
-        "item_id": "inicio_card_fatura",
-        "content_type": "card",
+        "link_id": "inicio_ofertas_indicador_1 a _3",
+        "element_type": "carousel_indicator",
+        "link_text": "Destaque 1 a 3",
+        "location": "Início, carrossel de ofertas",
+        "destination": "Banner do carrossel"
+      },
+      {
+        "link_id": "bnr_credito_preaprovado_cta",
+        "element_type": "banner_cta",
+        "link_text": "Simular parcelas",
+        "location": "Início, banner Crédito",
+        "destination": "Simulação na própria tela"
+      },
+      {
+        "link_id": "bnr_seguro_cartao_cta",
+        "element_type": "banner_cta",
+        "link_text": "Contratar seguro",
+        "location": "Início, banner Seguro",
+        "destination": "Simulação na própria tela"
+      },
+      {
+        "link_id": "bnr_pix_agendado_cta",
+        "element_type": "banner_cta",
+        "link_text": "Agendar um Pix",
+        "location": "Início, banner Pix agendado",
+        "destination": "/pix"
+      },
+      {
+        "link_id": "inicio_card_fatura",
+        "element_type": "card",
         "link_text": "Cartão Nuzzi Mais",
         "location": "Início, cartão da fatura",
         "destination": "/cartoes"
       },
       {
-        "item_id": "inicio_extrato_completo",
-        "content_type": "cta",
+        "link_id": "inicio_extrato_completo",
+        "element_type": "cta",
         "link_text": "Ver tudo",
         "location": "Início, últimos lançamentos",
         "destination": "/extrato"
       },
       {
-        "item_id": "inicio_card_investimentos",
-        "content_type": "card",
+        "link_id": "inicio_card_investimentos",
+        "element_type": "card",
         "link_text": "Investimentos",
         "location": "Início, cartão de investimentos",
         "destination": "/investimentos"
       },
       {
-        "item_id": "pix_voltar",
-        "content_type": "cta",
+        "link_id": "filtro_todos",
+        "element_type": "chip",
+        "link_text": "Tudo",
+        "location": "Extrato, filtros",
+        "destination": "Filtra o extrato"
+      },
+      {
+        "link_id": "filtro_entradas",
+        "element_type": "chip",
+        "link_text": "Entradas",
+        "location": "Extrato, filtros",
+        "destination": "Filtra o extrato"
+      },
+      {
+        "link_id": "filtro_saidas",
+        "element_type": "chip",
+        "link_text": "Saídas",
+        "location": "Extrato, filtros",
+        "destination": "Filtra o extrato"
+      },
+      {
+        "link_id": "pix_voltar",
+        "element_type": "cta",
         "link_text": "Voltar",
         "location": "Pix, topo",
         "destination": "/inicio"
       },
       {
-        "item_id": "pix_comprovante_inicio",
-        "content_type": "cta",
+        "link_id": "pix_continuar",
+        "element_type": "cta",
+        "link_text": "Continuar",
+        "location": "Pix, etapa 1",
+        "destination": "form_submit (revisao ou recusado)"
+      },
+      {
+        "link_id": "pix_confirmar",
+        "element_type": "cta",
+        "link_text": "Confirmar Pix",
+        "location": "Pix, etapa 2",
+        "destination": "form_submit (confirmado)"
+      },
+      {
+        "link_id": "pix_corrigir",
+        "element_type": "cta",
+        "link_text": "Corrigir dados",
+        "location": "Pix, etapa 2",
+        "destination": "Volta à etapa 1"
+      },
+      {
+        "link_id": "pix_comprovante_inicio",
+        "element_type": "cta",
         "link_text": "Voltar ao início",
         "location": "Pix, comprovante",
         "destination": "/inicio"
       },
       {
-        "item_id": "tab_inicio",
-        "content_type": "tab_bar",
+        "link_id": "pix_novo",
+        "element_type": "cta",
+        "link_text": "Fazer outro Pix",
+        "location": "Pix, comprovante",
+        "destination": "Volta à etapa 1"
+      },
+      {
+        "link_id": "cartao_virtual",
+        "element_type": "action",
+        "link_text": "Cartão virtual",
+        "location": "Cartões, ações",
+        "destination": "Sem fluxo (simulação)"
+      },
+      {
+        "link_id": "cartoes_bloquear",
+        "element_type": "action",
+        "link_text": "Bloquear",
+        "location": "Cartões, ações",
+        "destination": "Sem fluxo (simulação)"
+      },
+      {
+        "link_id": "ajustar_limite",
+        "element_type": "action",
+        "link_text": "Ajustar limite",
+        "location": "Cartões, ações",
+        "destination": "Sem fluxo (simulação)"
+      },
+      {
+        "link_id": "bnr_upgrade_black_cta",
+        "element_type": "banner_cta",
+        "link_text": "Pedir o Black",
+        "location": "Cartões, banner Upgrade Black",
+        "destination": "generate_lead (cartao_black)"
+      },
+      {
+        "link_id": "cartao_adicional",
+        "element_type": "cta",
+        "link_text": "Pedir adicional",
+        "location": "Cartões, cartão adicional",
+        "destination": "generate_lead (cartao_adicional)"
+      },
+      {
+        "link_id": "investir_cdb_liquidez",
+        "element_type": "product",
+        "link_text": "Investir",
+        "location": "Investimentos, CDB Liquidez Diária",
+        "destination": "select_item"
+      },
+      {
+        "link_id": "investir_lci_90",
+        "element_type": "product",
+        "link_text": "Investir",
+        "location": "Investimentos, LCI 90 dias",
+        "destination": "select_item"
+      },
+      {
+        "link_id": "investir_cdb_ipca_2a",
+        "element_type": "product",
+        "link_text": "Investir",
+        "location": "Investimentos, CDB 2 anos",
+        "destination": "select_item"
+      },
+      {
+        "link_id": "investir_fundo_di",
+        "element_type": "product",
+        "link_text": "Investir",
+        "location": "Investimentos, Fundo Nuzzi DI",
+        "destination": "select_item"
+      },
+      {
+        "link_id": "tab_inicio",
+        "element_type": "tab_bar",
         "link_text": "Início",
         "location": "Barra de abas",
         "destination": "/inicio"
       },
       {
-        "item_id": "tab_extrato",
-        "content_type": "tab_bar",
+        "link_id": "tab_extrato",
+        "element_type": "tab_bar",
         "link_text": "Extrato",
         "location": "Barra de abas",
         "destination": "/extrato"
       },
       {
-        "item_id": "tab_pix",
-        "content_type": "tab_bar",
+        "link_id": "tab_pix",
+        "element_type": "tab_bar",
         "link_text": "Pix",
         "location": "Barra de abas",
         "destination": "/pix"
       },
       {
-        "item_id": "tab_cartoes",
-        "content_type": "tab_bar",
+        "link_id": "tab_cartoes",
+        "element_type": "tab_bar",
         "link_text": "Cartões",
         "location": "Barra de abas",
         "destination": "/cartoes"
       },
       {
-        "item_id": "tab_investir",
-        "content_type": "tab_bar",
+        "link_id": "tab_investir",
+        "element_type": "tab_bar",
         "link_text": "Investir",
         "location": "Barra de abas",
         "destination": "/investimentos"
+      }
+    ],
+    "migration": [
+      {
+        "removed_event": "select_content",
+        "now": "click",
+        "how": "link_id substitui item_id; element_type substitui content_type"
+      },
+      {
+        "removed_event": "carousel_navigate",
+        "now": "click (indicadores)",
+        "how": "Arrastar deixou de gerar evento: a exposição do banner novo já é view_promotion"
+      },
+      {
+        "removed_event": "quick_action",
+        "now": "click",
+        "how": "link_id do atalho (ajuda, atalho_pagar, cartoes_bloquear...)"
+      },
+      {
+        "removed_event": "toggle_balance",
+        "now": "click",
+        "how": "link_id=ocultar_saldo; link_text diz a ação"
+      },
+      {
+        "removed_event": "statement_filter",
+        "now": "click",
+        "how": "link_id=filtro_todos, filtro_entradas ou filtro_saidas"
+      },
+      {
+        "removed_event": "logout",
+        "now": "click",
+        "how": "link_id=sair; o GA4 limpa o user_id logo depois"
+      },
+      {
+        "removed_event": "pix_edit",
+        "now": "click",
+        "how": "link_id=pix_corrigir"
+      },
+      {
+        "removed_event": "pix_restart",
+        "now": "click",
+        "how": "link_id=pix_novo"
+      },
+      {
+        "removed_event": "offer_click",
+        "now": "select_promotion",
+        "how": "O toque no banner já é select_promotion; o click diz qual botão"
+      },
+      {
+        "removed_event": "card_request",
+        "now": "generate_lead",
+        "how": "lead_source=cartao_black ou cartao_adicional"
+      },
+      {
+        "removed_event": "investment_intent",
+        "now": "select_item",
+        "how": "items[0].item_id = produto"
+      },
+      {
+        "removed_event": "pix_start",
+        "now": "form_start",
+        "how": "form_id=pix"
+      },
+      {
+        "removed_event": "pix_review",
+        "now": "form_submit",
+        "how": "form_id=pix, step=revisao"
+      },
+      {
+        "removed_event": "pix_success",
+        "now": "form_submit",
+        "how": "form_id=pix, step=confirmado. Não virou purchase: Pix não é receita"
+      },
+      {
+        "removed_event": "pix_error",
+        "now": "form_submit",
+        "how": "form_id=pix, step=recusado, error_type"
+      },
+      {
+        "removed_event": "login_error",
+        "now": "form_submit",
+        "how": "form_id=login, step=recusado, error_type"
+      },
+      {
+        "removed_event": "auth_required",
+        "now": "click + page_view",
+        "how": "o click do botão traz link_url com a tela pedida; o page_view seguinte é /entrar"
       }
     ],
     "journeys": [
@@ -1789,8 +1441,8 @@
         "journey": "Pix a partir do acesso",
         "step": 2,
         "user_action": "Toca no atalho Pix",
-        "expected_events": "select_content; auth_required; page_view",
-        "check_params": "item_id=acesso_pix; target_path=/pix; page_path=/entrar",
+        "expected_events": "click; page_view",
+        "check_params": "link_id=acesso_pix; link_url=/pix; page_path=/entrar (tela logada pede login)",
         "test_result": ""
       },
       {
@@ -1798,55 +1450,55 @@
         "step": 3,
         "user_action": "Digita o primeiro dígito",
         "expected_events": "form_start",
-        "check_params": "form_id=login; page_path=/entrar",
+        "check_params": "form_id=login; nenhum click nas teclas da senha",
         "test_result": ""
       },
       {
         "journey": "Pix a partir do acesso",
         "step": 4,
         "user_action": "Toca Entrar com 2 dígitos",
-        "expected_events": "login_error",
-        "check_params": "error_type=senha_incompleta",
+        "expected_events": "click; form_submit",
+        "check_params": "link_id=btn_entrar; form_id=login; step=recusado; error_type=senha_incompleta",
         "test_result": ""
       },
       {
         "journey": "Pix a partir do acesso",
         "step": 5,
         "user_action": "Digita 000000 e toca Entrar",
-        "expected_events": "login_error",
-        "check_params": "error_type=senha_incorreta",
+        "expected_events": "click; form_submit",
+        "check_params": "step=recusado; error_type=senha_incorreta",
         "test_result": ""
       },
       {
         "journey": "Pix a partir do acesso",
         "step": 6,
         "user_action": "Digita 6 dígitos e toca Entrar",
-        "expected_events": "login; page_view",
-        "check_params": "method=senha_eletronica; user_id=u_8f2c41a9; page_path=/pix",
+        "expected_events": "click; form_submit; login; page_view",
+        "check_params": "step=aprovado; method=senha_eletronica; user_id=u_8f2c41a9; page_path=/pix",
         "test_result": ""
       },
       {
         "journey": "Pix a partir do acesso",
         "step": 7,
         "user_action": "Toca no campo da chave",
-        "expected_events": "pix_start",
-        "check_params": "page_path=/pix",
+        "expected_events": "form_start",
+        "check_params": "form_id=pix; page_path=/pix",
         "test_result": ""
       },
       {
         "journey": "Pix a partir do acesso",
         "step": 8,
         "user_action": "Preenche e toca Continuar",
-        "expected_events": "pix_review",
-        "check_params": "value e pix_key_type preenchidos; chave ausente do evento",
+        "expected_events": "click; form_submit",
+        "check_params": "link_id=pix_continuar; step=revisao; value e pix_key_type preenchidos; chave ausente do evento",
         "test_result": ""
       },
       {
         "journey": "Pix a partir do acesso",
         "step": 9,
         "user_action": "Toca Confirmar Pix",
-        "expected_events": "pix_success",
-        "check_params": "transaction_id começa com E; value igual ao da revisão",
+        "expected_events": "click; form_submit",
+        "check_params": "link_id=pix_confirmar; step=confirmado; transaction_id começa com E",
         "test_result": ""
       },
       {
@@ -1861,72 +1513,80 @@
         "journey": "Ofertas do Início",
         "step": 2,
         "user_action": "Arrasta o carrossel para o 2º banner",
-        "expected_events": "carousel_navigate; view_promotion (bnr_seguro_cartao)",
-        "check_params": "carousel_id=inicio_ofertas; control=arrastar; slide_index=2",
+        "expected_events": "view_promotion (bnr_seguro_cartao)",
+        "check_params": "Arrastar não gera click",
         "test_result": ""
       },
       {
         "journey": "Ofertas do Início",
         "step": 3,
         "user_action": "Toca 'Contratar seguro'",
-        "expected_events": "select_promotion; offer_click",
-        "check_params": "promotion_id=bnr_seguro_cartao; offer_id=seguro_cartao",
+        "expected_events": "click; select_promotion",
+        "check_params": "link_id=bnr_seguro_cartao_cta; promotion_id=bnr_seguro_cartao",
         "test_result": ""
       },
       {
         "journey": "Ofertas do Início",
         "step": 4,
         "user_action": "Toca no 3º indicador",
-        "expected_events": "carousel_navigate; view_promotion (bnr_pix_agendado)",
-        "check_params": "control=indicador; slide_index=3",
+        "expected_events": "click; view_promotion (bnr_pix_agendado)",
+        "check_params": "link_id=inicio_ofertas_indicador_3; element_type=carousel_indicator",
         "test_result": ""
       },
       {
         "journey": "Área logada",
         "step": 1,
         "user_action": "Toca no olho do saldo",
-        "expected_events": "toggle_balance",
-        "check_params": "state=hidden; nenhum valor no evento",
+        "expected_events": "click",
+        "check_params": "link_id=ocultar_saldo; nenhum valor no evento",
         "test_result": ""
       },
       {
         "journey": "Área logada",
         "step": 2,
         "user_action": "Toca na aba Extrato e no filtro Entradas",
-        "expected_events": "select_content; page_view; statement_filter",
-        "check_params": "item_id=tab_extrato; filter=entradas",
+        "expected_events": "click; page_view; click",
+        "check_params": "link_id=tab_extrato; link_id=filtro_entradas",
         "test_result": ""
       },
       {
         "journey": "Área logada",
         "step": 3,
         "user_action": "Na aba Cartões, toca 'Pedir o Black'",
-        "expected_events": "select_promotion; card_request",
-        "check_params": "promotion_id=bnr_upgrade_black; card_tier=black",
+        "expected_events": "click; select_promotion; generate_lead",
+        "check_params": "promotion_id=bnr_upgrade_black; lead_source=cartao_black",
         "test_result": ""
       },
       {
         "journey": "Área logada",
         "step": 4,
         "user_action": "Toca no cartão da fatura no Início",
-        "expected_events": "select_content; page_view",
+        "expected_events": "click; page_view",
         "check_params": "link_text=Cartão Nuzzi Mais, sem o valor da fatura",
         "test_result": ""
       },
       {
         "journey": "Área logada",
         "step": 5,
+        "user_action": "Em Investimentos, toca Investir no CDB Liquidez",
+        "expected_events": "click; select_item",
+        "check_params": "link_id=investir_cdb_liquidez; items[0].item_id=cdb_liquidez",
+        "test_result": ""
+      },
+      {
+        "journey": "Área logada",
+        "step": 6,
         "user_action": "Toca em Sair",
-        "expected_events": "logout; page_view",
-        "check_params": "user_id no logout; page_path=/acesso; login_status=logged_out",
+        "expected_events": "click; page_view",
+        "check_params": "link_id=sair; page_path=/acesso; login_status=logged_out",
         "test_result": ""
       },
       {
         "journey": "Abertura de conta",
         "step": 1,
         "user_action": "Na tela de acesso, toca 'Quero abrir' no banner",
-        "expected_events": "select_promotion; generate_lead",
-        "check_params": "promotion_id=bnr_abra_conta; lead_type=abertura_conta",
+        "expected_events": "click; select_promotion; generate_lead",
+        "check_params": "promotion_id=bnr_abra_conta; lead_source=abertura_conta",
         "test_result": ""
       }
     ],
@@ -1949,11 +1609,11 @@
         "screen": "/acesso",
         "area": "Topo",
         "element": "Ícone de ajuda (?)",
-        "selector": "[data-action=quick_action][data-item=ajuda]",
+        "selector": "[data-click=ajuda]",
         "gesture": "Toque",
-        "events": "quick_action",
-        "fixed_values": "action_id=ajuda · page_path=/acesso",
-        "note": "",
+        "events": "click",
+        "fixed_values": "link_id=ajuda · element_type=icon · page_path=/acesso",
+        "note": "Atalho ainda sem fluxo: só o click.",
         "print": "docs/prints/EL-02.jpg",
         "crop": "docs/prints/recorte/EL-02.jpg"
       },
@@ -1962,11 +1622,11 @@
         "screen": "/acesso",
         "area": "Conta salva",
         "element": "Link Trocar",
-        "selector": "[data-item=trocar_conta]",
+        "selector": "[data-click=trocar_conta]",
         "gesture": "Toque",
-        "events": "quick_action",
-        "fixed_values": "action_id=trocar_conta · page_path=/acesso",
-        "note": "",
+        "events": "click",
+        "fixed_values": "link_id=trocar_conta · element_type=link · page_path=/acesso",
+        "note": "Atalho ainda sem fluxo: só o click.",
         "print": "docs/prints/EL-03.jpg",
         "crop": "docs/prints/recorte/EL-03.jpg"
       },
@@ -1975,10 +1635,10 @@
         "screen": "/acesso",
         "area": "Botão principal",
         "element": "Acessar minha conta",
-        "selector": "[data-track=acesso_entrar]",
+        "selector": "[data-click=acesso_entrar]",
         "gesture": "Toque",
-        "events": "select_content → page_view",
-        "fixed_values": "item_id=acesso_entrar · content_type=cta · depois page_path=/entrar",
+        "events": "click → page_view",
+        "fixed_values": "link_id=acesso_entrar · element_type=cta · link_url=/entrar · depois page_path=/entrar",
         "note": "",
         "print": "docs/prints/EL-04.jpg",
         "crop": "docs/prints/recorte/EL-04.jpg"
@@ -1988,10 +1648,10 @@
         "screen": "/acesso",
         "area": "Atalhos",
         "element": "Pix",
-        "selector": "[data-track=acesso_pix]",
+        "selector": "[data-click=acesso_pix]",
         "gesture": "Toque",
-        "events": "select_content → auth_required → page_view",
-        "fixed_values": "item_id=acesso_pix · target_path=/pix · depois page_path=/entrar",
+        "events": "click → page_view",
+        "fixed_values": "link_id=acesso_pix · element_type=shortcut · link_url=/pix · depois page_path=/entrar",
         "note": "Depois do login, o app abre o Pix direto.",
         "print": "docs/prints/EL-05.jpg",
         "crop": "docs/prints/recorte/EL-05.jpg"
@@ -2001,11 +1661,11 @@
         "screen": "/acesso",
         "area": "Atalhos",
         "element": "Token",
-        "selector": "[data-item=token]",
+        "selector": "[data-click=acesso_token]",
         "gesture": "Toque",
-        "events": "quick_action",
-        "fixed_values": "action_id=token · page_path=/acesso",
-        "note": "",
+        "events": "click",
+        "fixed_values": "link_id=acesso_token · element_type=shortcut · page_path=/acesso",
+        "note": "Atalho ainda sem fluxo: só o click.",
         "print": "docs/prints/EL-06.jpg",
         "crop": "docs/prints/recorte/EL-06.jpg"
       },
@@ -2014,11 +1674,11 @@
         "screen": "/acesso",
         "area": "Atalhos",
         "element": "Bloquear cartão",
-        "selector": "[data-item=bloquear_cartao]",
+        "selector": "[data-click=acesso_bloquear_cartao]",
         "gesture": "Toque",
-        "events": "quick_action",
-        "fixed_values": "action_id=bloquear_cartao · page_path=/acesso",
-        "note": "O mesmo action_id existe na tela Cartões; separe por page_path.",
+        "events": "click",
+        "fixed_values": "link_id=acesso_bloquear_cartao · element_type=shortcut · page_path=/acesso",
+        "note": "Atalho ainda sem fluxo: só o click.",
         "print": "docs/prints/EL-07.jpg",
         "crop": "docs/prints/recorte/EL-07.jpg"
       },
@@ -2027,10 +1687,10 @@
         "screen": "/acesso",
         "area": "Atalhos",
         "element": "Abrir conta",
-        "selector": "[data-action=lead]",
+        "selector": "[data-click=acesso_abrir_conta]",
         "gesture": "Toque",
-        "events": "generate_lead",
-        "fixed_values": "lead_type=abertura_conta · page_path=/acesso",
+        "events": "click → generate_lead",
+        "fixed_values": "link_id=acesso_abrir_conta · element_type=shortcut · lead_source=abertura_conta",
         "note": "Sem select_promotion, porque não é banner.",
         "print": "docs/prints/EL-08.jpg",
         "crop": "docs/prints/recorte/EL-08.jpg"
@@ -2039,12 +1699,12 @@
         "id": "EL-09",
         "screen": "/acesso",
         "area": "Carrossel Para você",
-        "element": "Indicadores e arrasto",
-        "selector": "[data-carousel=acesso_destaques]",
-        "gesture": "Arrastar ou tocar no indicador",
-        "events": "carousel_navigate",
-        "fixed_values": "carousel_id=acesso_destaques · control=arrastar ou indicador",
-        "note": "",
+        "element": "Indicadores (bolinhas)",
+        "selector": "[data-carousel=acesso_destaques] .dot",
+        "gesture": "Toque",
+        "events": "click → view_promotion",
+        "fixed_values": "element_type=carousel_indicator · page_path=/acesso",
+        "note": "link_id=acesso_destaques_indicador_1 a 3. Arrastar o carrossel não gera click; a exposição do banner novo é view_promotion.",
         "print": "docs/prints/EL-09.jpg",
         "crop": "docs/prints/recorte/EL-09.jpg"
       },
@@ -2066,10 +1726,10 @@
         "screen": "/acesso",
         "area": "Carrossel Para você",
         "element": "Botão Quero abrir",
-        "selector": "[data-promo=bnr_abra_conta] .promo-cta",
+        "selector": "[data-click=bnr_abra_conta_cta]",
         "gesture": "Toque",
-        "events": "select_promotion → generate_lead",
-        "fixed_values": "promotion_id=bnr_abra_conta · lead_type=abertura_conta",
+        "events": "click → select_promotion → generate_lead",
+        "fixed_values": "link_id=bnr_abra_conta_cta · element_type=banner_cta · promotion_id=bnr_abra_conta · lead_source=abertura_conta",
         "note": "",
         "print": "docs/prints/EL-11.jpg",
         "crop": "docs/prints/recorte/EL-11.jpg"
@@ -2092,10 +1752,10 @@
         "screen": "/acesso",
         "area": "Carrossel Para você",
         "element": "Botão Conhecer o Black",
-        "selector": "[data-promo=bnr_cartao_black] .promo-cta",
+        "selector": "[data-click=bnr_cartao_black_cta]",
         "gesture": "Toque",
-        "events": "select_promotion → auth_required → page_view",
-        "fixed_values": "promotion_id=bnr_cartao_black · target_path=/cartoes · depois page_path=/entrar",
+        "events": "click → select_promotion → page_view",
+        "fixed_values": "link_id=bnr_cartao_black_cta · element_type=banner_cta · promotion_id=bnr_cartao_black · depois page_path=/entrar",
         "note": "",
         "print": "docs/prints/EL-13.jpg",
         "crop": "docs/prints/recorte/EL-13.jpg"
@@ -2118,10 +1778,10 @@
         "screen": "/acesso",
         "area": "Carrossel Para você",
         "element": "Botão Ver investimentos",
-        "selector": "[data-promo=bnr_cdb_liquidez] .promo-cta",
+        "selector": "[data-click=bnr_cdb_liquidez_cta]",
         "gesture": "Toque",
-        "events": "select_promotion → auth_required → page_view",
-        "fixed_values": "promotion_id=bnr_cdb_liquidez · target_path=/investimentos · depois page_path=/entrar",
+        "events": "click → select_promotion → page_view",
+        "fixed_values": "link_id=bnr_cdb_liquidez_cta · element_type=banner_cta · promotion_id=bnr_cdb_liquidez · depois page_path=/entrar",
         "note": "",
         "print": "docs/prints/EL-15.jpg",
         "crop": "docs/prints/recorte/EL-15.jpg"
@@ -2144,10 +1804,10 @@
         "screen": "/entrar",
         "area": "Topo",
         "element": "Seta Voltar",
-        "selector": "[data-track=senha_voltar]",
+        "selector": "[data-click=senha_voltar]",
         "gesture": "Toque",
-        "events": "select_content → page_view",
-        "fixed_values": "item_id=senha_voltar · link_text=Voltar · depois page_path=/acesso",
+        "events": "click → page_view",
+        "fixed_values": "link_id=senha_voltar · element_type=cta · link_text=Voltar · depois page_path=/acesso",
         "note": "",
         "print": "docs/prints/EL-17.jpg",
         "crop": "docs/prints/recorte/EL-17.jpg"
@@ -2161,7 +1821,7 @@
         "gesture": "Primeiro dígito",
         "events": "form_start",
         "fixed_values": "form_id=login · page_path=/entrar",
-        "note": "Só no primeiro dígito de cada visita.",
+        "note": "Só no primeiro dígito de cada visita. As teclas não geram click: nenhum dígito da senha é enviado.",
         "print": "docs/prints/EL-18.jpg",
         "crop": "docs/prints/recorte/EL-18.jpg"
       },
@@ -2170,11 +1830,11 @@
         "screen": "/entrar",
         "area": "Teclado",
         "element": "Esqueci",
-        "selector": "[data-item=esqueci_senha]",
+        "selector": "[data-click=esqueci_senha]",
         "gesture": "Toque",
-        "events": "quick_action",
-        "fixed_values": "action_id=esqueci_senha · page_path=/entrar",
-        "note": "",
+        "events": "click",
+        "fixed_values": "link_id=esqueci_senha · element_type=link · page_path=/entrar",
+        "note": "Atalho ainda sem fluxo: só o click.",
         "print": "docs/prints/EL-19.jpg",
         "crop": "docs/prints/recorte/EL-19.jpg"
       },
@@ -2183,10 +1843,10 @@
         "screen": "/entrar",
         "area": "Botão",
         "element": "Entrar com menos de 6 dígitos",
-        "selector": "#btn-entrar",
+        "selector": "[data-click=btn_entrar]",
         "gesture": "Toque",
-        "events": "login_error",
-        "fixed_values": "form_id=login · error_type=senha_incompleta",
+        "events": "click → form_submit",
+        "fixed_values": "link_id=btn_entrar · element_type=cta · form_id=login · step=recusado · error_type=senha_incompleta",
         "note": "",
         "print": "docs/prints/EL-20.jpg",
         "crop": "docs/prints/recorte/EL-20.jpg"
@@ -2196,10 +1856,10 @@
         "screen": "/entrar",
         "area": "Botão",
         "element": "Entrar com 000000",
-        "selector": "#btn-entrar",
+        "selector": "[data-click=btn_entrar]",
         "gesture": "Toque",
-        "events": "login_error",
-        "fixed_values": "form_id=login · error_type=senha_incorreta",
+        "events": "click → form_submit",
+        "fixed_values": "link_id=btn_entrar · element_type=cta · form_id=login · step=recusado · error_type=senha_incorreta",
         "note": "Senha de teste que simula erro.",
         "print": "docs/prints/EL-21.jpg",
         "crop": "docs/prints/recorte/EL-21.jpg"
@@ -2209,10 +1869,10 @@
         "screen": "/entrar",
         "area": "Botão",
         "element": "Entrar com 6 dígitos",
-        "selector": "#btn-entrar",
+        "selector": "[data-click=btn_entrar]",
         "gesture": "Toque",
-        "events": "login → page_view",
-        "fixed_values": "method=senha_eletronica · user_id=u_8f2c41a9 · depois page_path do destino",
+        "events": "click → form_submit → login → page_view",
+        "fixed_values": "link_id=btn_entrar · element_type=cta · form_id=login · step=aprovado · method=senha_eletronica · user_id=u_8f2c41a9 · depois page_path do destino",
         "note": "",
         "print": "docs/prints/EL-22.jpg",
         "crop": "docs/prints/recorte/EL-22.jpg"
@@ -2235,11 +1895,11 @@
         "screen": "/inicio",
         "area": "Topo",
         "element": "Ícone de olho",
-        "selector": "#btn-saldo",
+        "selector": "[data-click=ocultar_saldo]",
         "gesture": "Toque",
-        "events": "toggle_balance",
-        "fixed_values": "state=hidden ou visible",
-        "note": "O valor do saldo não é enviado.",
+        "events": "click",
+        "fixed_values": "link_id=ocultar_saldo · element_type=icon · page_path=/inicio",
+        "note": "link_text diz a ação (Ocultar saldo ou Mostrar saldo). O valor do saldo não é enviado.",
         "print": "docs/prints/EL-24.jpg",
         "crop": "docs/prints/recorte/EL-24.jpg"
       },
@@ -2248,11 +1908,11 @@
         "screen": "/inicio",
         "area": "Topo",
         "element": "Sino de notificações",
-        "selector": "[data-item=notificacoes]",
+        "selector": "[data-click=notificacoes]",
         "gesture": "Toque",
-        "events": "quick_action",
-        "fixed_values": "action_id=notificacoes · page_path=/inicio",
-        "note": "",
+        "events": "click",
+        "fixed_values": "link_id=notificacoes · element_type=icon · page_path=/inicio",
+        "note": "Atalho ainda sem fluxo: só o click.",
         "print": "docs/prints/EL-25.jpg",
         "crop": "docs/prints/recorte/EL-25.jpg"
       },
@@ -2261,11 +1921,11 @@
         "screen": "/inicio",
         "area": "Topo",
         "element": "Ícone Sair",
-        "selector": "#btn-sair",
+        "selector": "[data-click=sair]",
         "gesture": "Toque",
-        "events": "logout → page_view",
-        "fixed_values": "user_id · depois page_path=/acesso · login_status=logged_out",
-        "note": "",
+        "events": "click → page_view",
+        "fixed_values": "link_id=sair · element_type=icon · depois page_path=/acesso · login_status=logged_out",
+        "note": "O click sai com o user_id da sessão; logo depois o GA4 esquece o user_id.",
         "print": "docs/prints/EL-26.jpg",
         "crop": "docs/prints/recorte/EL-26.jpg"
       },
@@ -2274,10 +1934,10 @@
         "screen": "/inicio",
         "area": "Saldo",
         "element": "Ver extrato",
-        "selector": "[data-track=inicio_ver_extrato]",
+        "selector": "[data-click=inicio_ver_extrato]",
         "gesture": "Toque",
-        "events": "select_content → page_view",
-        "fixed_values": "item_id=inicio_ver_extrato · depois page_path=/extrato",
+        "events": "click → page_view",
+        "fixed_values": "link_id=inicio_ver_extrato · element_type=cta · link_url=/extrato · depois page_path=/extrato",
         "note": "",
         "print": "docs/prints/EL-27.jpg",
         "crop": "docs/prints/recorte/EL-27.jpg"
@@ -2287,10 +1947,10 @@
         "screen": "/inicio",
         "area": "Atalhos",
         "element": "Pix",
-        "selector": "[data-track=atalho_pix]",
+        "selector": "[data-click=atalho_pix]",
         "gesture": "Toque",
-        "events": "select_content → page_view",
-        "fixed_values": "item_id=atalho_pix · content_type=shortcut · depois page_path=/pix",
+        "events": "click → page_view",
+        "fixed_values": "link_id=atalho_pix · element_type=shortcut · link_url=/pix · depois page_path=/pix",
         "note": "",
         "print": "docs/prints/EL-28.jpg",
         "crop": "docs/prints/recorte/EL-28.jpg"
@@ -2300,11 +1960,11 @@
         "screen": "/inicio",
         "area": "Atalhos",
         "element": "Pagar",
-        "selector": "[data-item=pagar_boleto]",
+        "selector": "[data-click=atalho_pagar]",
         "gesture": "Toque",
-        "events": "quick_action",
-        "fixed_values": "action_id=pagar_boleto · page_path=/inicio",
-        "note": "",
+        "events": "click",
+        "fixed_values": "link_id=atalho_pagar · element_type=shortcut · page_path=/inicio",
+        "note": "Atalho ainda sem fluxo: só o click.",
         "print": "docs/prints/EL-29.jpg",
         "crop": "docs/prints/recorte/EL-29.jpg"
       },
@@ -2313,11 +1973,11 @@
         "screen": "/inicio",
         "area": "Atalhos",
         "element": "Transferir",
-        "selector": "[data-item=transferir]",
+        "selector": "[data-click=atalho_transferir]",
         "gesture": "Toque",
-        "events": "quick_action",
-        "fixed_values": "action_id=transferir · page_path=/inicio",
-        "note": "",
+        "events": "click",
+        "fixed_values": "link_id=atalho_transferir · element_type=shortcut · page_path=/inicio",
+        "note": "Atalho ainda sem fluxo: só o click.",
         "print": "docs/prints/EL-30.jpg",
         "crop": "docs/prints/recorte/EL-30.jpg"
       },
@@ -2326,11 +1986,11 @@
         "screen": "/inicio",
         "area": "Atalhos",
         "element": "Recarga",
-        "selector": "[data-item=recarga]",
+        "selector": "[data-click=atalho_recarga]",
         "gesture": "Toque",
-        "events": "quick_action",
-        "fixed_values": "action_id=recarga · page_path=/inicio",
-        "note": "",
+        "events": "click",
+        "fixed_values": "link_id=atalho_recarga · element_type=shortcut · page_path=/inicio",
+        "note": "Atalho ainda sem fluxo: só o click.",
         "print": "docs/prints/EL-31.jpg",
         "crop": "docs/prints/recorte/EL-31.jpg"
       },
@@ -2339,10 +1999,10 @@
         "screen": "/inicio",
         "area": "Atalhos",
         "element": "Cartões",
-        "selector": "[data-track=atalho_cartoes]",
+        "selector": "[data-click=atalho_cartoes]",
         "gesture": "Toque",
-        "events": "select_content → page_view",
-        "fixed_values": "item_id=atalho_cartoes · depois page_path=/cartoes",
+        "events": "click → page_view",
+        "fixed_values": "link_id=atalho_cartoes · element_type=shortcut · link_url=/cartoes · depois page_path=/cartoes",
         "note": "",
         "print": "docs/prints/EL-32.jpg",
         "crop": "docs/prints/recorte/EL-32.jpg"
@@ -2352,10 +2012,10 @@
         "screen": "/inicio",
         "area": "Atalhos",
         "element": "Investir",
-        "selector": "[data-track=atalho_investir]",
+        "selector": "[data-click=atalho_investir]",
         "gesture": "Toque",
-        "events": "select_content → page_view",
-        "fixed_values": "item_id=atalho_investir · depois page_path=/investimentos",
+        "events": "click → page_view",
+        "fixed_values": "link_id=atalho_investir · element_type=shortcut · link_url=/investimentos · depois page_path=/investimentos",
         "note": "",
         "print": "docs/prints/EL-33.jpg",
         "crop": "docs/prints/recorte/EL-33.jpg"
@@ -2364,12 +2024,12 @@
         "id": "EL-34",
         "screen": "/inicio",
         "area": "Carrossel de ofertas",
-        "element": "Indicadores e arrasto",
-        "selector": "[data-carousel=inicio_ofertas]",
-        "gesture": "Arrastar ou tocar no indicador",
-        "events": "carousel_navigate",
-        "fixed_values": "carousel_id=inicio_ofertas · control=arrastar ou indicador",
-        "note": "",
+        "element": "Indicadores (bolinhas)",
+        "selector": "[data-carousel=inicio_ofertas] .dot",
+        "gesture": "Toque",
+        "events": "click → view_promotion",
+        "fixed_values": "element_type=carousel_indicator · page_path=/inicio",
+        "note": "link_id=inicio_ofertas_indicador_1 a 3. Arrastar o carrossel não gera click; a exposição do banner novo é view_promotion.",
         "print": "docs/prints/EL-34.jpg",
         "crop": "docs/prints/recorte/EL-34.jpg"
       },
@@ -2391,11 +2051,11 @@
         "screen": "/inicio",
         "area": "Carrossel de ofertas",
         "element": "Botão Simular parcelas",
-        "selector": "[data-promo=bnr_credito_preaprovado] .promo-cta",
+        "selector": "[data-click=bnr_credito_preaprovado_cta]",
         "gesture": "Toque",
-        "events": "select_promotion → offer_click",
-        "fixed_values": "promotion_id=bnr_credito_preaprovado · offer_id=credito_preaprovado",
-        "note": "offer_click está em Ajustar (sinal duplicado).",
+        "events": "click → select_promotion",
+        "fixed_values": "link_id=bnr_credito_preaprovado_cta · element_type=banner_cta · promotion_id=bnr_credito_preaprovado",
+        "note": "",
         "print": "docs/prints/EL-36.jpg",
         "crop": "docs/prints/recorte/EL-36.jpg"
       },
@@ -2417,10 +2077,10 @@
         "screen": "/inicio",
         "area": "Carrossel de ofertas",
         "element": "Botão Contratar seguro",
-        "selector": "[data-promo=bnr_seguro_cartao] .promo-cta",
+        "selector": "[data-click=bnr_seguro_cartao_cta]",
         "gesture": "Toque",
-        "events": "select_promotion → offer_click",
-        "fixed_values": "promotion_id=bnr_seguro_cartao · offer_id=seguro_cartao",
+        "events": "click → select_promotion",
+        "fixed_values": "link_id=bnr_seguro_cartao_cta · element_type=banner_cta · promotion_id=bnr_seguro_cartao",
         "note": "",
         "print": "docs/prints/EL-38.jpg",
         "crop": "docs/prints/recorte/EL-38.jpg"
@@ -2443,10 +2103,10 @@
         "screen": "/inicio",
         "area": "Carrossel de ofertas",
         "element": "Botão Agendar um Pix",
-        "selector": "[data-promo=bnr_pix_agendado] .promo-cta",
+        "selector": "[data-click=bnr_pix_agendado_cta]",
         "gesture": "Toque",
-        "events": "select_promotion → page_view",
-        "fixed_values": "promotion_id=bnr_pix_agendado · depois page_path=/pix",
+        "events": "click → select_promotion → page_view",
+        "fixed_values": "link_id=bnr_pix_agendado_cta · element_type=banner_cta · promotion_id=bnr_pix_agendado · depois page_path=/pix",
         "note": "",
         "print": "docs/prints/EL-40.jpg",
         "crop": "docs/prints/recorte/EL-40.jpg"
@@ -2456,10 +2116,10 @@
         "screen": "/inicio",
         "area": "Cartão da fatura",
         "element": "Cartão Nuzzi Mais (fatura)",
-        "selector": "[data-track=inicio_card_fatura]",
+        "selector": "[data-click=inicio_card_fatura]",
         "gesture": "Toque",
-        "events": "select_content → page_view",
-        "fixed_values": "item_id=inicio_card_fatura · link_text=Cartão Nuzzi Mais · depois page_path=/cartoes",
+        "events": "click → page_view",
+        "fixed_values": "link_id=inicio_card_fatura · element_type=card · link_text=Cartão Nuzzi Mais · depois page_path=/cartoes",
         "note": "link_text fixo: o valor da fatura não vai.",
         "print": "docs/prints/EL-41.jpg",
         "crop": "docs/prints/recorte/EL-41.jpg"
@@ -2469,10 +2129,10 @@
         "screen": "/inicio",
         "area": "Últimos lançamentos",
         "element": "Ver tudo",
-        "selector": "[data-track=inicio_extrato_completo]",
+        "selector": "[data-click=inicio_extrato_completo]",
         "gesture": "Toque",
-        "events": "select_content → page_view",
-        "fixed_values": "item_id=inicio_extrato_completo · depois page_path=/extrato",
+        "events": "click → page_view",
+        "fixed_values": "link_id=inicio_extrato_completo · element_type=cta · link_url=/extrato · depois page_path=/extrato",
         "note": "",
         "print": "docs/prints/EL-42.jpg",
         "crop": "docs/prints/recorte/EL-42.jpg"
@@ -2482,10 +2142,10 @@
         "screen": "/inicio",
         "area": "Investimentos",
         "element": "Cartão de investimentos",
-        "selector": "[data-track=inicio_card_investimentos]",
+        "selector": "[data-click=inicio_card_investimentos]",
         "gesture": "Toque",
-        "events": "select_content → page_view",
-        "fixed_values": "item_id=inicio_card_investimentos · link_text=Investimentos · depois page_path=/investimentos",
+        "events": "click → page_view",
+        "fixed_values": "link_id=inicio_card_investimentos · element_type=card · link_text=Investimentos · depois page_path=/investimentos",
         "note": "link_text fixo: o total investido não vai.",
         "print": "docs/prints/EL-43.jpg",
         "crop": "docs/prints/recorte/EL-43.jpg"
@@ -2507,17 +2167,43 @@
         "id": "EL-45",
         "screen": "/extrato",
         "area": "Filtros",
-        "element": "Tudo, Entradas, Saídas",
-        "selector": "[data-filter]",
-        "gesture": "Toque num filtro diferente do atual",
-        "events": "statement_filter",
-        "fixed_values": "filter=todos, entradas ou saidas",
+        "element": "Filtro Tudo",
+        "selector": "[data-click=filtro_todos]",
+        "gesture": "Toque",
+        "events": "click",
+        "fixed_values": "link_id=filtro_todos · element_type=chip · page_path=/extrato",
         "note": "Os lançamentos não são enviados.",
         "print": "docs/prints/EL-45.jpg",
         "crop": "docs/prints/recorte/EL-45.jpg"
       },
       {
         "id": "EL-46",
+        "screen": "/extrato",
+        "area": "Filtros",
+        "element": "Filtro Entradas",
+        "selector": "[data-click=filtro_entradas]",
+        "gesture": "Toque",
+        "events": "click",
+        "fixed_values": "link_id=filtro_entradas · element_type=chip · page_path=/extrato",
+        "note": "Os lançamentos não são enviados.",
+        "print": "docs/prints/EL-46.jpg",
+        "crop": "docs/prints/recorte/EL-46.jpg"
+      },
+      {
+        "id": "EL-47",
+        "screen": "/extrato",
+        "area": "Filtros",
+        "element": "Filtro Saídas",
+        "selector": "[data-click=filtro_saidas]",
+        "gesture": "Toque",
+        "events": "click",
+        "fixed_values": "link_id=filtro_saidas · element_type=chip · page_path=/extrato",
+        "note": "Os lançamentos não são enviados.",
+        "print": "docs/prints/EL-47.jpg",
+        "crop": "docs/prints/recorte/EL-47.jpg"
+      },
+      {
+        "id": "EL-48",
         "screen": "/pix",
         "area": "Tela inteira",
         "element": "Pix",
@@ -2526,44 +2212,18 @@
         "events": "page_view",
         "fixed_values": "page_path=/pix",
         "note": "",
-        "print": "docs/prints/EL-46.jpg",
-        "crop": "docs/prints/recorte/EL-46.jpg"
-      },
-      {
-        "id": "EL-47",
-        "screen": "/pix",
-        "area": "Topo",
-        "element": "Seta Voltar",
-        "selector": "[data-track=pix_voltar]",
-        "gesture": "Toque",
-        "events": "select_content → page_view",
-        "fixed_values": "item_id=pix_voltar · depois page_path=/inicio",
-        "note": "",
-        "print": "docs/prints/EL-47.jpg",
-        "crop": "docs/prints/recorte/EL-47.jpg"
-      },
-      {
-        "id": "EL-48",
-        "screen": "/pix",
-        "area": "Etapa 1 · Dados",
-        "element": "Campos chave, valor e mensagem",
-        "selector": "#pix-form",
-        "gesture": "Primeiro foco num campo",
-        "events": "pix_start",
-        "fixed_values": "page_path=/pix",
-        "note": "Uma vez a cada abertura do Pix.",
         "print": "docs/prints/EL-48.jpg",
         "crop": "docs/prints/recorte/EL-48.jpg"
       },
       {
         "id": "EL-49",
         "screen": "/pix",
-        "area": "Etapa 1 · Dados",
-        "element": "Botão Continuar com erro",
-        "selector": "#pix-form [type=submit]",
+        "area": "Topo",
+        "element": "Seta Voltar",
+        "selector": "[data-click=pix_voltar]",
         "gesture": "Toque",
-        "events": "pix_error",
-        "fixed_values": "error_type=chave_vazia, valor_invalido ou saldo_insuficiente",
+        "events": "click → page_view",
+        "fixed_values": "link_id=pix_voltar · element_type=cta · link_url=/inicio · depois page_path=/inicio",
         "note": "",
         "print": "docs/prints/EL-49.jpg",
         "crop": "docs/prints/recorte/EL-49.jpg"
@@ -2572,24 +2232,24 @@
         "id": "EL-50",
         "screen": "/pix",
         "area": "Etapa 1 · Dados",
-        "element": "Botão Continuar válido",
-        "selector": "#pix-form [type=submit]",
-        "gesture": "Toque",
-        "events": "pix_review",
-        "fixed_values": "value · currency=BRL · pix_key_type",
-        "note": "A chave nunca é enviada.",
+        "element": "Campos chave, valor e mensagem",
+        "selector": "#pix-form",
+        "gesture": "Primeiro foco num campo",
+        "events": "form_start",
+        "fixed_values": "form_id=pix · page_path=/pix",
+        "note": "Uma vez a cada abertura do Pix. O conteúdo dos campos não é enviado.",
         "print": "docs/prints/EL-50.jpg",
         "crop": "docs/prints/recorte/EL-50.jpg"
       },
       {
         "id": "EL-51",
         "screen": "/pix",
-        "area": "Etapa 2 · Revisão",
-        "element": "Botão Confirmar Pix",
-        "selector": "#pix-confirmar",
+        "area": "Etapa 1 · Dados",
+        "element": "Botão Continuar com erro",
+        "selector": "[data-click=pix_continuar]",
         "gesture": "Toque",
-        "events": "pix_success",
-        "fixed_values": "transaction_id · value · currency=BRL · pix_key_type",
+        "events": "click → form_submit",
+        "fixed_values": "link_id=pix_continuar · element_type=cta · form_id=pix · step=recusado · error_type=chave_vazia, valor_invalido ou saldo_insuficiente",
         "note": "",
         "print": "docs/prints/EL-51.jpg",
         "crop": "docs/prints/recorte/EL-51.jpg"
@@ -2597,44 +2257,70 @@
       {
         "id": "EL-52",
         "screen": "/pix",
-        "area": "Etapa 2 · Revisão",
-        "element": "Botão Corrigir dados",
-        "selector": "#pix-corrigir",
+        "area": "Etapa 1 · Dados",
+        "element": "Botão Continuar válido",
+        "selector": "[data-click=pix_continuar]",
         "gesture": "Toque",
-        "events": "pix_edit",
-        "fixed_values": "step=revisao",
-        "note": "",
+        "events": "click → form_submit",
+        "fixed_values": "link_id=pix_continuar · element_type=cta · form_id=pix · step=revisao · value · currency=BRL · pix_key_type",
+        "note": "A chave nunca é enviada.",
         "print": "docs/prints/EL-52.jpg",
         "crop": "docs/prints/recorte/EL-52.jpg"
       },
       {
         "id": "EL-53",
         "screen": "/pix",
-        "area": "Etapa 3 · Comprovante",
-        "element": "Voltar ao início",
-        "selector": "[data-track=pix_comprovante_inicio]",
+        "area": "Etapa 2 · Revisão",
+        "element": "Botão Confirmar Pix",
+        "selector": "[data-click=pix_confirmar]",
         "gesture": "Toque",
-        "events": "select_content → page_view",
-        "fixed_values": "item_id=pix_comprovante_inicio · depois page_path=/inicio",
-        "note": "",
+        "events": "click → form_submit",
+        "fixed_values": "link_id=pix_confirmar · element_type=cta · form_id=pix · step=confirmado · transaction_id · value · currency=BRL · pix_key_type",
+        "note": "Pix concluído. Não é purchase: Pix não é receita.",
         "print": "docs/prints/EL-53.jpg",
         "crop": "docs/prints/recorte/EL-53.jpg"
       },
       {
         "id": "EL-54",
         "screen": "/pix",
-        "area": "Etapa 3 · Comprovante",
-        "element": "Fazer outro Pix",
-        "selector": "#pix-novo",
+        "area": "Etapa 2 · Revisão",
+        "element": "Botão Corrigir dados",
+        "selector": "[data-click=pix_corrigir]",
         "gesture": "Toque",
-        "events": "pix_restart",
-        "fixed_values": "(nenhum parâmetro)",
-        "note": "",
+        "events": "click",
+        "fixed_values": "link_id=pix_corrigir · element_type=cta · page_path=/pix",
+        "note": "Volta à etapa 1; o click é o registro da correção.",
         "print": "docs/prints/EL-54.jpg",
         "crop": "docs/prints/recorte/EL-54.jpg"
       },
       {
         "id": "EL-55",
+        "screen": "/pix",
+        "area": "Etapa 3 · Comprovante",
+        "element": "Voltar ao início",
+        "selector": "[data-click=pix_comprovante_inicio]",
+        "gesture": "Toque",
+        "events": "click → page_view",
+        "fixed_values": "link_id=pix_comprovante_inicio · element_type=cta · link_url=/inicio · depois page_path=/inicio",
+        "note": "",
+        "print": "docs/prints/EL-55.jpg",
+        "crop": "docs/prints/recorte/EL-55.jpg"
+      },
+      {
+        "id": "EL-56",
+        "screen": "/pix",
+        "area": "Etapa 3 · Comprovante",
+        "element": "Fazer outro Pix",
+        "selector": "[data-click=pix_novo]",
+        "gesture": "Toque",
+        "events": "click",
+        "fixed_values": "link_id=pix_novo · element_type=cta · page_path=/pix",
+        "note": "Volta à etapa 1; o próximo form_start marca o novo Pix.",
+        "print": "docs/prints/EL-56.jpg",
+        "crop": "docs/prints/recorte/EL-56.jpg"
+      },
+      {
+        "id": "EL-57",
         "screen": "/cartoes",
         "area": "Tela inteira",
         "element": "Cartões",
@@ -2643,32 +2329,6 @@
         "events": "page_view",
         "fixed_values": "page_path=/cartoes",
         "note": "",
-        "print": "docs/prints/EL-55.jpg",
-        "crop": "docs/prints/recorte/EL-55.jpg"
-      },
-      {
-        "id": "EL-56",
-        "screen": "/cartoes",
-        "area": "Ações do cartão",
-        "element": "Cartão virtual",
-        "selector": "[data-item=cartao_virtual]",
-        "gesture": "Toque",
-        "events": "quick_action",
-        "fixed_values": "action_id=cartao_virtual · page_path=/cartoes",
-        "note": "",
-        "print": "docs/prints/EL-56.jpg",
-        "crop": "docs/prints/recorte/EL-56.jpg"
-      },
-      {
-        "id": "EL-57",
-        "screen": "/cartoes",
-        "area": "Ações do cartão",
-        "element": "Bloquear",
-        "selector": "[data-item=bloquear_cartao]",
-        "gesture": "Toque",
-        "events": "quick_action",
-        "fixed_values": "action_id=bloquear_cartao · page_path=/cartoes",
-        "note": "",
         "print": "docs/prints/EL-57.jpg",
         "crop": "docs/prints/recorte/EL-57.jpg"
       },
@@ -2676,17 +2336,43 @@
         "id": "EL-58",
         "screen": "/cartoes",
         "area": "Ações do cartão",
-        "element": "Ajustar limite",
-        "selector": "[data-item=ajustar_limite]",
+        "element": "Cartão virtual",
+        "selector": "[data-click=cartao_virtual]",
         "gesture": "Toque",
-        "events": "quick_action",
-        "fixed_values": "action_id=ajustar_limite · page_path=/cartoes",
-        "note": "",
+        "events": "click",
+        "fixed_values": "link_id=cartao_virtual · element_type=action · page_path=/cartoes",
+        "note": "Atalho ainda sem fluxo: só o click.",
         "print": "docs/prints/EL-58.jpg",
         "crop": "docs/prints/recorte/EL-58.jpg"
       },
       {
         "id": "EL-59",
+        "screen": "/cartoes",
+        "area": "Ações do cartão",
+        "element": "Bloquear",
+        "selector": "[data-click=cartoes_bloquear]",
+        "gesture": "Toque",
+        "events": "click",
+        "fixed_values": "link_id=cartoes_bloquear · element_type=action · page_path=/cartoes",
+        "note": "Atalho ainda sem fluxo: só o click.",
+        "print": "docs/prints/EL-59.jpg",
+        "crop": "docs/prints/recorte/EL-59.jpg"
+      },
+      {
+        "id": "EL-60",
+        "screen": "/cartoes",
+        "area": "Ações do cartão",
+        "element": "Ajustar limite",
+        "selector": "[data-click=ajustar_limite]",
+        "gesture": "Toque",
+        "events": "click",
+        "fixed_values": "link_id=ajustar_limite · element_type=action · page_path=/cartoes",
+        "note": "Atalho ainda sem fluxo: só o click.",
+        "print": "docs/prints/EL-60.jpg",
+        "crop": "docs/prints/recorte/EL-60.jpg"
+      },
+      {
+        "id": "EL-61",
         "screen": "/cartoes",
         "area": "Oferta",
         "element": "Banner Troque para o Nuzzi Black",
@@ -2695,37 +2381,37 @@
         "events": "view_promotion",
         "fixed_values": "promotion_id=bnr_upgrade_black · creative_slot=cartoes_oferta_1",
         "note": "",
-        "print": "docs/prints/EL-59.jpg",
-        "crop": "docs/prints/recorte/EL-59.jpg"
-      },
-      {
-        "id": "EL-60",
-        "screen": "/cartoes",
-        "area": "Oferta",
-        "element": "Botão Pedir o Black",
-        "selector": "[data-promo=bnr_upgrade_black] .promo-cta",
-        "gesture": "Toque",
-        "events": "select_promotion → card_request",
-        "fixed_values": "promotion_id=bnr_upgrade_black · card_tier=black",
-        "note": "",
-        "print": "docs/prints/EL-60.jpg",
-        "crop": "docs/prints/recorte/EL-60.jpg"
-      },
-      {
-        "id": "EL-61",
-        "screen": "/cartoes",
-        "area": "Cartão adicional",
-        "element": "Botão Pedir adicional",
-        "selector": "[data-action=card_request][data-item=adicional]",
-        "gesture": "Toque",
-        "events": "card_request",
-        "fixed_values": "card_tier=adicional",
-        "note": "Sem select_promotion, porque não é banner.",
         "print": "docs/prints/EL-61.jpg",
         "crop": "docs/prints/recorte/EL-61.jpg"
       },
       {
         "id": "EL-62",
+        "screen": "/cartoes",
+        "area": "Oferta",
+        "element": "Botão Pedir o Black",
+        "selector": "[data-click=bnr_upgrade_black_cta]",
+        "gesture": "Toque",
+        "events": "click → select_promotion → generate_lead",
+        "fixed_values": "link_id=bnr_upgrade_black_cta · element_type=banner_cta · promotion_id=bnr_upgrade_black · lead_source=cartao_black",
+        "note": "",
+        "print": "docs/prints/EL-62.jpg",
+        "crop": "docs/prints/recorte/EL-62.jpg"
+      },
+      {
+        "id": "EL-63",
+        "screen": "/cartoes",
+        "area": "Cartão adicional",
+        "element": "Botão Pedir adicional",
+        "selector": "[data-click=cartao_adicional]",
+        "gesture": "Toque",
+        "events": "click → generate_lead",
+        "fixed_values": "link_id=cartao_adicional · element_type=cta · lead_source=cartao_adicional",
+        "note": "Sem select_promotion, porque não é banner.",
+        "print": "docs/prints/EL-63.jpg",
+        "crop": "docs/prints/recorte/EL-63.jpg"
+      },
+      {
+        "id": "EL-64",
         "screen": "/investimentos",
         "area": "Tela inteira",
         "element": "Investimentos",
@@ -2734,32 +2420,6 @@
         "events": "page_view",
         "fixed_values": "page_path=/investimentos",
         "note": "",
-        "print": "docs/prints/EL-62.jpg",
-        "crop": "docs/prints/recorte/EL-62.jpg"
-      },
-      {
-        "id": "EL-63",
-        "screen": "/investimentos",
-        "area": "Renda fixa",
-        "element": "Investir · CDB Liquidez Diária",
-        "selector": "[data-item=cdb_liquidez]",
-        "gesture": "Toque",
-        "events": "investment_intent",
-        "fixed_values": "product_id=cdb_liquidez",
-        "note": "",
-        "print": "docs/prints/EL-63.jpg",
-        "crop": "docs/prints/recorte/EL-63.jpg"
-      },
-      {
-        "id": "EL-64",
-        "screen": "/investimentos",
-        "area": "Renda fixa",
-        "element": "Investir · LCI 90 dias",
-        "selector": "[data-item=lci_90]",
-        "gesture": "Toque",
-        "events": "investment_intent",
-        "fixed_values": "product_id=lci_90",
-        "note": "",
         "print": "docs/prints/EL-64.jpg",
         "crop": "docs/prints/recorte/EL-64.jpg"
       },
@@ -2767,11 +2427,11 @@
         "id": "EL-65",
         "screen": "/investimentos",
         "area": "Renda fixa",
-        "element": "Investir · CDB 2 anos",
-        "selector": "[data-item=cdb_ipca_2a]",
+        "element": "Investir · CDB Liquidez Diária",
+        "selector": "[data-click=investir_cdb_liquidez]",
         "gesture": "Toque",
-        "events": "investment_intent",
-        "fixed_values": "product_id=cdb_ipca_2a",
+        "events": "click → select_item",
+        "fixed_values": "link_id=investir_cdb_liquidez · element_type=product · item_list_id=renda_fixa · items[0].item_id=cdb_liquidez",
         "note": "",
         "print": "docs/prints/EL-65.jpg",
         "crop": "docs/prints/recorte/EL-65.jpg"
@@ -2780,37 +2440,37 @@
         "id": "EL-66",
         "screen": "/investimentos",
         "area": "Renda fixa",
-        "element": "Investir · Fundo Nuzzi DI",
-        "selector": "[data-item=fundo_di]",
+        "element": "Investir · LCI 90 dias",
+        "selector": "[data-click=investir_lci_90]",
         "gesture": "Toque",
-        "events": "investment_intent",
-        "fixed_values": "product_id=fundo_di",
+        "events": "click → select_item",
+        "fixed_values": "link_id=investir_lci_90 · element_type=product · item_list_id=renda_fixa · items[0].item_id=lci_90",
         "note": "",
         "print": "docs/prints/EL-66.jpg",
         "crop": "docs/prints/recorte/EL-66.jpg"
       },
       {
         "id": "EL-67",
-        "screen": "Telas logadas",
-        "area": "Barra de abas",
-        "element": "Início",
-        "selector": "[data-track=tab_inicio]",
+        "screen": "/investimentos",
+        "area": "Renda fixa",
+        "element": "Investir · CDB 2 anos",
+        "selector": "[data-click=investir_cdb_ipca_2a]",
         "gesture": "Toque",
-        "events": "select_content → page_view",
-        "fixed_values": "item_id=tab_inicio · content_type=tab_bar · depois page_path=/inicio",
-        "note": "Aparece em /inicio, /extrato, /pix, /cartoes e /investimentos.",
+        "events": "click → select_item",
+        "fixed_values": "link_id=investir_cdb_ipca_2a · element_type=product · item_list_id=renda_fixa · items[0].item_id=cdb_ipca_2a",
+        "note": "",
         "print": "docs/prints/EL-67.jpg",
         "crop": "docs/prints/recorte/EL-67.jpg"
       },
       {
         "id": "EL-68",
-        "screen": "Telas logadas",
-        "area": "Barra de abas",
-        "element": "Extrato",
-        "selector": "[data-track=tab_extrato]",
+        "screen": "/investimentos",
+        "area": "Renda fixa",
+        "element": "Investir · Fundo Nuzzi DI",
+        "selector": "[data-click=investir_fundo_di]",
         "gesture": "Toque",
-        "events": "select_content → page_view",
-        "fixed_values": "item_id=tab_extrato · depois page_path=/extrato",
+        "events": "click → select_item",
+        "fixed_values": "link_id=investir_fundo_di · element_type=product · item_list_id=renda_fixa · items[0].item_id=fundo_di",
         "note": "",
         "print": "docs/prints/EL-68.jpg",
         "crop": "docs/prints/recorte/EL-68.jpg"
@@ -2819,12 +2479,12 @@
         "id": "EL-69",
         "screen": "Telas logadas",
         "area": "Barra de abas",
-        "element": "Pix",
-        "selector": "[data-track=tab_pix]",
+        "element": "Início",
+        "selector": "[data-click=tab_inicio]",
         "gesture": "Toque",
-        "events": "select_content → page_view",
-        "fixed_values": "item_id=tab_pix · depois page_path=/pix",
-        "note": "",
+        "events": "click → page_view",
+        "fixed_values": "link_id=tab_inicio · element_type=tab_bar · link_url=/inicio · depois page_path=/inicio",
+        "note": "Aparece em /inicio, /extrato, /pix, /cartoes e /investimentos.",
         "print": "docs/prints/EL-69.jpg",
         "crop": "docs/prints/recorte/EL-69.jpg"
       },
@@ -2832,11 +2492,11 @@
         "id": "EL-70",
         "screen": "Telas logadas",
         "area": "Barra de abas",
-        "element": "Cartões",
-        "selector": "[data-track=tab_cartoes]",
+        "element": "Extrato",
+        "selector": "[data-click=tab_extrato]",
         "gesture": "Toque",
-        "events": "select_content → page_view",
-        "fixed_values": "item_id=tab_cartoes · depois page_path=/cartoes",
+        "events": "click → page_view",
+        "fixed_values": "link_id=tab_extrato · element_type=tab_bar · link_url=/extrato · depois page_path=/extrato",
         "note": "",
         "print": "docs/prints/EL-70.jpg",
         "crop": "docs/prints/recorte/EL-70.jpg"
@@ -2845,14 +2505,40 @@
         "id": "EL-71",
         "screen": "Telas logadas",
         "area": "Barra de abas",
-        "element": "Investir",
-        "selector": "[data-track=tab_investir]",
+        "element": "Pix",
+        "selector": "[data-click=tab_pix]",
         "gesture": "Toque",
-        "events": "select_content → page_view",
-        "fixed_values": "item_id=tab_investir · depois page_path=/investimentos",
+        "events": "click → page_view",
+        "fixed_values": "link_id=tab_pix · element_type=tab_bar · link_url=/pix · depois page_path=/pix",
         "note": "",
         "print": "docs/prints/EL-71.jpg",
         "crop": "docs/prints/recorte/EL-71.jpg"
+      },
+      {
+        "id": "EL-72",
+        "screen": "Telas logadas",
+        "area": "Barra de abas",
+        "element": "Cartões",
+        "selector": "[data-click=tab_cartoes]",
+        "gesture": "Toque",
+        "events": "click → page_view",
+        "fixed_values": "link_id=tab_cartoes · element_type=tab_bar · link_url=/cartoes · depois page_path=/cartoes",
+        "note": "",
+        "print": "docs/prints/EL-72.jpg",
+        "crop": "docs/prints/recorte/EL-72.jpg"
+      },
+      {
+        "id": "EL-73",
+        "screen": "Telas logadas",
+        "area": "Barra de abas",
+        "element": "Investir",
+        "selector": "[data-click=tab_investir]",
+        "gesture": "Toque",
+        "events": "click → page_view",
+        "fixed_values": "link_id=tab_investir · element_type=tab_bar · link_url=/investimentos · depois page_path=/investimentos",
+        "note": "",
+        "print": "docs/prints/EL-73.jpg",
+        "crop": "docs/prints/recorte/EL-73.jpg"
       }
     ]
   }

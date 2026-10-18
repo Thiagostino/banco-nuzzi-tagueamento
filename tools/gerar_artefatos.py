@@ -76,14 +76,21 @@ def gtm_container():
     }
 
 
+CATALOG_PT = {"automatic": "GA4 automático", "recommended": "GA4 recomendado", "custom": "Personalizado (fora do catálogo)"}
+
+
 # ----------------------------------------------------------------- Markdown
 def eventos_md():
     out = [f"# Eventos do Banco Nuzzi", "",
            f"Versão {plan['version']} · atualizado em {plan['updatedAt']} · gerado de `tracking-plan.json` por `tools/gerar_artefatos.py`.", "",
-           plan["documentationPrinciple"], "",
-           "| Evento | Categoria | Quando dispara | Status |", "| --- | --- | --- | --- |"]
+           plan["documentationPrinciple"], "", plan["reasoning"], "",
+           "| Evento | Catálogo GA4 (TagOps) | Categoria | Quando dispara | Status |", "| --- | --- | --- | --- | --- |"]
     for e in events:
-        out.append(f"| [`{e['eventName']}`](#{e['eventName']}) | {e['category']} | {e['description']['trigger'].split('. ')[0].rstrip('.')}. | {e['status']} |")
+        out.append(f"| [`{e['eventName']}`](#{e['eventName']}) | {CATALOG_PT[e['catalogType']]} | {e['category']} | {e['description']['trigger'].split('. ')[0].rstrip('.')}. | {e['status']} |")
+    out += ["", "## Migração da versão 1 (23 eventos) para a 2 (9 eventos)", "",
+            "| Evento removido | Agora é | Como identificar |", "| --- | --- | --- |"]
+    for m in plan["catalogs"]["migration"]:
+        out.append(f"| `{m['removed_event']}` | `{m['now']}` | {m['how']} |")
     out.append("")
     out += ["## Mapa por tela", "", "Cada elemento do app e os eventos que ele dispara, em ordem. Imagens das telas em `docs/telas/`.", ""]
     current = None
@@ -98,6 +105,7 @@ def eventos_md():
     for e in events:
         d = e["description"]
         out += [f"## {e['eventName']}", "",
+                f"**Catálogo GA4 (TagOps).** {CATALOG_PT[e['catalogType']]}.", "",
                 f"**O que é.** {d['behavior']}", "",
                 f"**Quando dispara.** {d['trigger']}", "",
                 f"**Diferença para eventos parecidos.** {d['disambiguation']}", "",
@@ -126,6 +134,14 @@ def elements_of(event_name):
 
 
 # ----------------------------------------------------------------- XLSX
+def ex_text(v):
+    if isinstance(v, bool):
+        return "true" if v else "false"
+    if isinstance(v, (list, dict)):
+        return json.dumps(v, ensure_ascii=False)
+    return v
+
+
 def xlsx(path):
     from openpyxl import Workbook
     from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
@@ -153,20 +169,20 @@ def xlsx(path):
         ws.freeze_panes = "C2"
         ws.auto_filter.ref = ws.dimensions
 
-    eh = ["ID", "Evento (event)", "Categoria", "O que o evento significa", "Quando deve disparar (gatilho exato)",
+    eh = ["ID", "Evento (event)", "Tipo no catálogo GA4 (TagOps)", "Categoria", "O que o evento significa", "Quando deve disparar (gatilho exato)",
           "Código do dataLayer (dataLayer.push)", "Diferença para eventos parecidos", "Uso em análise (funil ou métrica)", "Tela (page_path)", "Elemento / seletor",
           "Com o que se conecta", "Parâmetros enviados", "Uso pela IA: responder perguntas", "Uso pela IA: tomar decisões",
           "Contém dado pessoal?", "Gatilho no GTM", "Owner", "Status", "Descrição completa para a IA",
           "Elementos no app (IDs do Mapa de tagueamento)"]
-    rows = [[e["id"], e["eventName"], e["category"], e["description"]["behavior"], e["description"]["trigger"],
+    rows = [[e["id"], e["eventName"], CATALOG_PT[e["catalogType"]], e["category"], e["description"]["behavior"], e["description"]["trigger"],
              e["dataLayerPush"], e["description"]["disambiguation"], e["description"]["useCases"], e["screens"], e["selector"], e["connectsTo"],
              ", ".join(p["name"] for p in e["eventProperties"]) or "(nenhum)", e["aiUses"]["answerQuestions"],
              e["aiUses"]["makeDecisions"], e["containsPersonalData"], f"Acionador {e['gtm']['trigger']} · Tag {e['gtm']['tag']}",
              e["owner"], e["status"], e["aiDescription"], ", ".join(elements_of(e["eventName"]))] for e in events]
-    sheet("Eventos", eh, rows, [8, 18, 12, 36, 44, 46, 40, 34, 18, 26, 32, 30, 34, 34, 28, 28, 22, 12, 60, 40],
+    sheet("Eventos", eh, rows, [8, 18, 20, 12, 36, 44, 46, 40, 34, 18, 26, 32, 30, 34, 34, 28, 28, 22, 12, 60, 40],
           mono_cols=("Código do dataLayer (dataLayer.push)",))
     ph = ["Evento", "Parâmetro", "Tipo", "Exemplo", "Obrigatório", "O que o valor significa", "Valores possíveis", "Origem do valor", "Classificação LGPD"]
-    prow = [[e["eventName"], p["name"], p["type"], p["example"], p["required"], p["description"], p["possibleValues"], p["source"], p["lgpd"]]
+    prow = [[e["eventName"], p["name"], p["type"], ex_text(p["example"]), p["required"], p["description"], p["possibleValues"], p["source"], p["lgpd"]]
             for e in events for p in e["eventProperties"]]
     sheet("Parâmetros", ph, prow, [20, 18, 10, 22, 14, 44, 40, 22, 26])
     c = plan["catalogs"]
@@ -194,8 +210,10 @@ def xlsx(path):
     ws.freeze_panes = "B2"
     sheet("Jornadas", ["Jornada", "Passo", "Ação do cliente", "Evento esperado", "Parâmetros a conferir", "Resultado no teste"],
           [list(j.values()) for j in c["journeys"]], [24, 7, 38, 40, 52, 22])
-    sheet("Elementos", ["item_id (data-track)", "content_type", "Texto enviado (link_text)", "Onde fica", "Destino"],
-          [list(x.values()) for x in c["elements"]], [26, 14, 24, 30, 20])
+    sheet("Elementos", ["link_id (data-click)", "element_type", "Texto enviado (link_text)", "Onde fica", "Destino ou evento seguinte"],
+          [list(x.values()) for x in c["elements"]], [30, 18, 28, 34, 32])
+    sheet("Migração v1 → v2", ["Evento removido", "Agora é", "Como identificar"],
+          [list(x.values()) for x in c["migration"]], [22, 22, 70])
     del wb["Sheet"]
     path.parent.mkdir(parents=True, exist_ok=True)
     wb.save(path)
@@ -264,7 +282,7 @@ DL_SCRIPT = """
       return out;
     };
     function pad(n) { return String(n).padStart(2, '0'); }
-    // Escolhe no mapa os elementos cujos valores fixos batem com o push (ex.: item_id, promotion_id, page_path).
+    // Escolhe no mapa os elementos cujos valores fixos batem com o push (ex.: link_id, promotion_id, page_path).
     function pick(rows, p) {
       var best = 0, out = [];
       rows.forEach(function (r) {

@@ -21,6 +21,8 @@ description: >
 | --- | --- |
 | Bloqueia | Dado pessoal ou financeiro do cliente em qualquer parâmetro, inclusive em `link_text` montado a partir de texto da tela |
 | Bloqueia | Evento no código sem documentação, ou documentado sem existir no código |
+| Alta | Nome de evento fora do catálogo de eventos GA4 do TagOps |
+| Alta | Botão ou link sem `data-click` (toque sem `click`) |
 | Alta | Parâmetro opcional omitido em vez de `undefined`, que deixa o GTM ler um valor antigo |
 | Alta | Dois eventos para o mesmo gesto sem diferença documentada |
 | Média | Descrição só técnica, sem `behavior` em linguagem de negócio ou sem `disambiguation` |
@@ -29,9 +31,10 @@ description: >
 
 ## Pontos conhecidos
 
-- `offer_click` dispara no mesmo toque que `select_promotion` e não acrescenta informação além de `offer_id`. Status "Ajustar": decidir se sai ou se vira o único evento de intenção da oferta.
-- O carrossel dispara `carousel_navigate` quando a rolagem para. Um arrasto que passa por dois banners gera um evento, com o banner final.
-- `auth_required` vai sem `page_path` quando o app já abre numa tela logada.
+- Todo nome de evento precisa existir no catálogo de eventos GA4 do TagOps (automatic ou recommended). Evento personalizado é divergência de gravidade Alta.
+- `click` e o evento de negócio saem no mesmo toque. Contar os dois como dois toques é erro de análise, não de tagueamento.
+- `form_submit` leva parâmetros do login e do Pix; os que não se aplicam vão como `undefined`. Um valor herdado do envio anterior no GTM é divergência Alta.
+- Arrastar o carrossel não gera `click`; a exposição do banner novo é `view_promotion`.
 
 ## Como reportar
 

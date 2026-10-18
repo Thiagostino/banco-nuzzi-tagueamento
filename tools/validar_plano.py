@@ -6,7 +6,7 @@ Uso: python3 tools/validar_plano.py
 Verifica:
 - todo track('evento', {...}) do index.html está no plano, e vice-versa;
 - os parâmetros enviados em cada chamada são os documentados no plano;
-- todo data-track e todo data-promo do HTML estão nos catálogos;
+- todo data-click e todo data-promo do HTML estão nos catálogos e no mapa (todo botão e link gera click);
 - o trackingCode e a linha registrados no plano batem com o código atual.
 Sai com código 1 se encontrar divergência.
 """
@@ -68,12 +68,21 @@ for name, occurrences in code_events.items():
     if registered != actual:
         problems.append(f"{name}: implementationLocations desatualizado (rode o gerador do plano)")
 
-items = set(re.findall(r'data-track="([a-z_]+)"', html))
-documented_items = {e["item_id"] for e in plan["catalogs"]["elements"]}
+items = set(re.findall(r'data-click="([a-z0-9_]+)"', html))
+documented_items = {e["link_id"] for e in plan["catalogs"]["elements"]}
+# indicadores do carrossel são criados pelo JS: <carrossel>_indicador_N
+dynamic = {d for d in documented_items if "_indicador_" in d}
+for d in sorted(dynamic):
+    if d.split("_indicador_")[0] not in set(re.findall(r'data-carousel="([a-z_]+)"', html)) or "'_indicador_'" not in html:
+        problems.append(f"indicador documentado que o código não cria: {d}")
 for i in sorted(items - documented_items):
-    problems.append(f"data-track sem documentação: {i}")
-for i in sorted(documented_items - items):
+    problems.append(f"data-click sem documentação: {i}")
+for i in sorted(documented_items - dynamic - items):
     problems.append(f"elemento documentado que não existe no HTML: {i}")
+# botões e links sem data-click (só as teclas da senha podem ficar de fora)
+for tag in re.findall(r"<(?:button|a)\b[^>]*>", html.split("<script>\n(function")[0]):
+    if "data-click=" not in tag and "data-key=" not in tag:
+        problems.append(f"botão ou link sem data-click: {tag[:80]}")
 
 promos = set(re.findall(r'data-promo="([a-z_]+)"', html))
 documented_promos = {b["promotion_id"] for b in plan["catalogs"]["banners"]}
@@ -88,7 +97,7 @@ for row in tag_map:
         mapped_events.add(ev)
         if ev not in plan_events:
             problems.append(f"mapa ({row['screen']} · {row['element']}): evento inexistente no plano: {ev}")
-    for attr, val in re.findall(r"\[(data-[a-z-]+)=([a-z_]+)\]", row["selector"]):
+    for attr, val in re.findall(r"\[(data-[a-z-]+)=([a-z0-9_]+)\]", row["selector"]):
         if f'{attr}="{val}"' not in html:
             problems.append(f"mapa ({row['screen']} · {row['element']}): seletor não encontrado no HTML: [{attr}={val}]")
     for el_id in re.findall(r"#([a-z][a-z0-9-]*)", row["selector"]):
@@ -101,8 +110,8 @@ for ev in sorted(set(plan_events) - mapped_events):
     problems.append(f"evento sem nenhum elemento no mapa de tagueamento: {ev}")
 mapped_selectors = " ".join(r["selector"] for r in tag_map)
 for i in sorted(items):
-    if f"data-track={i}]" not in mapped_selectors:
-        problems.append(f"data-track fora do mapa de tagueamento: {i}")
+    if f"data-click={i}]" not in mapped_selectors:
+        problems.append(f"data-click fora do mapa de tagueamento: {i}")
 for i in sorted(promos):
     if f"data-promo={i}]" not in mapped_selectors:
         problems.append(f"banner fora do mapa de tagueamento: {i}")
