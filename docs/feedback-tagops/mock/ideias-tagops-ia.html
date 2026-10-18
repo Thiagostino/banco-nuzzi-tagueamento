@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<style>
+:root{--side:#111827;--top:#0b1220;--bg:#f3f4f6;--card:#fff;--ink:#111827;--mute:#6b7280;--line:#e5e7eb;--or:#f5a524;--orD:#b45309;--ok:#16a34a;--okBg:#dcfce7;--warn:#d97706;--warnBg:#fef3c7;--err:#dc2626;--errBg:#fee2e2;--ai:#4f46e5;--aiBg:#eef2ff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1600px;font-family:Inter,DejaVu Sans,sans-serif;background:var(--bg);color:var(--ink);font-size:13px}
+.top{height:56px;background:var(--top);display:flex;align-items:center;padding:0 20px;color:#fff;gap:14px}
+.logo{font-weight:800;font-size:20px;letter-spacing:.5px}.logo b{color:var(--or)}
+.sub{font-size:11px;color:#9ca3af}
+.badge{margin-left:auto;background:#7c2d12;color:#fed7aa;border:1px solid #f97316;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}
+.wrap{display:flex}
+.side{width:56px;background:var(--side);min-height:1104px;display:flex;flex-direction:column;align-items:center;padding-top:18px;gap:22px}
+.side i{width:20px;height:20px;border:2px solid #4b5563;border-radius:5px;display:block}.side i.on{border-color:var(--or)}
+main{flex:1;padding:22px 26px}
+h1{font-size:22px}h1 span{color:var(--ai)}
+.lead{color:var(--mute);margin:4px 0 16px}
+.flow{display:flex;gap:8px;margin-bottom:18px}
+.st{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 10px;position:relative}
+.st b{display:block;font-size:12px}.st small{color:var(--mute);font-size:11px}
+.st .n{display:inline-block;background:var(--or);color:#111;font-weight:800;font-size:11px;border-radius:5px;padding:1px 6px;margin-bottom:4px}
+.st.base .n{background:#e5e7eb}
+.st.ai{border-color:#c7d2fe;background:var(--aiBg)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.card h2{font-size:14px;display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;background:var(--aiBg);color:var(--ai)}
+.idn{background:var(--or);color:#111;font-weight:800;font-size:11px;border-radius:5px;padding:1px 6px}
+.in{border:1px solid var(--line);border-radius:8px;padding:7px 10px;color:#374151;background:#f9fafb;font-family:DejaVu Sans Mono,monospace;font-size:11.5px;margin-bottom:8px}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{text-align:left;color:var(--mute);font-weight:600;border-bottom:1px solid var(--line);padding:5px 4px}
+td{border-bottom:1px solid #f1f5f9;padding:5px 4px;vertical-align:top}
+code{font-family:DejaVu Sans Mono,monospace;font-size:11px;color:#9a3412}
+.btns{display:flex;gap:8px;margin-top:10px}
+.b{font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:7px;border:1px solid var(--line);background:#fff}
+.b.p{background:var(--or);border-color:var(--or)}.b.ai{background:var(--ai);border-color:var(--ai);color:#fff}
+.row{display:flex;gap:12px}.col{flex:1}
+.file{border:1px dashed #cbd5e1;border-radius:8px;padding:8px 10px;font-size:11.5px;margin-bottom:8px}
+.file b{font-family:DejaVu Sans Mono,monospace}
+.chk{font-size:11.5px;padding:3px 0}.ok{color:var(--ok);font-weight:700}.wa{color:var(--warn);font-weight:700}.er{color:var(--err);font-weight:700}
+.alert{border-radius:8px;padding:9px 11px;font-size:12px;margin-bottom:8px}
+.alert.w{background:var(--warnBg);border:1px solid #fcd34d}.alert.e{background:var(--errBg);border:1px solid #fca5a5}
+.chips span{display:inline-block;font-size:11px;background:#f3f4f6;border:1px solid var(--line);border-radius:999px;padding:2px 8px;margin:2px 3px 2px 0}
+.chat .q{background:#f3f4f6;border-radius:10px 10px 2px 10px;padding:8px 10px;margin:0 0 8px 80px;font-size:12px}
+.chat .a{background:var(--aiBg);border-radius:10px 10px 10px 2px;padding:9px 11px;margin-bottom:8px;font-size:12px;line-height:1.45}
+.bar{height:16px;background:#e5e7eb;border-radius:4px;position:relative;margin:3px 0}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--ai);border-radius:4px}
+.bar em{position:absolute;right:6px;top:1px;font-size:10.5px;font-style:normal;color:#111}
+.fl{display:grid;grid-template-columns:140px 1fr;gap:6px;align-items:center;font-size:11.5px}
+.sugg{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:8px;font-size:12px}
+.sugg .h{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.pend{font-size:10.5px;font-weight:700;color:var(--orD);background:#ffedd5;border-radius:999px;padding:2px 8px}
+.ad{display:flex;gap:10px;align-items:center}
+.adimg{width:150px;height:86px;border-radius:8px;background:#0f2a4a;color:#fff;display:flex;flex-direction:column;justify-content:center;padding:8px;font-size:10px;line-height:1.25}
+.adimg b{font-size:12.5px;margin-bottom:3px}
+.foot{margin-top:14px;color:var(--mute);font-size:11px;display:flex;justify-content:space-between}
+.span2{grid-column:1 / span 2}
+</style></head><body>
+<div class="top"><div><div class="logo">Tag<b>Ops</b> <span style="font-weight:600;font-size:14px;color:#c7d2fe">· Assistente IA</span></div><div class="sub">Conceito de funcionalidade · Banco Nuzzi (projeto de teste)</div></div>
+<div class="badge">SIMULAÇÃO CONCEITUAL · NÃO É TELA REAL · DADOS FICTÍCIOS</div></div>
+<div class="wrap"><div class="side"><i></i><i class="on"></i><i></i><i></i><i></i></div>
+<main>
+<h1>Da taxonomia à ativação, com a <span>IA do TagOps</span></h1>
+<div class="lead">As regras da Taxonomia e o Catálogo de Dados viram o contexto da IA. Cada etapa sugere, e a pessoa revisa, edita e aprova.</div>
+<div class="flow">
+ <div class="st base"><span class="n">Base</span><b>Taxonomia</b><small>nomes, tipos e valores aceitos</small></div>
+ <div class="st base"><span class="n">Base</span><b>Catálogo de Dados</b><small>eventos e parâmetros</small></div>
+ <div class="st ai"><span class="n">1</span><b>Mapa por IA</b><small>link das telas → arquitetura</small></div>
+ <div class="st ai"><span class="n">2 · 3</span><b>Handoff dev</b><small>.md e PR pronto</small></div>
+ <div class="st ai"><span class="n">7</span><b>Validação pré-PRD</b><small>check no PR, sem validador manual</small></div>
+ <div class="st ai"><span class="n">4 · 5</span><b>Correção e impacto</b><small>.md/PR + aviso aos donos</small></div>
+ <div class="st ai"><span class="n">6</span><b>Insights e ativação</b><small>BigQuery → campanha, com aceite</small></div>
+</div>
+<div class="grid">
+ <div class="card">
+  <h2><span class="idn">1</span>Mapa de Tags gerado pela IA <span class="tag">IA</span></h2>
+  <div class="in">https://figma.com/file/…/Banco-Nuzzi?node=Pix ▸ 3 telas detectadas</div>
+  <table><tr><th>Tela · elemento</th><th>Evento</th><th>Parâmetros e valores esperados</th><th>Origem</th></tr>
+  <tr><td>/pix · campo valor</td><td><code>form_start</code></td><td><code>form_id</code>=pix</td><td>Catálogo</td></tr>
+  <tr><td>/pix · Continuar</td><td><code>click</code></td><td><code>link_id</code>=pix_continuar · <code>outbound</code>=false</td><td>Taxonomia</td></tr>
+  <tr><td>/pix · Continuar</td><td><code>form_submit</code></td><td><code>step</code> ∈ {recusado, revisao} · <code>pix_key_type</code> ∈ {email, celular, cpf, cnpj, aleatoria}</td><td>Catálogo</td></tr>
+  <tr><td>/pix · Confirmar</td><td><code>form_submit</code></td><td><code>step</code>=confirmado · <code>value</code> number · <code>currency</code>=BRL</td><td>Catálogo</td></tr>
+  </table>
+  <div class="btns"><span class="b">Editar linhas</span><span class="b">Ver prints marcados</span><span class="b p">Aprovar mapa</span></div>
+ </div>
+ <div class="card">
+  <h2><span class="idn">2 · 3 · 7</span>Entrega ao desenvolvedor <span class="tag">IA</span></h2>
+  <div class="row"><div class="col">
+   <div class="file">📄 <b>tagueamento-pix.md</b><br><span style="color:var(--mute)">eventos, parâmetros, tipos, exemplos e regras, pronto para o dev usar com IA</span></div>
+   <div class="file">🔗 <b>github.com/banco-nuzzi/app</b><br><span style="color:var(--mute)">repositório vinculado · leitura do código</span></div>
+  </div><div class="col">
+   <div class="file" style="border-style:solid">🔀 <b>PR #42 · feat(tracking): eventos do Pix</b><br><span style="color:var(--mute)">aberto pela IA do TagOps · aguardando revisão</span>
+   <div style="margin-top:6px;font-weight:700;font-size:11.5px">Validação TagOps IA (pré-produção)</div>
+   <div class="chk"><span class="ok">✓</span> 14 de 15 disparos batem com o catálogo</div>
+   <div class="chk"><span class="wa">!</span> <code>value</code> enviado como string em 1 caso</div>
+   <div class="chk"><span class="ok">✓</span> nenhum dado pessoal no payload</div></div>
+  </div></div>
+  <div class="btns"><span class="b">Baixar .md</span><span class="b">Abrir PR</span><span class="b p">Pedir correção à IA</span></div>
+ </div>
+ <div class="card">
+  <h2><span class="idn">4 · 5</span>Correção de tagueamento em produção <span class="tag">IA + BigQuery</span></h2>
+  <div class="alert e"><b>Divergência:</b> <code>element_type</code> chega com a lista inteira ("cta, link, shortcut…") em 38% dos <code>click</code> dos últimos 7 dias.</div>
+  <div class="alert w"><b>Antes de corrigir:</b> o valor vai mudar para um único item (ex.: <code>cta</code>). Quem usa esse dado pode ver queda ou quebra de série.
+   <div class="chips" style="margin-top:6px"><span>Dashboard Power BI · Uso de botões</span><span>Audiência CRM · clicou_cartao</span><span>Meta Ads · Pix Ágil</span><span>Banner interno · inicio_oferta_2</span></div></div>
+  <div style="font-size:12px">Avisar: <b>dev</b> (PR #43 de correção) · <b>dona do produto</b> · <b>analista de dados</b> · data prevista da troca: 25/10</div>
+  <div class="btns"><span class="b">Baixar .md de correção</span><span class="b">Notificar responsáveis</span><span class="b p">Agendar correção</span></div>
+ </div>
+ <div class="card chat">
+  <h2><span class="idn">6</span>Insights TagOps <span class="tag">IA + BigQuery</span></h2>
+  <div class="q">Como está o funil do Pix nesta semana?</div>
+  <div class="a">
+   <div class="fl"><span>Início (form_start)</span><div class="bar"><i style="width:100%"></i><em>10.420</em></div>
+   <span>Revisão</span><div class="bar"><i style="width:62%"></i><em>62% · −9 p.p.</em></div>
+   <span>Confirmado</span><div class="bar"><i style="width:55%"></i><em>55%</em></div></div>
+   <div style="margin-top:6px">A queda está em <code>pix_key_type</code>=celular (<code>error_type</code>=chave_invalida, +31%). Sugestão: máscara de telefone no campo e aviso antes de enviar.</div>
+  </div>
+  <div class="sugg"><div class="h"><b>Ativação sugerida · Google Ads (API)</b><span class="pend">AGUARDA SEU ACEITE</span></div>Nova linha de campanha para quem iniciou o Pix e parou na chave por celular, com orçamento de teste de 7 dias.</div>
+  <div class="sugg"><div class="h"><b>Peça criativa · conforme o Guia de Comunicação</b><span class="pend">AGUARDA SEU ACEITE</span></div>
+   <div class="ad"><div class="adimg"><b>Pix pelo celular?</b>Confira o número antes de enviar. Rápido e seguro.</div><div style="font-size:11.5px;color:#374151">Tom e termos do guia da marca aplicados.<br>Também disponível para CRM e banner interno.</div></div></div>
+  <div class="btns"><span class="b">Editar</span><span class="b">Recusar</span><span class="b ai">Aprovar e ativar</span></div>
+ </div>
+</div>
+<div class="foot"><span>Ideias do Thiago D'Agostino para o TagOps · nada é publicado, ativado ou corrigido sem o aceite de uma pessoa.</span><span>Simulação feita com dados fictícios do Banco Nuzzi.</span></div>
+</main></div>
+</body></html>
