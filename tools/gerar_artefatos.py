@@ -14,6 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 plan = json.loads((ROOT / "tracking-plan" / "tracking-plan.json").read_text(encoding="utf-8"))
 events = plan["trackingPlan"]
+GA4_ID = "G-RKQL0CT1PS"  # mesmo ID do gtag.js no <head> do index.html
 
 
 # ----------------------------------------------------------------- GTM
@@ -26,8 +27,8 @@ def gtm_container():
         return {"type": "TEMPLATE", "key": key, "value": value}
 
     variables.append({"variableId": str(next(ids)), "name": "GA4 · ID de métricas", "type": "c",
-                      "parameter": [tpl("value", "G-XXXXXXXXXX")],
-                      "notes": "Troque pelo ID de métricas da sua propriedade GA4."})
+                      "parameter": [tpl("value", GA4_ID)],
+                      "notes": "ID de métricas da propriedade GA4 do laboratório. Troque se for usar outra propriedade."})
     params = sorted({p["name"] for e in events for p in e["eventProperties"]})
     for p in params:
         name = f"DLV · {p}"
@@ -257,7 +258,8 @@ DL_SCRIPT = """
     var orig = dl.push;
     dl.push = function () {
       var out = orig.apply(dl, arguments);
-      for (var i = 0; i < arguments.length; i++) queue.push({ time: new Date(), p: arguments[i] });
+      // Só pushes com event (os comandos do gtag.js também passam pelo dataLayer e ficam de fora).
+      for (var i = 0; i < arguments.length; i++) if (arguments[i] && typeof arguments[i].event === 'string') queue.push({ time: new Date(), p: arguments[i] });
       if (document.readyState !== 'loading') flush();
       return out;
     };

@@ -9,6 +9,22 @@
   // dataLayer inicializado antes de qualquer tag.
   window.dataLayer = window.dataLayer || [];
 </script>
+<!-- GA4 direto (gtag.js), propriedade do laboratório. Se passar a usar o GTM com o contêiner de gtm/,
+     remova este bloco: com os dois ativos, cada evento chega duas vezes no GA4. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RKQL0CT1PS"></script>
+<script>
+  window.GA4_ID = 'G-RKQL0CT1PS';
+  function gtag() { dataLayer.push(arguments); }
+  // Só medição de uso: sem sinais de anúncio, sem Google Signals e sem personalização.
+  gtag('consent', 'default', { analytics_storage: 'granted', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+  gtag('js', new Date());
+  (function () {
+    var cfg = { send_page_view: false, allow_google_signals: false, allow_ad_personalization_signals: false };
+    // ?debug=1 na URL manda os eventos para o DebugView do GA4.
+    if (/[?&]debug=1(&|$)/.test(location.search)) cfg.debug_mode = true;
+    gtag('config', window.GA4_ID, cfg);
+  })();
+</script>
 <!-- Cole aqui o snippet do Google Tag Manager (parte do <head>), por exemplo:
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
 -->
@@ -536,6 +552,22 @@ button { cursor: pointer; }
     var p = { event: event };
     Object.keys(params || {}).forEach(function (k) { p[k] = params[k]; });
     dl.push(p);
+    ga4(event, params || {});
+  }
+  // Envio direto ao GA4 com o mesmo nome e os mesmos parâmetros do push, sem os undefined.
+  // user_id vai como campo do GA4 (gtag set) e é limpo no logout. page_view vira página virtual
+  // (/inicio, /pix...), porque o GA4 descarta o #hash do caminho da página.
+  function ga4(event, params) {
+    if (typeof window.gtag !== 'function') return;
+    var g = {};
+    Object.keys(params).forEach(function (k) { if (params[k] !== undefined && k !== 'user_id') g[k] = params[k]; });
+    if (event === 'login') gtag('set', { user_id: params.user_id });
+    if (event === 'page_view') {
+      g.page_location = location.origin + location.pathname.replace(/[^/]*$/, '') + params.page_path.slice(1);
+      gtag('set', { page_location: g.page_location, page_title: params.page_title });
+    }
+    gtag('event', event, g);
+    if (event === 'logout') gtag('set', { user_id: null });
   }
   function pad(n) { return String(n).padStart(2, '0'); }
   /* ---------- rotas ---------- */

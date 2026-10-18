@@ -109,7 +109,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 570,
+          "originalLineNumberPreChanges": 602,
           "codeContext": "route(), depois de mostrar a tela",
           "trackingCode": "track('page_view', { page_path: '/' + r, page_title: ROUTES[r].title, page_type: ROUTES[r].type, login_status: S.logged ? 'logged_in' : 'logged_out', user_id: S.logged ? S.user.id : undefined })"
         }
@@ -192,7 +192,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 589,
+          "originalLineNumberPreChanges": 621,
           "codeContext": "impression(), chamada pelo IntersectionObserver",
           "trackingCode": "track('view_promotion', promoData(el))"
         }
@@ -275,7 +275,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 635,
+          "originalLineNumberPreChanges": 667,
           "codeContext": "listener global de clique, ramo .promo-cta",
           "trackingCode": "track('select_promotion', promoData(promoCta.closest('[data-promo]')))"
         }
@@ -358,13 +358,13 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 614,
+          "originalLineNumberPreChanges": 646,
           "codeContext": "clique num indicador (.dot) do carrossel",
           "trackingCode": "track('carousel_navigate', { carousel_id: id, control: 'indicador', slide_index: i + 1, promotion_id: slides[i].getAttribute('data-promo') })"
         },
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 626,
+          "originalLineNumberPreChanges": 658,
           "codeContext": "fim da rolagem do carrossel (.track), quando não veio de um indicador",
           "trackingCode": "track('carousel_navigate', { carousel_id: id, control: 'arrastar', slide_index: cur + 1, promotion_id: slides[cur].getAttribute('data-promo') })"
         }
@@ -447,7 +447,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 638,
+          "originalLineNumberPreChanges": 670,
           "codeContext": "listener global de clique, ramo [data-track]",
           "trackingCode": "track('select_content', { content_type: t.getAttribute('data-track-type') || 'link', item_id: t.getAttribute('data-track'), link_text: (t.getAttribute('data-track-text') || t.getAttribute('aria-label') || t.textContent || '').replace(/\\s+/g, ' ').trim().slice(0, 60), page_path: '/' + S.route })"
         }
@@ -510,7 +510,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 557,
+          "originalLineNumberPreChanges": 589,
           "codeContext": "route(), tela logada aberta sem login",
           "trackingCode": "track('auth_required', { target_path: '/' + r, page_path: S.route ? '/' + S.route : undefined })"
         }
@@ -573,7 +573,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 672,
+          "originalLineNumberPreChanges": 704,
           "codeContext": "pressKey(), primeiro dígito da senha",
           "trackingCode": "track('form_start', { form_id: 'login', page_path: '/entrar' })"
         }
@@ -636,7 +636,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 681,
+          "originalLineNumberPreChanges": 713,
           "codeContext": "loginFail(), chamada por submitLogin() quando a senha é recusada",
           "trackingCode": "track('login_error', { form_id: 'login', error_type: type })"
         }
@@ -709,7 +709,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 689,
+          "originalLineNumberPreChanges": 721,
           "codeContext": "submitLogin(), ramo de sucesso",
           "trackingCode": "track('login', { method: 'senha_eletronica', user_id: S.user.id, customer_segment: S.user.segment })"
         }
@@ -762,7 +762,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 703,
+          "originalLineNumberPreChanges": 735,
           "codeContext": "listener de clique de #btn-sair",
           "trackingCode": "track('logout', { user_id: S.user && S.user.id })"
         }
@@ -815,7 +815,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 648,
+          "originalLineNumberPreChanges": 680,
           "codeContext": "listener global de clique, ramo data-action=toggle_balance",
           "trackingCode": "track('toggle_balance', { state: S.hideBal ? 'hidden' : 'visible' })"
         }
@@ -868,7 +868,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 746,
+          "originalLineNumberPreChanges": 778,
           "codeContext": "listener de clique de [data-filter]",
           "trackingCode": "track('statement_filter', { filter: f })"
         }
@@ -931,7 +931,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 644,
+          "originalLineNumberPreChanges": 676,
           "codeContext": "listener global de clique, ramo data-action=quick_action",
           "trackingCode": "track('quick_action', { action_id: item, page_path: '/' + S.route })"
         }
@@ -984,7 +984,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 650,
+          "originalLineNumberPreChanges": 682,
           "codeContext": "listener global de clique, ramo data-action=offer_accept",
           "trackingCode": "track('offer_click', { offer_id: item })"
         }
@@ -1037,7 +1037,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 652,
+          "originalLineNumberPreChanges": 684,
           "codeContext": "listener global de clique, ramo data-action=card_request",
           "trackingCode": "track('card_request', { card_tier: item })"
         }
@@ -1090,7 +1090,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 654,
+          "originalLineNumberPreChanges": 686,
           "codeContext": "listener global de clique, ramo data-action=investment_intent",
           "trackingCode": "track('investment_intent', { product_id: item })"
         }
@@ -1153,7 +1153,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 646,
+          "originalLineNumberPreChanges": 678,
           "codeContext": "listener global de clique, ramo data-action=lead",
           "trackingCode": "track('generate_lead', { lead_type: item, page_path: '/' + S.route })"
         }
@@ -1206,7 +1206,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 781,
+          "originalLineNumberPreChanges": 813,
           "codeContext": "listener focusin de #pix-form",
           "trackingCode": "track('pix_start', { page_path: '/pix' })"
         }
@@ -1259,7 +1259,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 789,
+          "originalLineNumberPreChanges": 821,
           "codeContext": "listener submit de #pix-form, ramo de erro",
           "trackingCode": "track('pix_error', { error_type: err[0] })"
         }
@@ -1332,7 +1332,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 800,
+          "originalLineNumberPreChanges": 832,
           "codeContext": "listener submit de #pix-form, ramo de sucesso",
           "trackingCode": "track('pix_review', { value: v, currency: 'BRL', pix_key_type: S.pending.tipo })"
         }
@@ -1385,7 +1385,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 802,
+          "originalLineNumberPreChanges": 834,
           "codeContext": "listener de clique de #pix-corrigir",
           "trackingCode": "track('pix_edit', { step: 'revisao' })"
         }
@@ -1468,7 +1468,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 817,
+          "originalLineNumberPreChanges": 849,
           "codeContext": "listener de clique de #pix-confirmar",
           "trackingCode": "track('pix_success', { transaction_id: id, value: p.v, currency: 'BRL', pix_key_type: p.tipo })"
         }
@@ -1510,7 +1510,7 @@
       "implementationLocations": [
         {
           "filePath": "index.html",
-          "originalLineNumberPreChanges": 820,
+          "originalLineNumberPreChanges": 852,
           "codeContext": "listener de clique de #pix-novo",
           "trackingCode": "track('pix_restart', {})"
         }

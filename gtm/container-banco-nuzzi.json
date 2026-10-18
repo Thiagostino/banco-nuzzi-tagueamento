@@ -2100,10 +2100,10 @@
           {
             "type": "TEMPLATE",
             "key": "value",
-            "value": "G-XXXXXXXXXX"
+            "value": "G-RKQL0CT1PS"
           }
         ],
-        "notes": "Troque pelo ID de métricas da sua propriedade GA4."
+        "notes": "ID de métricas da propriedade GA4 do laboratório. Troque se for usar outra propriedade."
       },
       {
         "variableId": "2",

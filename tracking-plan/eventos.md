@@ -201,7 +201,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 570, route(), depois de mostrar a tela: `track('page_view', { page_path: '/' + r, page_title: ROUTES[r].title, page_type: ROUTES[r].type, login_status: S.logged ? 'logged_in' : 'logged_out', user_id: S.logged ? S.user.id : undefined })`
+- `index.html`, linha 602, route(), depois de mostrar a tela: `track('page_view', { page_path: '/' + r, page_title: ROUTES[r].title, page_type: ROUTES[r].type, login_status: S.logged ? 'logged_in' : 'logged_out', user_id: S.logged ? S.user.id : undefined })`
 
 **Elementos no app.** EL-01, EL-04, EL-05, EL-13, EL-15, EL-16, EL-17, EL-22, EL-23, EL-26, EL-27, EL-28, EL-32, EL-33, EL-40, EL-41, EL-42, EL-43, EL-44, EL-46, EL-47, EL-53, EL-55, EL-62, EL-67, EL-68, EL-69, EL-70, EL-71 (ver Mapa por tela).
 
@@ -247,7 +247,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 589, impression(), chamada pelo IntersectionObserver: `track('view_promotion', promoData(el))`
+- `index.html`, linha 621, impression(), chamada pelo IntersectionObserver: `track('view_promotion', promoData(el))`
 
 **Elementos no app.** EL-10, EL-12, EL-14, EL-35, EL-37, EL-39, EL-59 (ver Mapa por tela).
 
@@ -293,7 +293,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 635, listener global de clique, ramo .promo-cta: `track('select_promotion', promoData(promoCta.closest('[data-promo]')))`
+- `index.html`, linha 667, listener global de clique, ramo .promo-cta: `track('select_promotion', promoData(promoCta.closest('[data-promo]')))`
 
 **Elementos no app.** EL-11, EL-13, EL-15, EL-36, EL-38, EL-40, EL-60 (ver Mapa por tela).
 
@@ -339,8 +339,8 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 614, clique num indicador (.dot) do carrossel: `track('carousel_navigate', { carousel_id: id, control: 'indicador', slide_index: i + 1, promotion_id: slides[i].getAttribute('data-promo') })`
-- `index.html`, linha 626, fim da rolagem do carrossel (.track), quando não veio de um indicador: `track('carousel_navigate', { carousel_id: id, control: 'arrastar', slide_index: cur + 1, promotion_id: slides[cur].getAttribute('data-promo') })`
+- `index.html`, linha 646, clique num indicador (.dot) do carrossel: `track('carousel_navigate', { carousel_id: id, control: 'indicador', slide_index: i + 1, promotion_id: slides[i].getAttribute('data-promo') })`
+- `index.html`, linha 658, fim da rolagem do carrossel (.track), quando não veio de um indicador: `track('carousel_navigate', { carousel_id: id, control: 'arrastar', slide_index: cur + 1, promotion_id: slides[cur].getAttribute('data-promo') })`
 
 **Elementos no app.** EL-09, EL-34 (ver Mapa por tela).
 
@@ -386,7 +386,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 638, listener global de clique, ramo [data-track]: `track('select_content', { content_type: t.getAttribute('data-track-type') || 'link', item_id: t.getAttribute('data-track'), link_text: (t.getAttribute('data-track-text') || t.getAttribute('aria-label') || t.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60), page_path: '/' + S.route })`
+- `index.html`, linha 670, listener global de clique, ramo [data-track]: `track('select_content', { content_type: t.getAttribute('data-track-type') || 'link', item_id: t.getAttribute('data-track'), link_text: (t.getAttribute('data-track-text') || t.getAttribute('aria-label') || t.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60), page_path: '/' + S.route })`
 
 **Elementos no app.** EL-04, EL-05, EL-17, EL-27, EL-28, EL-32, EL-33, EL-41, EL-42, EL-43, EL-47, EL-53, EL-67, EL-68, EL-69, EL-70, EL-71 (ver Mapa por tela).
 
@@ -428,7 +428,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 557, route(), tela logada aberta sem login: `track('auth_required', { target_path: '/' + r, page_path: S.route ? '/' + S.route : undefined })`
+- `index.html`, linha 589, route(), tela logada aberta sem login: `track('auth_required', { target_path: '/' + r, page_path: S.route ? '/' + S.route : undefined })`
 
 **Elementos no app.** EL-05, EL-13, EL-15 (ver Mapa por tela).
 
@@ -470,7 +470,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 672, pressKey(), primeiro dígito da senha: `track('form_start', { form_id: 'login', page_path: '/entrar' })`
+- `index.html`, linha 704, pressKey(), primeiro dígito da senha: `track('form_start', { form_id: 'login', page_path: '/entrar' })`
 
 **Elementos no app.** EL-18 (ver Mapa por tela).
 
@@ -512,7 +512,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 681, loginFail(), chamada por submitLogin() quando a senha é recusada: `track('login_error', { form_id: 'login', error_type: type })`
+- `index.html`, linha 713, loginFail(), chamada por submitLogin() quando a senha é recusada: `track('login_error', { form_id: 'login', error_type: type })`
 
 **Elementos no app.** EL-20, EL-21 (ver Mapa por tela).
 
@@ -556,7 +556,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 689, submitLogin(), ramo de sucesso: `track('login', { method: 'senha_eletronica', user_id: S.user.id, customer_segment: S.user.segment })`
+- `index.html`, linha 721, submitLogin(), ramo de sucesso: `track('login', { method: 'senha_eletronica', user_id: S.user.id, customer_segment: S.user.segment })`
 
 **Elementos no app.** EL-22 (ver Mapa por tela).
 
@@ -596,7 +596,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 703, listener de clique de #btn-sair: `track('logout', { user_id: S.user && S.user.id })`
+- `index.html`, linha 735, listener de clique de #btn-sair: `track('logout', { user_id: S.user && S.user.id })`
 
 **Elementos no app.** EL-26 (ver Mapa por tela).
 
@@ -636,7 +636,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 648, listener global de clique, ramo data-action=toggle_balance: `track('toggle_balance', { state: S.hideBal ? 'hidden' : 'visible' })`
+- `index.html`, linha 680, listener global de clique, ramo data-action=toggle_balance: `track('toggle_balance', { state: S.hideBal ? 'hidden' : 'visible' })`
 
 **Elementos no app.** EL-24 (ver Mapa por tela).
 
@@ -676,7 +676,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 746, listener de clique de [data-filter]: `track('statement_filter', { filter: f })`
+- `index.html`, linha 778, listener de clique de [data-filter]: `track('statement_filter', { filter: f })`
 
 **Elementos no app.** EL-45 (ver Mapa por tela).
 
@@ -718,7 +718,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 644, listener global de clique, ramo data-action=quick_action: `track('quick_action', { action_id: item, page_path: '/' + S.route })`
+- `index.html`, linha 676, listener global de clique, ramo data-action=quick_action: `track('quick_action', { action_id: item, page_path: '/' + S.route })`
 
 **Elementos no app.** EL-02, EL-03, EL-06, EL-07, EL-19, EL-25, EL-29, EL-30, EL-31, EL-56, EL-57, EL-58 (ver Mapa por tela).
 
@@ -758,7 +758,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 650, listener global de clique, ramo data-action=offer_accept: `track('offer_click', { offer_id: item })`
+- `index.html`, linha 682, listener global de clique, ramo data-action=offer_accept: `track('offer_click', { offer_id: item })`
 
 **Elementos no app.** EL-36, EL-38 (ver Mapa por tela).
 
@@ -798,7 +798,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 652, listener global de clique, ramo data-action=card_request: `track('card_request', { card_tier: item })`
+- `index.html`, linha 684, listener global de clique, ramo data-action=card_request: `track('card_request', { card_tier: item })`
 
 **Elementos no app.** EL-60, EL-61 (ver Mapa por tela).
 
@@ -838,7 +838,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 654, listener global de clique, ramo data-action=investment_intent: `track('investment_intent', { product_id: item })`
+- `index.html`, linha 686, listener global de clique, ramo data-action=investment_intent: `track('investment_intent', { product_id: item })`
 
 **Elementos no app.** EL-63, EL-64, EL-65, EL-66 (ver Mapa por tela).
 
@@ -880,7 +880,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 646, listener global de clique, ramo data-action=lead: `track('generate_lead', { lead_type: item, page_path: '/' + S.route })`
+- `index.html`, linha 678, listener global de clique, ramo data-action=lead: `track('generate_lead', { lead_type: item, page_path: '/' + S.route })`
 
 **Elementos no app.** EL-08, EL-11 (ver Mapa por tela).
 
@@ -920,7 +920,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 781, listener focusin de #pix-form: `track('pix_start', { page_path: '/pix' })`
+- `index.html`, linha 813, listener focusin de #pix-form: `track('pix_start', { page_path: '/pix' })`
 
 **Elementos no app.** EL-48 (ver Mapa por tela).
 
@@ -960,7 +960,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 789, listener submit de #pix-form, ramo de erro: `track('pix_error', { error_type: err[0] })`
+- `index.html`, linha 821, listener submit de #pix-form, ramo de erro: `track('pix_error', { error_type: err[0] })`
 
 **Elementos no app.** EL-49 (ver Mapa por tela).
 
@@ -1004,7 +1004,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 800, listener submit de #pix-form, ramo de sucesso: `track('pix_review', { value: v, currency: 'BRL', pix_key_type: S.pending.tipo })`
+- `index.html`, linha 832, listener submit de #pix-form, ramo de sucesso: `track('pix_review', { value: v, currency: 'BRL', pix_key_type: S.pending.tipo })`
 
 **Elementos no app.** EL-50 (ver Mapa por tela).
 
@@ -1044,7 +1044,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 802, listener de clique de #pix-corrigir: `track('pix_edit', { step: 'revisao' })`
+- `index.html`, linha 834, listener de clique de #pix-corrigir: `track('pix_edit', { step: 'revisao' })`
 
 **Elementos no app.** EL-52 (ver Mapa por tela).
 
@@ -1090,7 +1090,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 817, listener de clique de #pix-confirmar: `track('pix_success', { transaction_id: id, value: p.v, currency: 'BRL', pix_key_type: p.tipo })`
+- `index.html`, linha 849, listener de clique de #pix-confirmar: `track('pix_success', { transaction_id: id, value: p.v, currency: 'BRL', pix_key_type: p.tipo })`
 
 **Elementos no app.** EL-51 (ver Mapa por tela).
 
@@ -1125,7 +1125,7 @@ window.dataLayer.push({
 
 **Onde está no código**
 
-- `index.html`, linha 820, listener de clique de #pix-novo: `track('pix_restart', {})`
+- `index.html`, linha 852, listener de clique de #pix-novo: `track('pix_restart', {})`
 
 **Elementos no app.** EL-54 (ver Mapa por tela).
 
