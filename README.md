@@ -17,7 +17,7 @@ O app inteiro roda num único `index.html`, sem backend e sem dependências, com
 ## Como usar
 
 1. Abra `index.html` no navegador, ou publique com GitHub Pages (Settings → Pages → branch `main`, pasta `/`).
-2. Para ver os eventos, use o **Modo de visualização** do GTM ou digite `dataLayer` no console do navegador. A documentação de cada evento está na planilha e em `tracking-plan/`.
+2. Para ver cada push no momento em que dispara, abra `index-datalayer.html`: é o mesmo app, com o painel do dataLayer ao lado. Cada evento aparece com a regra de disparo do plano e o ID do elemento do mapa que o gerou (EL-01 a EL-71). O `index.html` fica limpo, sem painel, para testar com o GTM.
 3. Na senha, qualquer sequência de 6 dígitos entra. `000000` simula senha incorreta.
 
 Cada tela é uma página virtual com rota por `#hash` (`#acesso`, `#entrar`, `#inicio`, `#extrato`, `#pix`, `#cartoes`, `#investimentos`) e gera um `page_view`.
@@ -53,12 +53,13 @@ A descrição de cada evento segue seis partes, nesta ordem:
 | Produto | `card_request`, `investment_intent`, `generate_lead` |
 | Pix | `pix_start`, `pix_error`, `pix_review`, `pix_edit`, `pix_success`, `pix_restart` |
 
-O **mapa de tagueamento** (`catalogs.tagMap` no JSON, aba Mapa de tagueamento na planilha e seção Mapa por tela em `tracking-plan/eventos.md`) liga cada tela e cada elemento do app aos eventos que ele dispara, em ordem, com os valores fixos enviados. O validador falha se um elemento com `data-track` ou `data-promo` ficar fora do mapa.
+O **mapa de tagueamento** (`catalogs.tagMap` no JSON, aba Mapa de tagueamento na planilha e seção Mapa por tela em `tracking-plan/eventos.md`) liga cada tela e cada elemento do app aos eventos que ele dispara, em ordem, com os valores fixos enviados. Cada linha do mapa tem um ID (EL-01 a EL-71) e um print do app com o elemento destacado, em `docs/prints/`, gerado por `tools/gerar_prints.py`. Na planilha Excel, o print fica embutido na própria linha. O validador falha se um elemento com `data-track` ou `data-promo` ficar fora do mapa ou se faltar o print.
 
 ## Estrutura
 
 ```
 index.html                                   app completo (HTML, CSS e JS)
+index-datalayer.html                         o mesmo app com o painel do dataLayer ao lado (gerado)
 AGENTS.md                                    instruções para agentes de IA
 tracking-plan/tracking-plan.json             fonte única do tagueamento
 tracking-plan/tracking-plan.schema.json      esquema do JSON
@@ -67,8 +68,10 @@ tracking-plan/eventos.md                     documentação legível (gerada)
 gtm/container-banco-nuzzi.json               contêiner para importar no GTM (gerado)
 docs/plano-de-tagueamento-banco-nuzzi.xlsx   planilha (gerada)
 docs/telas/                                  imagem de cada tela do app
+docs/prints/                                 print de cada elemento do mapa, destacado (gerado)
 tools/gerar_artefatos.py                     gera os arquivos derivados a partir do JSON
 tools/validar_plano.py                       confere o plano contra o código
+tools/gerar_prints.py                        gera os prints dos elementos (Playwright)
 .claude-plugin/marketplace.json              catálogo do plugin para agentes
 plugins/banco-nuzzi-tagueamento/skills/      skills de taxonomia, instrumentação e auditoria
 ```
@@ -77,7 +80,8 @@ plugins/banco-nuzzi-tagueamento/skills/      skills de taxonomia, instrumentaç�
 
 ```bash
 # 1. altere o index.html e o tracking-plan.json
-python3 tools/gerar_artefatos.py   # atualiza linhas do código, eventos.md, GTM e planilha
+python3 tools/gerar_prints.py      # refaz os prints quando o visual mudar
+python3 tools/gerar_artefatos.py   # atualiza linhas do código, index-datalayer.html, eventos.md, GTM e planilha
 python3 tools/validar_plano.py     # precisa terminar com OK
 ```
 

@@ -1932,6 +1932,7 @@
     ],
     "tagMap": [
       {
+        "id": "EL-01",
         "screen": "/acesso",
         "area": "Tela inteira",
         "element": "Tela de acesso",
@@ -1939,9 +1940,11 @@
         "gesture": "Abrir o app deslogado",
         "events": "page_view",
         "fixed_values": "page_path=/acesso · page_type=publico · login_status=logged_out",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-01.jpg"
       },
       {
+        "id": "EL-02",
         "screen": "/acesso",
         "area": "Topo",
         "element": "Ícone de ajuda (?)",
@@ -1949,9 +1952,11 @@
         "gesture": "Toque",
         "events": "quick_action",
         "fixed_values": "action_id=ajuda · page_path=/acesso",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-02.jpg"
       },
       {
+        "id": "EL-03",
         "screen": "/acesso",
         "area": "Conta salva",
         "element": "Link Trocar",
@@ -1959,9 +1964,11 @@
         "gesture": "Toque",
         "events": "quick_action",
         "fixed_values": "action_id=trocar_conta · page_path=/acesso",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-03.jpg"
       },
       {
+        "id": "EL-04",
         "screen": "/acesso",
         "area": "Botão principal",
         "element": "Acessar minha conta",
@@ -1969,9 +1976,11 @@
         "gesture": "Toque",
         "events": "select_content → page_view",
         "fixed_values": "item_id=acesso_entrar · content_type=cta · depois page_path=/entrar",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-04.jpg"
       },
       {
+        "id": "EL-05",
         "screen": "/acesso",
         "area": "Atalhos",
         "element": "Pix",
@@ -1979,9 +1988,11 @@
         "gesture": "Toque",
         "events": "select_content → auth_required → page_view",
         "fixed_values": "item_id=acesso_pix · target_path=/pix · depois page_path=/entrar",
-        "note": "Depois do login, o app abre o Pix direto."
+        "note": "Depois do login, o app abre o Pix direto.",
+        "print": "docs/prints/EL-05.jpg"
       },
       {
+        "id": "EL-06",
         "screen": "/acesso",
         "area": "Atalhos",
         "element": "Token",
@@ -1989,9 +2000,11 @@
         "gesture": "Toque",
         "events": "quick_action",
         "fixed_values": "action_id=token · page_path=/acesso",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-06.jpg"
       },
       {
+        "id": "EL-07",
         "screen": "/acesso",
         "area": "Atalhos",
         "element": "Bloquear cartão",
@@ -1999,9 +2012,11 @@
         "gesture": "Toque",
         "events": "quick_action",
         "fixed_values": "action_id=bloquear_cartao · page_path=/acesso",
-        "note": "O mesmo action_id existe na tela Cartões; separe por page_path."
+        "note": "O mesmo action_id existe na tela Cartões; separe por page_path.",
+        "print": "docs/prints/EL-07.jpg"
       },
       {
+        "id": "EL-08",
         "screen": "/acesso",
         "area": "Atalhos",
         "element": "Abrir conta",
@@ -2009,9 +2024,11 @@
         "gesture": "Toque",
         "events": "generate_lead",
         "fixed_values": "lead_type=abertura_conta · page_path=/acesso",
-        "note": "Sem select_promotion, porque não é banner."
+        "note": "Sem select_promotion, porque não é banner.",
+        "print": "docs/prints/EL-08.jpg"
       },
       {
+        "id": "EL-09",
         "screen": "/acesso",
         "area": "Carrossel Para você",
         "element": "Indicadores e arrasto",
@@ -2019,9 +2036,11 @@
         "gesture": "Arrastar ou tocar no indicador",
         "events": "carousel_navigate",
         "fixed_values": "carousel_id=acesso_destaques · control=arrastar ou indicador",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-09.jpg"
       },
       {
+        "id": "EL-10",
         "screen": "/acesso",
         "area": "Carrossel Para você",
         "element": "Banner Abra sua conta",
@@ -2029,9 +2048,11 @@
         "gesture": "Aparecer 60% na tela",
         "events": "view_promotion",
         "fixed_values": "promotion_id=bnr_abra_conta · creative_slot=acesso_destaque_1",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-10.jpg"
       },
       {
+        "id": "EL-11",
         "screen": "/acesso",
         "area": "Carrossel Para você",
         "element": "Botão Quero abrir",
@@ -2039,9 +2060,11 @@
         "gesture": "Toque",
         "events": "select_promotion → generate_lead",
         "fixed_values": "promotion_id=bnr_abra_conta · lead_type=abertura_conta",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-11.jpg"
       },
       {
+        "id": "EL-12",
         "screen": "/acesso",
         "area": "Carrossel Para você",
         "element": "Banner Nuzzi Black",
@@ -2049,9 +2072,11 @@
         "gesture": "Aparecer 60% na tela",
         "events": "view_promotion",
         "fixed_values": "promotion_id=bnr_cartao_black · creative_slot=acesso_destaque_2",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-12.jpg"
       },
       {
+        "id": "EL-13",
         "screen": "/acesso",
         "area": "Carrossel Para você",
         "element": "Botão Conhecer o Black",
@@ -2059,9 +2084,11 @@
         "gesture": "Toque",
         "events": "select_promotion → auth_required → page_view",
         "fixed_values": "promotion_id=bnr_cartao_black · target_path=/cartoes · depois page_path=/entrar",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-13.jpg"
       },
       {
+        "id": "EL-14",
         "screen": "/acesso",
         "area": "Carrossel Para você",
         "element": "Banner CDB 104% do CDI",
@@ -2069,9 +2096,11 @@
         "gesture": "Aparecer 60% na tela",
         "events": "view_promotion",
         "fixed_values": "promotion_id=bnr_cdb_liquidez · creative_slot=acesso_destaque_3",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-14.jpg"
       },
       {
+        "id": "EL-15",
         "screen": "/acesso",
         "area": "Carrossel Para você",
         "element": "Botão Ver investimentos",
@@ -2079,9 +2108,11 @@
         "gesture": "Toque",
         "events": "select_promotion → auth_required → page_view",
         "fixed_values": "promotion_id=bnr_cdb_liquidez · target_path=/investimentos · depois page_path=/entrar",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-15.jpg"
       },
       {
+        "id": "EL-16",
         "screen": "/entrar",
         "area": "Tela inteira",
         "element": "Tela de senha",
@@ -2089,9 +2120,11 @@
         "gesture": "Abrir",
         "events": "page_view",
         "fixed_values": "page_path=/entrar · page_type=login",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-16.jpg"
       },
       {
+        "id": "EL-17",
         "screen": "/entrar",
         "area": "Topo",
         "element": "Seta Voltar",
@@ -2099,9 +2132,11 @@
         "gesture": "Toque",
         "events": "select_content → page_view",
         "fixed_values": "item_id=senha_voltar · link_text=Voltar · depois page_path=/acesso",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-17.jpg"
       },
       {
+        "id": "EL-18",
         "screen": "/entrar",
         "area": "Teclado",
         "element": "Teclas de 0 a 9",
@@ -2109,9 +2144,11 @@
         "gesture": "Primeiro dígito",
         "events": "form_start",
         "fixed_values": "form_id=login · page_path=/entrar",
-        "note": "Só no primeiro dígito de cada visita."
+        "note": "Só no primeiro dígito de cada visita.",
+        "print": "docs/prints/EL-18.jpg"
       },
       {
+        "id": "EL-19",
         "screen": "/entrar",
         "area": "Teclado",
         "element": "Esqueci",
@@ -2119,9 +2156,11 @@
         "gesture": "Toque",
         "events": "quick_action",
         "fixed_values": "action_id=esqueci_senha · page_path=/entrar",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-19.jpg"
       },
       {
+        "id": "EL-20",
         "screen": "/entrar",
         "area": "Botão",
         "element": "Entrar com menos de 6 dígitos",
@@ -2129,9 +2168,11 @@
         "gesture": "Toque",
         "events": "login_error",
         "fixed_values": "form_id=login · error_type=senha_incompleta",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-20.jpg"
       },
       {
+        "id": "EL-21",
         "screen": "/entrar",
         "area": "Botão",
         "element": "Entrar com 000000",
@@ -2139,9 +2180,11 @@
         "gesture": "Toque",
         "events": "login_error",
         "fixed_values": "form_id=login · error_type=senha_incorreta",
-        "note": "Senha de teste que simula erro."
+        "note": "Senha de teste que simula erro.",
+        "print": "docs/prints/EL-21.jpg"
       },
       {
+        "id": "EL-22",
         "screen": "/entrar",
         "area": "Botão",
         "element": "Entrar com 6 dígitos",
@@ -2149,9 +2192,11 @@
         "gesture": "Toque",
         "events": "login → page_view",
         "fixed_values": "method=senha_eletronica · user_id=u_8f2c41a9 · depois page_path do destino",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-22.jpg"
       },
       {
+        "id": "EL-23",
         "screen": "/inicio",
         "area": "Tela inteira",
         "element": "Início",
@@ -2159,9 +2204,11 @@
         "gesture": "Abrir",
         "events": "page_view",
         "fixed_values": "page_path=/inicio · page_type=area_logada · user_id",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-23.jpg"
       },
       {
+        "id": "EL-24",
         "screen": "/inicio",
         "area": "Topo",
         "element": "Ícone de olho",
@@ -2169,9 +2216,11 @@
         "gesture": "Toque",
         "events": "toggle_balance",
         "fixed_values": "state=hidden ou visible",
-        "note": "O valor do saldo não é enviado."
+        "note": "O valor do saldo não é enviado.",
+        "print": "docs/prints/EL-24.jpg"
       },
       {
+        "id": "EL-25",
         "screen": "/inicio",
         "area": "Topo",
         "element": "Sino de notificações",
@@ -2179,9 +2228,11 @@
         "gesture": "Toque",
         "events": "quick_action",
         "fixed_values": "action_id=notificacoes · page_path=/inicio",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-25.jpg"
       },
       {
+        "id": "EL-26",
         "screen": "/inicio",
         "area": "Topo",
         "element": "Ícone Sair",
@@ -2189,9 +2240,11 @@
         "gesture": "Toque",
         "events": "logout → page_view",
         "fixed_values": "user_id · depois page_path=/acesso · login_status=logged_out",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-26.jpg"
       },
       {
+        "id": "EL-27",
         "screen": "/inicio",
         "area": "Saldo",
         "element": "Ver extrato",
@@ -2199,9 +2252,11 @@
         "gesture": "Toque",
         "events": "select_content → page_view",
         "fixed_values": "item_id=inicio_ver_extrato · depois page_path=/extrato",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-27.jpg"
       },
       {
+        "id": "EL-28",
         "screen": "/inicio",
         "area": "Atalhos",
         "element": "Pix",
@@ -2209,9 +2264,11 @@
         "gesture": "Toque",
         "events": "select_content → page_view",
         "fixed_values": "item_id=atalho_pix · content_type=shortcut · depois page_path=/pix",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-28.jpg"
       },
       {
+        "id": "EL-29",
         "screen": "/inicio",
         "area": "Atalhos",
         "element": "Pagar",
@@ -2219,9 +2276,11 @@
         "gesture": "Toque",
         "events": "quick_action",
         "fixed_values": "action_id=pagar_boleto · page_path=/inicio",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-29.jpg"
       },
       {
+        "id": "EL-30",
         "screen": "/inicio",
         "area": "Atalhos",
         "element": "Transferir",
@@ -2229,9 +2288,11 @@
         "gesture": "Toque",
         "events": "quick_action",
         "fixed_values": "action_id=transferir · page_path=/inicio",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-30.jpg"
       },
       {
+        "id": "EL-31",
         "screen": "/inicio",
         "area": "Atalhos",
         "element": "Recarga",
@@ -2239,9 +2300,11 @@
         "gesture": "Toque",
         "events": "quick_action",
         "fixed_values": "action_id=recarga · page_path=/inicio",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-31.jpg"
       },
       {
+        "id": "EL-32",
         "screen": "/inicio",
         "area": "Atalhos",
         "element": "Cartões",
@@ -2249,9 +2312,11 @@
         "gesture": "Toque",
         "events": "select_content → page_view",
         "fixed_values": "item_id=atalho_cartoes · depois page_path=/cartoes",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-32.jpg"
       },
       {
+        "id": "EL-33",
         "screen": "/inicio",
         "area": "Atalhos",
         "element": "Investir",
@@ -2259,9 +2324,11 @@
         "gesture": "Toque",
         "events": "select_content → page_view",
         "fixed_values": "item_id=atalho_investir · depois page_path=/investimentos",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-33.jpg"
       },
       {
+        "id": "EL-34",
         "screen": "/inicio",
         "area": "Carrossel de ofertas",
         "element": "Indicadores e arrasto",
@@ -2269,9 +2336,11 @@
         "gesture": "Arrastar ou tocar no indicador",
         "events": "carousel_navigate",
         "fixed_values": "carousel_id=inicio_ofertas · control=arrastar ou indicador",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-34.jpg"
       },
       {
+        "id": "EL-35",
         "screen": "/inicio",
         "area": "Carrossel de ofertas",
         "element": "Banner Crédito pré-aprovado",
@@ -2279,9 +2348,11 @@
         "gesture": "Aparecer 60% na tela",
         "events": "view_promotion",
         "fixed_values": "promotion_id=bnr_credito_preaprovado · creative_slot=inicio_oferta_1",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-35.jpg"
       },
       {
+        "id": "EL-36",
         "screen": "/inicio",
         "area": "Carrossel de ofertas",
         "element": "Botão Simular parcelas",
@@ -2289,9 +2360,11 @@
         "gesture": "Toque",
         "events": "select_promotion → offer_click",
         "fixed_values": "promotion_id=bnr_credito_preaprovado · offer_id=credito_preaprovado",
-        "note": "offer_click está em Ajustar (sinal duplicado)."
+        "note": "offer_click está em Ajustar (sinal duplicado).",
+        "print": "docs/prints/EL-36.jpg"
       },
       {
+        "id": "EL-37",
         "screen": "/inicio",
         "area": "Carrossel de ofertas",
         "element": "Banner Seguro cartão",
@@ -2299,9 +2372,11 @@
         "gesture": "Aparecer 60% na tela",
         "events": "view_promotion",
         "fixed_values": "promotion_id=bnr_seguro_cartao · creative_slot=inicio_oferta_2",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-37.jpg"
       },
       {
+        "id": "EL-38",
         "screen": "/inicio",
         "area": "Carrossel de ofertas",
         "element": "Botão Contratar seguro",
@@ -2309,9 +2384,11 @@
         "gesture": "Toque",
         "events": "select_promotion → offer_click",
         "fixed_values": "promotion_id=bnr_seguro_cartao · offer_id=seguro_cartao",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-38.jpg"
       },
       {
+        "id": "EL-39",
         "screen": "/inicio",
         "area": "Carrossel de ofertas",
         "element": "Banner Pix agendado",
@@ -2319,9 +2396,11 @@
         "gesture": "Aparecer 60% na tela",
         "events": "view_promotion",
         "fixed_values": "promotion_id=bnr_pix_agendado · creative_slot=inicio_oferta_3",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-39.jpg"
       },
       {
+        "id": "EL-40",
         "screen": "/inicio",
         "area": "Carrossel de ofertas",
         "element": "Botão Agendar um Pix",
@@ -2329,9 +2408,11 @@
         "gesture": "Toque",
         "events": "select_promotion → page_view",
         "fixed_values": "promotion_id=bnr_pix_agendado · depois page_path=/pix",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-40.jpg"
       },
       {
+        "id": "EL-41",
         "screen": "/inicio",
         "area": "Cartão da fatura",
         "element": "Cartão Nuzzi Mais (fatura)",
@@ -2339,9 +2420,11 @@
         "gesture": "Toque",
         "events": "select_content → page_view",
         "fixed_values": "item_id=inicio_card_fatura · link_text=Cartão Nuzzi Mais · depois page_path=/cartoes",
-        "note": "link_text fixo: o valor da fatura não vai."
+        "note": "link_text fixo: o valor da fatura não vai.",
+        "print": "docs/prints/EL-41.jpg"
       },
       {
+        "id": "EL-42",
         "screen": "/inicio",
         "area": "Últimos lançamentos",
         "element": "Ver tudo",
@@ -2349,9 +2432,11 @@
         "gesture": "Toque",
         "events": "select_content → page_view",
         "fixed_values": "item_id=inicio_extrato_completo · depois page_path=/extrato",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-42.jpg"
       },
       {
+        "id": "EL-43",
         "screen": "/inicio",
         "area": "Investimentos",
         "element": "Cartão de investimentos",
@@ -2359,9 +2444,11 @@
         "gesture": "Toque",
         "events": "select_content → page_view",
         "fixed_values": "item_id=inicio_card_investimentos · link_text=Investimentos · depois page_path=/investimentos",
-        "note": "link_text fixo: o total investido não vai."
+        "note": "link_text fixo: o total investido não vai.",
+        "print": "docs/prints/EL-43.jpg"
       },
       {
+        "id": "EL-44",
         "screen": "/extrato",
         "area": "Tela inteira",
         "element": "Extrato",
@@ -2369,9 +2456,11 @@
         "gesture": "Abrir",
         "events": "page_view",
         "fixed_values": "page_path=/extrato",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-44.jpg"
       },
       {
+        "id": "EL-45",
         "screen": "/extrato",
         "area": "Filtros",
         "element": "Tudo, Entradas, Saídas",
@@ -2379,9 +2468,11 @@
         "gesture": "Toque num filtro diferente do atual",
         "events": "statement_filter",
         "fixed_values": "filter=todos, entradas ou saidas",
-        "note": "Os lançamentos não são enviados."
+        "note": "Os lançamentos não são enviados.",
+        "print": "docs/prints/EL-45.jpg"
       },
       {
+        "id": "EL-46",
         "screen": "/pix",
         "area": "Tela inteira",
         "element": "Pix",
@@ -2389,9 +2480,11 @@
         "gesture": "Abrir",
         "events": "page_view",
         "fixed_values": "page_path=/pix",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-46.jpg"
       },
       {
+        "id": "EL-47",
         "screen": "/pix",
         "area": "Topo",
         "element": "Seta Voltar",
@@ -2399,9 +2492,11 @@
         "gesture": "Toque",
         "events": "select_content → page_view",
         "fixed_values": "item_id=pix_voltar · depois page_path=/inicio",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-47.jpg"
       },
       {
+        "id": "EL-48",
         "screen": "/pix",
         "area": "Etapa 1 · Dados",
         "element": "Campos chave, valor e mensagem",
@@ -2409,9 +2504,11 @@
         "gesture": "Primeiro foco num campo",
         "events": "pix_start",
         "fixed_values": "page_path=/pix",
-        "note": "Uma vez a cada abertura do Pix."
+        "note": "Uma vez a cada abertura do Pix.",
+        "print": "docs/prints/EL-48.jpg"
       },
       {
+        "id": "EL-49",
         "screen": "/pix",
         "area": "Etapa 1 · Dados",
         "element": "Botão Continuar com erro",
@@ -2419,9 +2516,11 @@
         "gesture": "Toque",
         "events": "pix_error",
         "fixed_values": "error_type=chave_vazia, valor_invalido ou saldo_insuficiente",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-49.jpg"
       },
       {
+        "id": "EL-50",
         "screen": "/pix",
         "area": "Etapa 1 · Dados",
         "element": "Botão Continuar válido",
@@ -2429,9 +2528,11 @@
         "gesture": "Toque",
         "events": "pix_review",
         "fixed_values": "value · currency=BRL · pix_key_type",
-        "note": "A chave nunca é enviada."
+        "note": "A chave nunca é enviada.",
+        "print": "docs/prints/EL-50.jpg"
       },
       {
+        "id": "EL-51",
         "screen": "/pix",
         "area": "Etapa 2 · Revisão",
         "element": "Botão Confirmar Pix",
@@ -2439,9 +2540,11 @@
         "gesture": "Toque",
         "events": "pix_success",
         "fixed_values": "transaction_id · value · currency=BRL · pix_key_type",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-51.jpg"
       },
       {
+        "id": "EL-52",
         "screen": "/pix",
         "area": "Etapa 2 · Revisão",
         "element": "Botão Corrigir dados",
@@ -2449,9 +2552,11 @@
         "gesture": "Toque",
         "events": "pix_edit",
         "fixed_values": "step=revisao",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-52.jpg"
       },
       {
+        "id": "EL-53",
         "screen": "/pix",
         "area": "Etapa 3 · Comprovante",
         "element": "Voltar ao início",
@@ -2459,9 +2564,11 @@
         "gesture": "Toque",
         "events": "select_content → page_view",
         "fixed_values": "item_id=pix_comprovante_inicio · depois page_path=/inicio",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-53.jpg"
       },
       {
+        "id": "EL-54",
         "screen": "/pix",
         "area": "Etapa 3 · Comprovante",
         "element": "Fazer outro Pix",
@@ -2469,9 +2576,11 @@
         "gesture": "Toque",
         "events": "pix_restart",
         "fixed_values": "(nenhum parâmetro)",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-54.jpg"
       },
       {
+        "id": "EL-55",
         "screen": "/cartoes",
         "area": "Tela inteira",
         "element": "Cartões",
@@ -2479,9 +2588,11 @@
         "gesture": "Abrir",
         "events": "page_view",
         "fixed_values": "page_path=/cartoes",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-55.jpg"
       },
       {
+        "id": "EL-56",
         "screen": "/cartoes",
         "area": "Ações do cartão",
         "element": "Cartão virtual",
@@ -2489,9 +2600,11 @@
         "gesture": "Toque",
         "events": "quick_action",
         "fixed_values": "action_id=cartao_virtual · page_path=/cartoes",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-56.jpg"
       },
       {
+        "id": "EL-57",
         "screen": "/cartoes",
         "area": "Ações do cartão",
         "element": "Bloquear",
@@ -2499,9 +2612,11 @@
         "gesture": "Toque",
         "events": "quick_action",
         "fixed_values": "action_id=bloquear_cartao · page_path=/cartoes",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-57.jpg"
       },
       {
+        "id": "EL-58",
         "screen": "/cartoes",
         "area": "Ações do cartão",
         "element": "Ajustar limite",
@@ -2509,9 +2624,11 @@
         "gesture": "Toque",
         "events": "quick_action",
         "fixed_values": "action_id=ajustar_limite · page_path=/cartoes",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-58.jpg"
       },
       {
+        "id": "EL-59",
         "screen": "/cartoes",
         "area": "Oferta",
         "element": "Banner Troque para o Nuzzi Black",
@@ -2519,9 +2636,11 @@
         "gesture": "Aparecer 60% na tela",
         "events": "view_promotion",
         "fixed_values": "promotion_id=bnr_upgrade_black · creative_slot=cartoes_oferta_1",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-59.jpg"
       },
       {
+        "id": "EL-60",
         "screen": "/cartoes",
         "area": "Oferta",
         "element": "Botão Pedir o Black",
@@ -2529,9 +2648,11 @@
         "gesture": "Toque",
         "events": "select_promotion → card_request",
         "fixed_values": "promotion_id=bnr_upgrade_black · card_tier=black",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-60.jpg"
       },
       {
+        "id": "EL-61",
         "screen": "/cartoes",
         "area": "Cartão adicional",
         "element": "Botão Pedir adicional",
@@ -2539,9 +2660,11 @@
         "gesture": "Toque",
         "events": "card_request",
         "fixed_values": "card_tier=adicional",
-        "note": "Sem select_promotion, porque não é banner."
+        "note": "Sem select_promotion, porque não é banner.",
+        "print": "docs/prints/EL-61.jpg"
       },
       {
+        "id": "EL-62",
         "screen": "/investimentos",
         "area": "Tela inteira",
         "element": "Investimentos",
@@ -2549,9 +2672,11 @@
         "gesture": "Abrir",
         "events": "page_view",
         "fixed_values": "page_path=/investimentos",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-62.jpg"
       },
       {
+        "id": "EL-63",
         "screen": "/investimentos",
         "area": "Renda fixa",
         "element": "Investir · CDB Liquidez Diária",
@@ -2559,9 +2684,11 @@
         "gesture": "Toque",
         "events": "investment_intent",
         "fixed_values": "product_id=cdb_liquidez",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-63.jpg"
       },
       {
+        "id": "EL-64",
         "screen": "/investimentos",
         "area": "Renda fixa",
         "element": "Investir · LCI 90 dias",
@@ -2569,9 +2696,11 @@
         "gesture": "Toque",
         "events": "investment_intent",
         "fixed_values": "product_id=lci_90",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-64.jpg"
       },
       {
+        "id": "EL-65",
         "screen": "/investimentos",
         "area": "Renda fixa",
         "element": "Investir · CDB 2 anos",
@@ -2579,9 +2708,11 @@
         "gesture": "Toque",
         "events": "investment_intent",
         "fixed_values": "product_id=cdb_ipca_2a",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-65.jpg"
       },
       {
+        "id": "EL-66",
         "screen": "/investimentos",
         "area": "Renda fixa",
         "element": "Investir · Fundo Nuzzi DI",
@@ -2589,9 +2720,11 @@
         "gesture": "Toque",
         "events": "investment_intent",
         "fixed_values": "product_id=fundo_di",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-66.jpg"
       },
       {
+        "id": "EL-67",
         "screen": "Telas logadas",
         "area": "Barra de abas",
         "element": "Início",
@@ -2599,9 +2732,11 @@
         "gesture": "Toque",
         "events": "select_content → page_view",
         "fixed_values": "item_id=tab_inicio · content_type=tab_bar · depois page_path=/inicio",
-        "note": "Aparece em /inicio, /extrato, /pix, /cartoes e /investimentos."
+        "note": "Aparece em /inicio, /extrato, /pix, /cartoes e /investimentos.",
+        "print": "docs/prints/EL-67.jpg"
       },
       {
+        "id": "EL-68",
         "screen": "Telas logadas",
         "area": "Barra de abas",
         "element": "Extrato",
@@ -2609,9 +2744,11 @@
         "gesture": "Toque",
         "events": "select_content → page_view",
         "fixed_values": "item_id=tab_extrato · depois page_path=/extrato",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-68.jpg"
       },
       {
+        "id": "EL-69",
         "screen": "Telas logadas",
         "area": "Barra de abas",
         "element": "Pix",
@@ -2619,9 +2756,11 @@
         "gesture": "Toque",
         "events": "select_content → page_view",
         "fixed_values": "item_id=tab_pix · depois page_path=/pix",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-69.jpg"
       },
       {
+        "id": "EL-70",
         "screen": "Telas logadas",
         "area": "Barra de abas",
         "element": "Cartões",
@@ -2629,9 +2768,11 @@
         "gesture": "Toque",
         "events": "select_content → page_view",
         "fixed_values": "item_id=tab_cartoes · depois page_path=/cartoes",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-70.jpg"
       },
       {
+        "id": "EL-71",
         "screen": "Telas logadas",
         "area": "Barra de abas",
         "element": "Investir",
@@ -2639,7 +2780,8 @@
         "gesture": "Toque",
         "events": "select_content → page_view",
         "fixed_values": "item_id=tab_investir · depois page_path=/investimentos",
-        "note": ""
+        "note": "",
+        "print": "docs/prints/EL-71.jpg"
       }
     ]
   }

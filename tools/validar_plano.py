@@ -94,6 +94,9 @@ for row in tag_map:
     for el_id in re.findall(r"#([a-z][a-z0-9-]*)", row["selector"]):
         if f'id="{el_id}"' not in html:
             problems.append(f"mapa ({row['screen']} · {row['element']}): id não encontrado no HTML: #{el_id}")
+for row in tag_map:
+    if not (ROOT / row.get("print", "")).is_file():
+        problems.append(f"mapa {row.get('id')}: print não encontrado ({row.get('print')}); rode tools/gerar_prints.py")
 for ev in sorted(set(plan_events) - mapped_events):
     problems.append(f"evento sem nenhum elemento no mapa de tagueamento: {ev}")
 mapped_selectors = " ".join(r["selector"] for r in tag_map)

@@ -39,126 +39,126 @@ Cada elemento do app e os eventos que ele dispara, em ordem. Imagens das telas e
 
 ![/acesso](../docs/telas/01-acesso.png)
 
-| Área | Elemento | Seletor | Gesto | Eventos | Valores fixos |
-| --- | --- | --- | --- | --- | --- |
-| Tela inteira | Tela de acesso | `[data-page=acesso]` | Abrir o app deslogado | page_view | page_path=/acesso · page_type=publico · login_status=logged_out |
-| Topo | Ícone de ajuda (?) | `[data-action=quick_action][data-item=ajuda]` | Toque | quick_action | action_id=ajuda · page_path=/acesso |
-| Conta salva | Link Trocar | `[data-item=trocar_conta]` | Toque | quick_action | action_id=trocar_conta · page_path=/acesso |
-| Botão principal | Acessar minha conta | `[data-track=acesso_entrar]` | Toque | select_content → page_view | item_id=acesso_entrar · content_type=cta · depois page_path=/entrar |
-| Atalhos | Pix | `[data-track=acesso_pix]` | Toque | select_content → auth_required → page_view | item_id=acesso_pix · target_path=/pix · depois page_path=/entrar |
-| Atalhos | Token | `[data-item=token]` | Toque | quick_action | action_id=token · page_path=/acesso |
-| Atalhos | Bloquear cartão | `[data-item=bloquear_cartao]` | Toque | quick_action | action_id=bloquear_cartao · page_path=/acesso |
-| Atalhos | Abrir conta | `[data-action=lead]` | Toque | generate_lead | lead_type=abertura_conta · page_path=/acesso |
-| Carrossel Para você | Indicadores e arrasto | `[data-carousel=acesso_destaques]` | Arrastar ou tocar no indicador | carousel_navigate | carousel_id=acesso_destaques · control=arrastar ou indicador |
-| Carrossel Para você | Banner Abra sua conta | `[data-promo=bnr_abra_conta]` | Aparecer 60% na tela | view_promotion | promotion_id=bnr_abra_conta · creative_slot=acesso_destaque_1 |
-| Carrossel Para você | Botão Quero abrir | `[data-promo=bnr_abra_conta] .promo-cta` | Toque | select_promotion → generate_lead | promotion_id=bnr_abra_conta · lead_type=abertura_conta |
-| Carrossel Para você | Banner Nuzzi Black | `[data-promo=bnr_cartao_black]` | Aparecer 60% na tela | view_promotion | promotion_id=bnr_cartao_black · creative_slot=acesso_destaque_2 |
-| Carrossel Para você | Botão Conhecer o Black | `[data-promo=bnr_cartao_black] .promo-cta` | Toque | select_promotion → auth_required → page_view | promotion_id=bnr_cartao_black · target_path=/cartoes · depois page_path=/entrar |
-| Carrossel Para você | Banner CDB 104% do CDI | `[data-promo=bnr_cdb_liquidez]` | Aparecer 60% na tela | view_promotion | promotion_id=bnr_cdb_liquidez · creative_slot=acesso_destaque_3 |
-| Carrossel Para você | Botão Ver investimentos | `[data-promo=bnr_cdb_liquidez] .promo-cta` | Toque | select_promotion → auth_required → page_view | promotion_id=bnr_cdb_liquidez · target_path=/investimentos · depois page_path=/entrar |
+| ID | Área | Elemento | Seletor | Gesto | Eventos | Valores fixos | Print |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| EL-01 | Tela inteira | Tela de acesso | `[data-page=acesso]` | Abrir o app deslogado | page_view | page_path=/acesso · page_type=publico · login_status=logged_out | [ver](../docs/prints/EL-01.jpg) |
+| EL-02 | Topo | Ícone de ajuda (?) | `[data-action=quick_action][data-item=ajuda]` | Toque | quick_action | action_id=ajuda · page_path=/acesso | [ver](../docs/prints/EL-02.jpg) |
+| EL-03 | Conta salva | Link Trocar | `[data-item=trocar_conta]` | Toque | quick_action | action_id=trocar_conta · page_path=/acesso | [ver](../docs/prints/EL-03.jpg) |
+| EL-04 | Botão principal | Acessar minha conta | `[data-track=acesso_entrar]` | Toque | select_content → page_view | item_id=acesso_entrar · content_type=cta · depois page_path=/entrar | [ver](../docs/prints/EL-04.jpg) |
+| EL-05 | Atalhos | Pix | `[data-track=acesso_pix]` | Toque | select_content → auth_required → page_view | item_id=acesso_pix · target_path=/pix · depois page_path=/entrar | [ver](../docs/prints/EL-05.jpg) |
+| EL-06 | Atalhos | Token | `[data-item=token]` | Toque | quick_action | action_id=token · page_path=/acesso | [ver](../docs/prints/EL-06.jpg) |
+| EL-07 | Atalhos | Bloquear cartão | `[data-item=bloquear_cartao]` | Toque | quick_action | action_id=bloquear_cartao · page_path=/acesso | [ver](../docs/prints/EL-07.jpg) |
+| EL-08 | Atalhos | Abrir conta | `[data-action=lead]` | Toque | generate_lead | lead_type=abertura_conta · page_path=/acesso | [ver](../docs/prints/EL-08.jpg) |
+| EL-09 | Carrossel Para você | Indicadores e arrasto | `[data-carousel=acesso_destaques]` | Arrastar ou tocar no indicador | carousel_navigate | carousel_id=acesso_destaques · control=arrastar ou indicador | [ver](../docs/prints/EL-09.jpg) |
+| EL-10 | Carrossel Para você | Banner Abra sua conta | `[data-promo=bnr_abra_conta]` | Aparecer 60% na tela | view_promotion | promotion_id=bnr_abra_conta · creative_slot=acesso_destaque_1 | [ver](../docs/prints/EL-10.jpg) |
+| EL-11 | Carrossel Para você | Botão Quero abrir | `[data-promo=bnr_abra_conta] .promo-cta` | Toque | select_promotion → generate_lead | promotion_id=bnr_abra_conta · lead_type=abertura_conta | [ver](../docs/prints/EL-11.jpg) |
+| EL-12 | Carrossel Para você | Banner Nuzzi Black | `[data-promo=bnr_cartao_black]` | Aparecer 60% na tela | view_promotion | promotion_id=bnr_cartao_black · creative_slot=acesso_destaque_2 | [ver](../docs/prints/EL-12.jpg) |
+| EL-13 | Carrossel Para você | Botão Conhecer o Black | `[data-promo=bnr_cartao_black] .promo-cta` | Toque | select_promotion → auth_required → page_view | promotion_id=bnr_cartao_black · target_path=/cartoes · depois page_path=/entrar | [ver](../docs/prints/EL-13.jpg) |
+| EL-14 | Carrossel Para você | Banner CDB 104% do CDI | `[data-promo=bnr_cdb_liquidez]` | Aparecer 60% na tela | view_promotion | promotion_id=bnr_cdb_liquidez · creative_slot=acesso_destaque_3 | [ver](../docs/prints/EL-14.jpg) |
+| EL-15 | Carrossel Para você | Botão Ver investimentos | `[data-promo=bnr_cdb_liquidez] .promo-cta` | Toque | select_promotion → auth_required → page_view | promotion_id=bnr_cdb_liquidez · target_path=/investimentos · depois page_path=/entrar | [ver](../docs/prints/EL-15.jpg) |
 
 ### /entrar
 
 ![/entrar](../docs/telas/02-senha.png)
 
-| Área | Elemento | Seletor | Gesto | Eventos | Valores fixos |
-| --- | --- | --- | --- | --- | --- |
-| Tela inteira | Tela de senha | `[data-page=entrar]` | Abrir | page_view | page_path=/entrar · page_type=login |
-| Topo | Seta Voltar | `[data-track=senha_voltar]` | Toque | select_content → page_view | item_id=senha_voltar · link_text=Voltar · depois page_path=/acesso |
-| Teclado | Teclas de 0 a 9 | `#keypad [data-key]` | Primeiro dígito | form_start | form_id=login · page_path=/entrar |
-| Teclado | Esqueci | `[data-item=esqueci_senha]` | Toque | quick_action | action_id=esqueci_senha · page_path=/entrar |
-| Botão | Entrar com menos de 6 dígitos | `#btn-entrar` | Toque | login_error | form_id=login · error_type=senha_incompleta |
-| Botão | Entrar com 000000 | `#btn-entrar` | Toque | login_error | form_id=login · error_type=senha_incorreta |
-| Botão | Entrar com 6 dígitos | `#btn-entrar` | Toque | login → page_view | method=senha_eletronica · user_id=u_8f2c41a9 · depois page_path do destino |
+| ID | Área | Elemento | Seletor | Gesto | Eventos | Valores fixos | Print |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| EL-16 | Tela inteira | Tela de senha | `[data-page=entrar]` | Abrir | page_view | page_path=/entrar · page_type=login | [ver](../docs/prints/EL-16.jpg) |
+| EL-17 | Topo | Seta Voltar | `[data-track=senha_voltar]` | Toque | select_content → page_view | item_id=senha_voltar · link_text=Voltar · depois page_path=/acesso | [ver](../docs/prints/EL-17.jpg) |
+| EL-18 | Teclado | Teclas de 0 a 9 | `#keypad [data-key]` | Primeiro dígito | form_start | form_id=login · page_path=/entrar | [ver](../docs/prints/EL-18.jpg) |
+| EL-19 | Teclado | Esqueci | `[data-item=esqueci_senha]` | Toque | quick_action | action_id=esqueci_senha · page_path=/entrar | [ver](../docs/prints/EL-19.jpg) |
+| EL-20 | Botão | Entrar com menos de 6 dígitos | `#btn-entrar` | Toque | login_error | form_id=login · error_type=senha_incompleta | [ver](../docs/prints/EL-20.jpg) |
+| EL-21 | Botão | Entrar com 000000 | `#btn-entrar` | Toque | login_error | form_id=login · error_type=senha_incorreta | [ver](../docs/prints/EL-21.jpg) |
+| EL-22 | Botão | Entrar com 6 dígitos | `#btn-entrar` | Toque | login → page_view | method=senha_eletronica · user_id=u_8f2c41a9 · depois page_path do destino | [ver](../docs/prints/EL-22.jpg) |
 
 ### /inicio
 
 ![/inicio](../docs/telas/03-inicio.png)
 
-| Área | Elemento | Seletor | Gesto | Eventos | Valores fixos |
-| --- | --- | --- | --- | --- | --- |
-| Tela inteira | Início | `[data-page=inicio]` | Abrir | page_view | page_path=/inicio · page_type=area_logada · user_id |
-| Topo | Ícone de olho | `#btn-saldo` | Toque | toggle_balance | state=hidden ou visible |
-| Topo | Sino de notificações | `[data-item=notificacoes]` | Toque | quick_action | action_id=notificacoes · page_path=/inicio |
-| Topo | Ícone Sair | `#btn-sair` | Toque | logout → page_view | user_id · depois page_path=/acesso · login_status=logged_out |
-| Saldo | Ver extrato | `[data-track=inicio_ver_extrato]` | Toque | select_content → page_view | item_id=inicio_ver_extrato · depois page_path=/extrato |
-| Atalhos | Pix | `[data-track=atalho_pix]` | Toque | select_content → page_view | item_id=atalho_pix · content_type=shortcut · depois page_path=/pix |
-| Atalhos | Pagar | `[data-item=pagar_boleto]` | Toque | quick_action | action_id=pagar_boleto · page_path=/inicio |
-| Atalhos | Transferir | `[data-item=transferir]` | Toque | quick_action | action_id=transferir · page_path=/inicio |
-| Atalhos | Recarga | `[data-item=recarga]` | Toque | quick_action | action_id=recarga · page_path=/inicio |
-| Atalhos | Cartões | `[data-track=atalho_cartoes]` | Toque | select_content → page_view | item_id=atalho_cartoes · depois page_path=/cartoes |
-| Atalhos | Investir | `[data-track=atalho_investir]` | Toque | select_content → page_view | item_id=atalho_investir · depois page_path=/investimentos |
-| Carrossel de ofertas | Indicadores e arrasto | `[data-carousel=inicio_ofertas]` | Arrastar ou tocar no indicador | carousel_navigate | carousel_id=inicio_ofertas · control=arrastar ou indicador |
-| Carrossel de ofertas | Banner Crédito pré-aprovado | `[data-promo=bnr_credito_preaprovado]` | Aparecer 60% na tela | view_promotion | promotion_id=bnr_credito_preaprovado · creative_slot=inicio_oferta_1 |
-| Carrossel de ofertas | Botão Simular parcelas | `[data-promo=bnr_credito_preaprovado] .promo-cta` | Toque | select_promotion → offer_click | promotion_id=bnr_credito_preaprovado · offer_id=credito_preaprovado |
-| Carrossel de ofertas | Banner Seguro cartão | `[data-promo=bnr_seguro_cartao]` | Aparecer 60% na tela | view_promotion | promotion_id=bnr_seguro_cartao · creative_slot=inicio_oferta_2 |
-| Carrossel de ofertas | Botão Contratar seguro | `[data-promo=bnr_seguro_cartao] .promo-cta` | Toque | select_promotion → offer_click | promotion_id=bnr_seguro_cartao · offer_id=seguro_cartao |
-| Carrossel de ofertas | Banner Pix agendado | `[data-promo=bnr_pix_agendado]` | Aparecer 60% na tela | view_promotion | promotion_id=bnr_pix_agendado · creative_slot=inicio_oferta_3 |
-| Carrossel de ofertas | Botão Agendar um Pix | `[data-promo=bnr_pix_agendado] .promo-cta` | Toque | select_promotion → page_view | promotion_id=bnr_pix_agendado · depois page_path=/pix |
-| Cartão da fatura | Cartão Nuzzi Mais (fatura) | `[data-track=inicio_card_fatura]` | Toque | select_content → page_view | item_id=inicio_card_fatura · link_text=Cartão Nuzzi Mais · depois page_path=/cartoes |
-| Últimos lançamentos | Ver tudo | `[data-track=inicio_extrato_completo]` | Toque | select_content → page_view | item_id=inicio_extrato_completo · depois page_path=/extrato |
-| Investimentos | Cartão de investimentos | `[data-track=inicio_card_investimentos]` | Toque | select_content → page_view | item_id=inicio_card_investimentos · link_text=Investimentos · depois page_path=/investimentos |
+| ID | Área | Elemento | Seletor | Gesto | Eventos | Valores fixos | Print |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| EL-23 | Tela inteira | Início | `[data-page=inicio]` | Abrir | page_view | page_path=/inicio · page_type=area_logada · user_id | [ver](../docs/prints/EL-23.jpg) |
+| EL-24 | Topo | Ícone de olho | `#btn-saldo` | Toque | toggle_balance | state=hidden ou visible | [ver](../docs/prints/EL-24.jpg) |
+| EL-25 | Topo | Sino de notificações | `[data-item=notificacoes]` | Toque | quick_action | action_id=notificacoes · page_path=/inicio | [ver](../docs/prints/EL-25.jpg) |
+| EL-26 | Topo | Ícone Sair | `#btn-sair` | Toque | logout → page_view | user_id · depois page_path=/acesso · login_status=logged_out | [ver](../docs/prints/EL-26.jpg) |
+| EL-27 | Saldo | Ver extrato | `[data-track=inicio_ver_extrato]` | Toque | select_content → page_view | item_id=inicio_ver_extrato · depois page_path=/extrato | [ver](../docs/prints/EL-27.jpg) |
+| EL-28 | Atalhos | Pix | `[data-track=atalho_pix]` | Toque | select_content → page_view | item_id=atalho_pix · content_type=shortcut · depois page_path=/pix | [ver](../docs/prints/EL-28.jpg) |
+| EL-29 | Atalhos | Pagar | `[data-item=pagar_boleto]` | Toque | quick_action | action_id=pagar_boleto · page_path=/inicio | [ver](../docs/prints/EL-29.jpg) |
+| EL-30 | Atalhos | Transferir | `[data-item=transferir]` | Toque | quick_action | action_id=transferir · page_path=/inicio | [ver](../docs/prints/EL-30.jpg) |
+| EL-31 | Atalhos | Recarga | `[data-item=recarga]` | Toque | quick_action | action_id=recarga · page_path=/inicio | [ver](../docs/prints/EL-31.jpg) |
+| EL-32 | Atalhos | Cartões | `[data-track=atalho_cartoes]` | Toque | select_content → page_view | item_id=atalho_cartoes · depois page_path=/cartoes | [ver](../docs/prints/EL-32.jpg) |
+| EL-33 | Atalhos | Investir | `[data-track=atalho_investir]` | Toque | select_content → page_view | item_id=atalho_investir · depois page_path=/investimentos | [ver](../docs/prints/EL-33.jpg) |
+| EL-34 | Carrossel de ofertas | Indicadores e arrasto | `[data-carousel=inicio_ofertas]` | Arrastar ou tocar no indicador | carousel_navigate | carousel_id=inicio_ofertas · control=arrastar ou indicador | [ver](../docs/prints/EL-34.jpg) |
+| EL-35 | Carrossel de ofertas | Banner Crédito pré-aprovado | `[data-promo=bnr_credito_preaprovado]` | Aparecer 60% na tela | view_promotion | promotion_id=bnr_credito_preaprovado · creative_slot=inicio_oferta_1 | [ver](../docs/prints/EL-35.jpg) |
+| EL-36 | Carrossel de ofertas | Botão Simular parcelas | `[data-promo=bnr_credito_preaprovado] .promo-cta` | Toque | select_promotion → offer_click | promotion_id=bnr_credito_preaprovado · offer_id=credito_preaprovado | [ver](../docs/prints/EL-36.jpg) |
+| EL-37 | Carrossel de ofertas | Banner Seguro cartão | `[data-promo=bnr_seguro_cartao]` | Aparecer 60% na tela | view_promotion | promotion_id=bnr_seguro_cartao · creative_slot=inicio_oferta_2 | [ver](../docs/prints/EL-37.jpg) |
+| EL-38 | Carrossel de ofertas | Botão Contratar seguro | `[data-promo=bnr_seguro_cartao] .promo-cta` | Toque | select_promotion → offer_click | promotion_id=bnr_seguro_cartao · offer_id=seguro_cartao | [ver](../docs/prints/EL-38.jpg) |
+| EL-39 | Carrossel de ofertas | Banner Pix agendado | `[data-promo=bnr_pix_agendado]` | Aparecer 60% na tela | view_promotion | promotion_id=bnr_pix_agendado · creative_slot=inicio_oferta_3 | [ver](../docs/prints/EL-39.jpg) |
+| EL-40 | Carrossel de ofertas | Botão Agendar um Pix | `[data-promo=bnr_pix_agendado] .promo-cta` | Toque | select_promotion → page_view | promotion_id=bnr_pix_agendado · depois page_path=/pix | [ver](../docs/prints/EL-40.jpg) |
+| EL-41 | Cartão da fatura | Cartão Nuzzi Mais (fatura) | `[data-track=inicio_card_fatura]` | Toque | select_content → page_view | item_id=inicio_card_fatura · link_text=Cartão Nuzzi Mais · depois page_path=/cartoes | [ver](../docs/prints/EL-41.jpg) |
+| EL-42 | Últimos lançamentos | Ver tudo | `[data-track=inicio_extrato_completo]` | Toque | select_content → page_view | item_id=inicio_extrato_completo · depois page_path=/extrato | [ver](../docs/prints/EL-42.jpg) |
+| EL-43 | Investimentos | Cartão de investimentos | `[data-track=inicio_card_investimentos]` | Toque | select_content → page_view | item_id=inicio_card_investimentos · link_text=Investimentos · depois page_path=/investimentos | [ver](../docs/prints/EL-43.jpg) |
 
 ### /extrato
 
 ![/extrato](../docs/telas/04-extrato.png)
 
-| Área | Elemento | Seletor | Gesto | Eventos | Valores fixos |
-| --- | --- | --- | --- | --- | --- |
-| Tela inteira | Extrato | `[data-page=extrato]` | Abrir | page_view | page_path=/extrato |
-| Filtros | Tudo, Entradas, Saídas | `[data-filter]` | Toque num filtro diferente do atual | statement_filter | filter=todos, entradas ou saidas |
+| ID | Área | Elemento | Seletor | Gesto | Eventos | Valores fixos | Print |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| EL-44 | Tela inteira | Extrato | `[data-page=extrato]` | Abrir | page_view | page_path=/extrato | [ver](../docs/prints/EL-44.jpg) |
+| EL-45 | Filtros | Tudo, Entradas, Saídas | `[data-filter]` | Toque num filtro diferente do atual | statement_filter | filter=todos, entradas ou saidas | [ver](../docs/prints/EL-45.jpg) |
 
 ### /pix
 
 ![/pix](../docs/telas/05-pix.png)
 
-| Área | Elemento | Seletor | Gesto | Eventos | Valores fixos |
-| --- | --- | --- | --- | --- | --- |
-| Tela inteira | Pix | `[data-page=pix]` | Abrir | page_view | page_path=/pix |
-| Topo | Seta Voltar | `[data-track=pix_voltar]` | Toque | select_content → page_view | item_id=pix_voltar · depois page_path=/inicio |
-| Etapa 1 · Dados | Campos chave, valor e mensagem | `#pix-form` | Primeiro foco num campo | pix_start | page_path=/pix |
-| Etapa 1 · Dados | Botão Continuar com erro | `#pix-form [type=submit]` | Toque | pix_error | error_type=chave_vazia, valor_invalido ou saldo_insuficiente |
-| Etapa 1 · Dados | Botão Continuar válido | `#pix-form [type=submit]` | Toque | pix_review | value · currency=BRL · pix_key_type |
-| Etapa 2 · Revisão | Botão Confirmar Pix | `#pix-confirmar` | Toque | pix_success | transaction_id · value · currency=BRL · pix_key_type |
-| Etapa 2 · Revisão | Botão Corrigir dados | `#pix-corrigir` | Toque | pix_edit | step=revisao |
-| Etapa 3 · Comprovante | Voltar ao início | `[data-track=pix_comprovante_inicio]` | Toque | select_content → page_view | item_id=pix_comprovante_inicio · depois page_path=/inicio |
-| Etapa 3 · Comprovante | Fazer outro Pix | `#pix-novo` | Toque | pix_restart | (nenhum parâmetro) |
+| ID | Área | Elemento | Seletor | Gesto | Eventos | Valores fixos | Print |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| EL-46 | Tela inteira | Pix | `[data-page=pix]` | Abrir | page_view | page_path=/pix | [ver](../docs/prints/EL-46.jpg) |
+| EL-47 | Topo | Seta Voltar | `[data-track=pix_voltar]` | Toque | select_content → page_view | item_id=pix_voltar · depois page_path=/inicio | [ver](../docs/prints/EL-47.jpg) |
+| EL-48 | Etapa 1 · Dados | Campos chave, valor e mensagem | `#pix-form` | Primeiro foco num campo | pix_start | page_path=/pix | [ver](../docs/prints/EL-48.jpg) |
+| EL-49 | Etapa 1 · Dados | Botão Continuar com erro | `#pix-form [type=submit]` | Toque | pix_error | error_type=chave_vazia, valor_invalido ou saldo_insuficiente | [ver](../docs/prints/EL-49.jpg) |
+| EL-50 | Etapa 1 · Dados | Botão Continuar válido | `#pix-form [type=submit]` | Toque | pix_review | value · currency=BRL · pix_key_type | [ver](../docs/prints/EL-50.jpg) |
+| EL-51 | Etapa 2 · Revisão | Botão Confirmar Pix | `#pix-confirmar` | Toque | pix_success | transaction_id · value · currency=BRL · pix_key_type | [ver](../docs/prints/EL-51.jpg) |
+| EL-52 | Etapa 2 · Revisão | Botão Corrigir dados | `#pix-corrigir` | Toque | pix_edit | step=revisao | [ver](../docs/prints/EL-52.jpg) |
+| EL-53 | Etapa 3 · Comprovante | Voltar ao início | `[data-track=pix_comprovante_inicio]` | Toque | select_content → page_view | item_id=pix_comprovante_inicio · depois page_path=/inicio | [ver](../docs/prints/EL-53.jpg) |
+| EL-54 | Etapa 3 · Comprovante | Fazer outro Pix | `#pix-novo` | Toque | pix_restart | (nenhum parâmetro) | [ver](../docs/prints/EL-54.jpg) |
 
 ### /cartoes
 
 ![/cartoes](../docs/telas/06-cartoes.png)
 
-| Área | Elemento | Seletor | Gesto | Eventos | Valores fixos |
-| --- | --- | --- | --- | --- | --- |
-| Tela inteira | Cartões | `[data-page=cartoes]` | Abrir | page_view | page_path=/cartoes |
-| Ações do cartão | Cartão virtual | `[data-item=cartao_virtual]` | Toque | quick_action | action_id=cartao_virtual · page_path=/cartoes |
-| Ações do cartão | Bloquear | `[data-item=bloquear_cartao]` | Toque | quick_action | action_id=bloquear_cartao · page_path=/cartoes |
-| Ações do cartão | Ajustar limite | `[data-item=ajustar_limite]` | Toque | quick_action | action_id=ajustar_limite · page_path=/cartoes |
-| Oferta | Banner Troque para o Nuzzi Black | `[data-promo=bnr_upgrade_black]` | Aparecer 60% na tela | view_promotion | promotion_id=bnr_upgrade_black · creative_slot=cartoes_oferta_1 |
-| Oferta | Botão Pedir o Black | `[data-promo=bnr_upgrade_black] .promo-cta` | Toque | select_promotion → card_request | promotion_id=bnr_upgrade_black · card_tier=black |
-| Cartão adicional | Botão Pedir adicional | `[data-action=card_request][data-item=adicional]` | Toque | card_request | card_tier=adicional |
+| ID | Área | Elemento | Seletor | Gesto | Eventos | Valores fixos | Print |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| EL-55 | Tela inteira | Cartões | `[data-page=cartoes]` | Abrir | page_view | page_path=/cartoes | [ver](../docs/prints/EL-55.jpg) |
+| EL-56 | Ações do cartão | Cartão virtual | `[data-item=cartao_virtual]` | Toque | quick_action | action_id=cartao_virtual · page_path=/cartoes | [ver](../docs/prints/EL-56.jpg) |
+| EL-57 | Ações do cartão | Bloquear | `[data-item=bloquear_cartao]` | Toque | quick_action | action_id=bloquear_cartao · page_path=/cartoes | [ver](../docs/prints/EL-57.jpg) |
+| EL-58 | Ações do cartão | Ajustar limite | `[data-item=ajustar_limite]` | Toque | quick_action | action_id=ajustar_limite · page_path=/cartoes | [ver](../docs/prints/EL-58.jpg) |
+| EL-59 | Oferta | Banner Troque para o Nuzzi Black | `[data-promo=bnr_upgrade_black]` | Aparecer 60% na tela | view_promotion | promotion_id=bnr_upgrade_black · creative_slot=cartoes_oferta_1 | [ver](../docs/prints/EL-59.jpg) |
+| EL-60 | Oferta | Botão Pedir o Black | `[data-promo=bnr_upgrade_black] .promo-cta` | Toque | select_promotion → card_request | promotion_id=bnr_upgrade_black · card_tier=black | [ver](../docs/prints/EL-60.jpg) |
+| EL-61 | Cartão adicional | Botão Pedir adicional | `[data-action=card_request][data-item=adicional]` | Toque | card_request | card_tier=adicional | [ver](../docs/prints/EL-61.jpg) |
 
 ### /investimentos
 
 ![/investimentos](../docs/telas/07-investimentos.png)
 
-| Área | Elemento | Seletor | Gesto | Eventos | Valores fixos |
-| --- | --- | --- | --- | --- | --- |
-| Tela inteira | Investimentos | `[data-page=investimentos]` | Abrir | page_view | page_path=/investimentos |
-| Renda fixa | Investir · CDB Liquidez Diária | `[data-item=cdb_liquidez]` | Toque | investment_intent | product_id=cdb_liquidez |
-| Renda fixa | Investir · LCI 90 dias | `[data-item=lci_90]` | Toque | investment_intent | product_id=lci_90 |
-| Renda fixa | Investir · CDB 2 anos | `[data-item=cdb_ipca_2a]` | Toque | investment_intent | product_id=cdb_ipca_2a |
-| Renda fixa | Investir · Fundo Nuzzi DI | `[data-item=fundo_di]` | Toque | investment_intent | product_id=fundo_di |
+| ID | Área | Elemento | Seletor | Gesto | Eventos | Valores fixos | Print |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| EL-62 | Tela inteira | Investimentos | `[data-page=investimentos]` | Abrir | page_view | page_path=/investimentos | [ver](../docs/prints/EL-62.jpg) |
+| EL-63 | Renda fixa | Investir · CDB Liquidez Diária | `[data-item=cdb_liquidez]` | Toque | investment_intent | product_id=cdb_liquidez | [ver](../docs/prints/EL-63.jpg) |
+| EL-64 | Renda fixa | Investir · LCI 90 dias | `[data-item=lci_90]` | Toque | investment_intent | product_id=lci_90 | [ver](../docs/prints/EL-64.jpg) |
+| EL-65 | Renda fixa | Investir · CDB 2 anos | `[data-item=cdb_ipca_2a]` | Toque | investment_intent | product_id=cdb_ipca_2a | [ver](../docs/prints/EL-65.jpg) |
+| EL-66 | Renda fixa | Investir · Fundo Nuzzi DI | `[data-item=fundo_di]` | Toque | investment_intent | product_id=fundo_di | [ver](../docs/prints/EL-66.jpg) |
 
 ### Telas logadas
 
-| Área | Elemento | Seletor | Gesto | Eventos | Valores fixos |
-| --- | --- | --- | --- | --- | --- |
-| Barra de abas | Início | `[data-track=tab_inicio]` | Toque | select_content → page_view | item_id=tab_inicio · content_type=tab_bar · depois page_path=/inicio |
-| Barra de abas | Extrato | `[data-track=tab_extrato]` | Toque | select_content → page_view | item_id=tab_extrato · depois page_path=/extrato |
-| Barra de abas | Pix | `[data-track=tab_pix]` | Toque | select_content → page_view | item_id=tab_pix · depois page_path=/pix |
-| Barra de abas | Cartões | `[data-track=tab_cartoes]` | Toque | select_content → page_view | item_id=tab_cartoes · depois page_path=/cartoes |
-| Barra de abas | Investir | `[data-track=tab_investir]` | Toque | select_content → page_view | item_id=tab_investir · depois page_path=/investimentos |
+| ID | Área | Elemento | Seletor | Gesto | Eventos | Valores fixos | Print |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| EL-67 | Barra de abas | Início | `[data-track=tab_inicio]` | Toque | select_content → page_view | item_id=tab_inicio · content_type=tab_bar · depois page_path=/inicio | [ver](../docs/prints/EL-67.jpg) |
+| EL-68 | Barra de abas | Extrato | `[data-track=tab_extrato]` | Toque | select_content → page_view | item_id=tab_extrato · depois page_path=/extrato | [ver](../docs/prints/EL-68.jpg) |
+| EL-69 | Barra de abas | Pix | `[data-track=tab_pix]` | Toque | select_content → page_view | item_id=tab_pix · depois page_path=/pix | [ver](../docs/prints/EL-69.jpg) |
+| EL-70 | Barra de abas | Cartões | `[data-track=tab_cartoes]` | Toque | select_content → page_view | item_id=tab_cartoes · depois page_path=/cartoes | [ver](../docs/prints/EL-70.jpg) |
+| EL-71 | Barra de abas | Investir | `[data-track=tab_investir]` | Toque | select_content → page_view | item_id=tab_investir · depois page_path=/investimentos | [ver](../docs/prints/EL-71.jpg) |
 
 ## page_view
 
@@ -203,6 +203,9 @@ window.dataLayer.push({
 
 - `index.html`, linha 570, route(), depois de mostrar a tela: `track('page_view', { page_path: '/' + r, page_title: ROUTES[r].title, page_type: ROUTES[r].type, login_status: S.logged ? 'logged_in' : 'logged_out', user_id: S.logged ? S.user.id : undefined })`
 
+**Elementos no app.** EL-01, EL-04, EL-05, EL-13, EL-15, EL-16, EL-17, EL-22, EL-23, EL-26, EL-27, EL-28, EL-32, EL-33, EL-40, EL-41, EL-42, EL-43, EL-44, EL-46, EL-47, EL-53, EL-55, EL-62, EL-67, EL-68, EL-69, EL-70, EL-71 (ver Mapa por tela).
+
+
 **GTM.** Acionador `CE · page_view`, tag `GA4 · page_view`. Owner: Governança de Dados Digitais.
 
 ## view_promotion
@@ -246,6 +249,9 @@ window.dataLayer.push({
 
 - `index.html`, linha 589, impression(), chamada pelo IntersectionObserver: `track('view_promotion', promoData(el))`
 
+**Elementos no app.** EL-10, EL-12, EL-14, EL-35, EL-37, EL-39, EL-59 (ver Mapa por tela).
+
+
 **GTM.** Acionador `CE · view_promotion`, tag `GA4 · view_promotion`. Owner: Marketing Digital.
 
 ## select_promotion
@@ -288,6 +294,9 @@ window.dataLayer.push({
 **Onde está no código**
 
 - `index.html`, linha 635, listener global de clique, ramo .promo-cta: `track('select_promotion', promoData(promoCta.closest('[data-promo]')))`
+
+**Elementos no app.** EL-11, EL-13, EL-15, EL-36, EL-38, EL-40, EL-60 (ver Mapa por tela).
+
 
 **GTM.** Acionador `CE · select_promotion`, tag `GA4 · select_promotion`. Owner: Marketing Digital.
 
@@ -333,6 +342,9 @@ window.dataLayer.push({
 - `index.html`, linha 614, clique num indicador (.dot) do carrossel: `track('carousel_navigate', { carousel_id: id, control: 'indicador', slide_index: i + 1, promotion_id: slides[i].getAttribute('data-promo') })`
 - `index.html`, linha 626, fim da rolagem do carrossel (.track), quando não veio de um indicador: `track('carousel_navigate', { carousel_id: id, control: 'arrastar', slide_index: cur + 1, promotion_id: slides[cur].getAttribute('data-promo') })`
 
+**Elementos no app.** EL-09, EL-34 (ver Mapa por tela).
+
+
 **GTM.** Acionador `CE · carousel_navigate`, tag `GA4 · carousel_navigate`. Owner: Marketing Digital.
 
 ## select_content
@@ -376,6 +388,9 @@ window.dataLayer.push({
 
 - `index.html`, linha 638, listener global de clique, ramo [data-track]: `track('select_content', { content_type: t.getAttribute('data-track-type') || 'link', item_id: t.getAttribute('data-track'), link_text: (t.getAttribute('data-track-text') || t.getAttribute('aria-label') || t.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60), page_path: '/' + S.route })`
 
+**Elementos no app.** EL-04, EL-05, EL-17, EL-27, EL-28, EL-32, EL-33, EL-41, EL-42, EL-43, EL-47, EL-53, EL-67, EL-68, EL-69, EL-70, EL-71 (ver Mapa por tela).
+
+
 **GTM.** Acionador `CE · select_content`, tag `GA4 · select_content`. Owner: Produto Digital.
 
 ## auth_required
@@ -414,6 +429,9 @@ window.dataLayer.push({
 **Onde está no código**
 
 - `index.html`, linha 557, route(), tela logada aberta sem login: `track('auth_required', { target_path: '/' + r, page_path: S.route ? '/' + S.route : undefined })`
+
+**Elementos no app.** EL-05, EL-13, EL-15 (ver Mapa por tela).
+
 
 **GTM.** Acionador `CE · auth_required`, tag `GA4 · auth_required`. Owner: Produto Digital.
 
@@ -454,6 +472,9 @@ window.dataLayer.push({
 
 - `index.html`, linha 672, pressKey(), primeiro dígito da senha: `track('form_start', { form_id: 'login', page_path: '/entrar' })`
 
+**Elementos no app.** EL-18 (ver Mapa por tela).
+
+
 **GTM.** Acionador `CE · form_start`, tag `GA4 · form_start`. Owner: Produto Digital.
 
 ## login_error
@@ -492,6 +513,9 @@ window.dataLayer.push({
 **Onde está no código**
 
 - `index.html`, linha 681, loginFail(), chamada por submitLogin() quando a senha é recusada: `track('login_error', { form_id: 'login', error_type: type })`
+
+**Elementos no app.** EL-20, EL-21 (ver Mapa por tela).
+
 
 **GTM.** Acionador `CE · login_error`, tag `GA4 · login_error`. Owner: Produto Digital.
 
@@ -534,6 +558,9 @@ window.dataLayer.push({
 
 - `index.html`, linha 689, submitLogin(), ramo de sucesso: `track('login', { method: 'senha_eletronica', user_id: S.user.id, customer_segment: S.user.segment })`
 
+**Elementos no app.** EL-22 (ver Mapa por tela).
+
+
 **GTM.** Acionador `CE · login`, tag `GA4 · login`. Owner: Governança de Dados Digitais.
 
 ## logout
@@ -570,6 +597,9 @@ window.dataLayer.push({
 **Onde está no código**
 
 - `index.html`, linha 703, listener de clique de #btn-sair: `track('logout', { user_id: S.user && S.user.id })`
+
+**Elementos no app.** EL-26 (ver Mapa por tela).
+
 
 **GTM.** Acionador `CE · logout`, tag `GA4 · logout`. Owner: Governança de Dados Digitais.
 
@@ -608,6 +638,9 @@ window.dataLayer.push({
 
 - `index.html`, linha 648, listener global de clique, ramo data-action=toggle_balance: `track('toggle_balance', { state: S.hideBal ? 'hidden' : 'visible' })`
 
+**Elementos no app.** EL-24 (ver Mapa por tela).
+
+
 **GTM.** Acionador `CE · toggle_balance`, tag `GA4 · toggle_balance`. Owner: Produto Digital.
 
 ## statement_filter
@@ -644,6 +677,9 @@ window.dataLayer.push({
 **Onde está no código**
 
 - `index.html`, linha 746, listener de clique de [data-filter]: `track('statement_filter', { filter: f })`
+
+**Elementos no app.** EL-45 (ver Mapa por tela).
+
 
 **GTM.** Acionador `CE · statement_filter`, tag `GA4 · statement_filter`. Owner: Produto Digital.
 
@@ -684,6 +720,9 @@ window.dataLayer.push({
 
 - `index.html`, linha 644, listener global de clique, ramo data-action=quick_action: `track('quick_action', { action_id: item, page_path: '/' + S.route })`
 
+**Elementos no app.** EL-02, EL-03, EL-06, EL-07, EL-19, EL-25, EL-29, EL-30, EL-31, EL-56, EL-57, EL-58 (ver Mapa por tela).
+
+
 **GTM.** Acionador `CE · quick_action`, tag `GA4 · quick_action`. Owner: Produto Digital.
 
 ## offer_click
@@ -720,6 +759,9 @@ window.dataLayer.push({
 **Onde está no código**
 
 - `index.html`, linha 650, listener global de clique, ramo data-action=offer_accept: `track('offer_click', { offer_id: item })`
+
+**Elementos no app.** EL-36, EL-38 (ver Mapa por tela).
+
 
 **GTM.** Acionador `CE · offer_click`, tag `GA4 · offer_click`. Owner: Marketing Digital.
 
@@ -758,6 +800,9 @@ window.dataLayer.push({
 
 - `index.html`, linha 652, listener global de clique, ramo data-action=card_request: `track('card_request', { card_tier: item })`
 
+**Elementos no app.** EL-60, EL-61 (ver Mapa por tela).
+
+
 **GTM.** Acionador `CE · card_request`, tag `GA4 · card_request`. Owner: Produto Cartões.
 
 ## investment_intent
@@ -794,6 +839,9 @@ window.dataLayer.push({
 **Onde está no código**
 
 - `index.html`, linha 654, listener global de clique, ramo data-action=investment_intent: `track('investment_intent', { product_id: item })`
+
+**Elementos no app.** EL-63, EL-64, EL-65, EL-66 (ver Mapa por tela).
+
 
 **GTM.** Acionador `CE · investment_intent`, tag `GA4 · investment_intent`. Owner: Produto Investimentos.
 
@@ -834,6 +882,9 @@ window.dataLayer.push({
 
 - `index.html`, linha 646, listener global de clique, ramo data-action=lead: `track('generate_lead', { lead_type: item, page_path: '/' + S.route })`
 
+**Elementos no app.** EL-08, EL-11 (ver Mapa por tela).
+
+
 **GTM.** Acionador `CE · generate_lead`, tag `GA4 · generate_lead`. Owner: Marketing Aquisição.
 
 ## pix_start
@@ -871,6 +922,9 @@ window.dataLayer.push({
 
 - `index.html`, linha 781, listener focusin de #pix-form: `track('pix_start', { page_path: '/pix' })`
 
+**Elementos no app.** EL-48 (ver Mapa por tela).
+
+
 **GTM.** Acionador `CE · pix_start`, tag `GA4 · pix_start`. Owner: Produto Pix.
 
 ## pix_error
@@ -907,6 +961,9 @@ window.dataLayer.push({
 **Onde está no código**
 
 - `index.html`, linha 789, listener submit de #pix-form, ramo de erro: `track('pix_error', { error_type: err[0] })`
+
+**Elementos no app.** EL-49 (ver Mapa por tela).
+
 
 **GTM.** Acionador `CE · pix_error`, tag `GA4 · pix_error`. Owner: Produto Pix.
 
@@ -949,6 +1006,9 @@ window.dataLayer.push({
 
 - `index.html`, linha 800, listener submit de #pix-form, ramo de sucesso: `track('pix_review', { value: v, currency: 'BRL', pix_key_type: S.pending.tipo })`
 
+**Elementos no app.** EL-50 (ver Mapa por tela).
+
+
 **GTM.** Acionador `CE · pix_review`, tag `GA4 · pix_review`. Owner: Produto Pix.
 
 ## pix_edit
@@ -985,6 +1045,9 @@ window.dataLayer.push({
 **Onde está no código**
 
 - `index.html`, linha 802, listener de clique de #pix-corrigir: `track('pix_edit', { step: 'revisao' })`
+
+**Elementos no app.** EL-52 (ver Mapa por tela).
+
 
 **GTM.** Acionador `CE · pix_edit`, tag `GA4 · pix_edit`. Owner: Produto Pix.
 
@@ -1029,6 +1092,9 @@ window.dataLayer.push({
 
 - `index.html`, linha 817, listener de clique de #pix-confirmar: `track('pix_success', { transaction_id: id, value: p.v, currency: 'BRL', pix_key_type: p.tipo })`
 
+**Elementos no app.** EL-51 (ver Mapa por tela).
+
+
 **GTM.** Acionador `CE · pix_success`, tag `GA4 · pix_success`. Owner: Produto Pix.
 
 ## pix_restart
@@ -1060,5 +1126,8 @@ window.dataLayer.push({
 **Onde está no código**
 
 - `index.html`, linha 820, listener de clique de #pix-novo: `track('pix_restart', {})`
+
+**Elementos no app.** EL-54 (ver Mapa por tela).
+
 
 **GTM.** Acionador `CE · pix_restart`, tag `GA4 · pix_restart`. Owner: Produto Pix.

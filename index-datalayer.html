@@ -1,0 +1,947 @@
+<!doctype html>
+<!-- Gerado por tools/gerar_artefatos.py a partir do index.html. Não edite à mão. -->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Banco Nuzzi dataLayer</title>
+<meta name="description" content="App de banco fictício para testes de tagueamento e dataLayer.">
+<script>
+  // dataLayer inicializado antes de qualquer tag.
+  window.dataLayer = window.dataLayer || [];
+</script>
+<script>
+  // Painel do dataLayer: intercepta cada push e mostra no momento do disparo.
+  (function () {
+    var META = {"page_view": {"when": "Ao abrir o app e a cada troca de #hash, depois da checagem de login. Sem #hash, abre /acesso (deslogado) ou /inicio (logado). Se a tela exige login e o cliente está deslogado, dispara para /entrar, e não para a tela pedida.", "rows": [{"id": "EL-01", "t": {"page_path": "/acesso", "page_type": "publico", "login_status": "logged_out"}}, {"id": "EL-04", "t": {"item_id": "acesso_entrar", "content_type": "cta"}}, {"id": "EL-05", "t": {"item_id": "acesso_pix", "target_path": "/pix"}}, {"id": "EL-13", "t": {"promotion_id": "bnr_cartao_black", "target_path": "/cartoes"}}, {"id": "EL-15", "t": {"promotion_id": "bnr_cdb_liquidez", "target_path": "/investimentos"}}, {"id": "EL-16", "t": {"page_path": "/entrar", "page_type": "login"}}, {"id": "EL-17", "t": {"item_id": "senha_voltar", "link_text": "Voltar"}}, {"id": "EL-22", "t": {"method": "senha_eletronica", "user_id": "u_8f2c41a9"}}, {"id": "EL-23", "t": {"page_path": "/inicio", "page_type": "area_logada"}}, {"id": "EL-26", "t": {"login_status": "logged_out"}}, {"id": "EL-27", "t": {"item_id": "inicio_ver_extrato"}}, {"id": "EL-28", "t": {"item_id": "atalho_pix", "content_type": "shortcut"}}, {"id": "EL-32", "t": {"item_id": "atalho_cartoes"}}, {"id": "EL-33", "t": {"item_id": "atalho_investir"}}, {"id": "EL-40", "t": {"promotion_id": "bnr_pix_agendado"}}, {"id": "EL-41", "t": {"item_id": "inicio_card_fatura"}}, {"id": "EL-42", "t": {"item_id": "inicio_extrato_completo"}}, {"id": "EL-43", "t": {"item_id": "inicio_card_investimentos", "link_text": "Investimentos"}}, {"id": "EL-44", "t": {"page_path": "/extrato"}}, {"id": "EL-46", "t": {"page_path": "/pix"}}, {"id": "EL-47", "t": {"item_id": "pix_voltar"}}, {"id": "EL-53", "t": {"item_id": "pix_comprovante_inicio"}}, {"id": "EL-55", "t": {"page_path": "/cartoes"}}, {"id": "EL-62", "t": {"page_path": "/investimentos"}}, {"id": "EL-67", "t": {"item_id": "tab_inicio", "content_type": "tab_bar"}}, {"id": "EL-68", "t": {"item_id": "tab_extrato"}}, {"id": "EL-69", "t": {"item_id": "tab_pix"}}, {"id": "EL-70", "t": {"item_id": "tab_cartoes"}}, {"id": "EL-71", "t": {"item_id": "tab_investir"}}]}, "view_promotion": {"when": "Quando ao menos 60% do banner fica visível (IntersectionObserver), inclusive ao arrastar o carrossel até ele. Uma vez por banner a cada page_view.", "rows": [{"id": "EL-10", "t": {"promotion_id": "bnr_abra_conta", "creative_slot": "acesso_destaque_1"}}, {"id": "EL-12", "t": {"promotion_id": "bnr_cartao_black", "creative_slot": "acesso_destaque_2"}}, {"id": "EL-14", "t": {"promotion_id": "bnr_cdb_liquidez", "creative_slot": "acesso_destaque_3"}}, {"id": "EL-35", "t": {"promotion_id": "bnr_credito_preaprovado", "creative_slot": "inicio_oferta_1"}}, {"id": "EL-37", "t": {"promotion_id": "bnr_seguro_cartao", "creative_slot": "inicio_oferta_2"}}, {"id": "EL-39", "t": {"promotion_id": "bnr_pix_agendado", "creative_slot": "inicio_oferta_3"}}, {"id": "EL-59", "t": {"promotion_id": "bnr_upgrade_black", "creative_slot": "cartoes_oferta_1"}}]}, "select_promotion": {"when": "No toque em .promo-cta dentro de [data-promo]. Dispara antes da troca de tela e antes do evento da ação do botão (generate_lead, offer_click ou card_request).", "rows": [{"id": "EL-11", "t": {"promotion_id": "bnr_abra_conta", "lead_type": "abertura_conta"}}, {"id": "EL-13", "t": {"promotion_id": "bnr_cartao_black", "target_path": "/cartoes"}}, {"id": "EL-15", "t": {"promotion_id": "bnr_cdb_liquidez", "target_path": "/investimentos"}}, {"id": "EL-36", "t": {"promotion_id": "bnr_credito_preaprovado", "offer_id": "credito_preaprovado"}}, {"id": "EL-38", "t": {"promotion_id": "bnr_seguro_cartao", "offer_id": "seguro_cartao"}}, {"id": "EL-40", "t": {"promotion_id": "bnr_pix_agendado"}}, {"id": "EL-60", "t": {"promotion_id": "bnr_upgrade_black", "card_tier": "black"}}]}, "carousel_navigate": {"when": "Quando o cliente arrasta o carrossel e a rolagem para em outro banner, ou toca num indicador (.dot). O arrasto dispara uma vez, no banner em que a rolagem parou.", "rows": [{"id": "EL-09", "t": {"carousel_id": "acesso_destaques"}}, {"id": "EL-34", "t": {"carousel_id": "inicio_ofertas"}}]}, "select_content": {"when": "No toque em qualquer elemento com data-track. Dispara antes da troca de tela.", "rows": [{"id": "EL-04", "t": {"item_id": "acesso_entrar", "content_type": "cta"}}, {"id": "EL-05", "t": {"item_id": "acesso_pix", "target_path": "/pix"}}, {"id": "EL-17", "t": {"item_id": "senha_voltar", "link_text": "Voltar"}}, {"id": "EL-27", "t": {"item_id": "inicio_ver_extrato"}}, {"id": "EL-28", "t": {"item_id": "atalho_pix", "content_type": "shortcut"}}, {"id": "EL-32", "t": {"item_id": "atalho_cartoes"}}, {"id": "EL-33", "t": {"item_id": "atalho_investir"}}, {"id": "EL-41", "t": {"item_id": "inicio_card_fatura"}}, {"id": "EL-42", "t": {"item_id": "inicio_extrato_completo"}}, {"id": "EL-43", "t": {"item_id": "inicio_card_investimentos", "link_text": "Investimentos"}}, {"id": "EL-47", "t": {"item_id": "pix_voltar"}}, {"id": "EL-53", "t": {"item_id": "pix_comprovante_inicio"}}, {"id": "EL-67", "t": {"item_id": "tab_inicio", "content_type": "tab_bar"}}, {"id": "EL-68", "t": {"item_id": "tab_extrato"}}, {"id": "EL-69", "t": {"item_id": "tab_pix"}}, {"id": "EL-70", "t": {"item_id": "tab_cartoes"}}, {"id": "EL-71", "t": {"item_id": "tab_investir"}}]}, "auth_required": {"when": "Ao abrir uma tela logada deslogado: pelo atalho Pix da tela de acesso, pelos banners de Cartões e Investimentos ou por link direto. Dispara antes do page_view de /entrar.", "rows": [{"id": "EL-05", "t": {"item_id": "acesso_pix", "target_path": "/pix"}}, {"id": "EL-13", "t": {"promotion_id": "bnr_cartao_black", "target_path": "/cartoes"}}, {"id": "EL-15", "t": {"promotion_id": "bnr_cdb_liquidez", "target_path": "/investimentos"}}]}, "form_start": {"when": "No primeiro dígito da senha (teclado da tela ou do computador), uma vez a cada visita a /entrar.", "rows": [{"id": "EL-18", "t": {"form_id": "login", "page_path": "/entrar"}}]}, "login_error": {"when": "No toque em Entrar com menos de 6 dígitos (senha_incompleta) ou com a senha 000000, que simula senha incorreta (senha_incorreta).", "rows": [{"id": "EL-20", "t": {"form_id": "login", "error_type": "senha_incompleta"}}, {"id": "EL-21", "t": {"form_id": "login", "error_type": "senha_incorreta"}}]}, "login": {"when": "No toque em Entrar com 6 dígitos aceitos, antes de ir para o destino guardado (ou /inicio).", "rows": [{"id": "EL-22", "t": {"method": "senha_eletronica", "user_id": "u_8f2c41a9"}}]}, "logout": {"when": "No toque no ícone Sair (#btn-sair), no topo do Início. Dispara antes do page_view de /acesso.", "rows": [{"id": "EL-26", "t": {"login_status": "logged_out"}}]}, "toggle_balance": {"when": "No toque no ícone de olho (#btn-saldo), no topo do Início.", "rows": [{"id": "EL-24", "t": {}}]}, "statement_filter": {"when": "No toque num filtro do extrato (Tudo, Entradas, Saídas) diferente do filtro atual.", "rows": [{"id": "EL-45", "t": {}}]}, "quick_action": {"when": "No toque em Ajuda, Trocar conta, Token, Bloquear cartão, Esqueci, Notificações, Pagar, Transferir, Recarga, Cartão virtual ou Ajustar limite. Os atalhos com link (Pix, Cartões, Investir) geram select_content.", "rows": [{"id": "EL-02", "t": {"action_id": "ajuda", "page_path": "/acesso"}}, {"id": "EL-03", "t": {"action_id": "trocar_conta", "page_path": "/acesso"}}, {"id": "EL-06", "t": {"action_id": "token", "page_path": "/acesso"}}, {"id": "EL-07", "t": {"action_id": "bloquear_cartao", "page_path": "/acesso"}}, {"id": "EL-19", "t": {"action_id": "esqueci_senha", "page_path": "/entrar"}}, {"id": "EL-25", "t": {"action_id": "notificacoes", "page_path": "/inicio"}}, {"id": "EL-29", "t": {"action_id": "pagar_boleto", "page_path": "/inicio"}}, {"id": "EL-30", "t": {"action_id": "transferir", "page_path": "/inicio"}}, {"id": "EL-31", "t": {"action_id": "recarga", "page_path": "/inicio"}}, {"id": "EL-56", "t": {"action_id": "cartao_virtual", "page_path": "/cartoes"}}, {"id": "EL-57", "t": {"action_id": "bloquear_cartao", "page_path": "/cartoes"}}, {"id": "EL-58", "t": {"action_id": "ajustar_limite", "page_path": "/cartoes"}}]}, "offer_click": {"when": "No toque em 'Simular parcelas' ou 'Contratar seguro' nos banners do Início, logo depois de select_promotion.", "rows": [{"id": "EL-36", "t": {"promotion_id": "bnr_credito_preaprovado", "offer_id": "credito_preaprovado"}}, {"id": "EL-38", "t": {"promotion_id": "bnr_seguro_cartao", "offer_id": "seguro_cartao"}}]}, "card_request": {"when": "No toque em 'Pedir o Black' (banner, logo depois de select_promotion) ou em 'Pedir adicional' na tela Cartões.", "rows": [{"id": "EL-60", "t": {"promotion_id": "bnr_upgrade_black", "card_tier": "black"}}, {"id": "EL-61", "t": {"card_tier": "adicional"}}]}, "investment_intent": {"when": "No toque em Investir num produto da tela Investimentos.", "rows": [{"id": "EL-63", "t": {"product_id": "cdb_liquidez"}}, {"id": "EL-64", "t": {"product_id": "lci_90"}}, {"id": "EL-65", "t": {"product_id": "cdb_ipca_2a"}}, {"id": "EL-66", "t": {"product_id": "fundo_di"}}]}, "generate_lead": {"when": "No toque em 'Abrir conta' (atalho) ou 'Quero abrir' (banner, logo depois de select_promotion) na tela de acesso.", "rows": [{"id": "EL-08", "t": {"lead_type": "abertura_conta", "page_path": "/acesso"}}, {"id": "EL-11", "t": {"promotion_id": "bnr_abra_conta", "lead_type": "abertura_conta"}}]}, "pix_start": {"when": "No primeiro foco em qualquer campo de #pix-form, uma vez a cada abertura do Pix.", "rows": [{"id": "EL-48", "t": {"page_path": "/pix"}}]}, "pix_error": {"when": "No toque em Continuar sem chave, com valor zero ou inválido, ou acima do saldo.", "rows": [{"id": "EL-49", "t": {}}]}, "pix_review": {"when": "No toque em Continuar com chave e valor válidos.", "rows": [{"id": "EL-50", "t": {"currency": "BRL"}}]}, "pix_edit": {"when": "No toque em 'Corrigir dados' (#pix-corrigir).", "rows": [{"id": "EL-52", "t": {"step": "revisao"}}]}, "pix_success": {"when": "No toque em 'Confirmar Pix' (#pix-confirmar), depois de debitar o saldo e gerar o identificador.", "rows": [{"id": "EL-51", "t": {"currency": "BRL"}}]}, "pix_restart": {"when": "No toque em 'Fazer outro Pix' (#pix-novo).", "rows": [{"id": "EL-54", "t": {}}]}};
+    var dl = window.dataLayer = window.dataLayer || [];
+    var queue = [], log = [];
+    var orig = dl.push;
+    dl.push = function () {
+      var out = orig.apply(dl, arguments);
+      for (var i = 0; i < arguments.length; i++) queue.push({ time: new Date(), p: arguments[i] });
+      if (document.readyState !== 'loading') flush();
+      return out;
+    };
+    function pad(n) { return String(n).padStart(2, '0'); }
+    // Escolhe no mapa os elementos cujos valores fixos batem com o push (ex.: item_id, promotion_id, page_path).
+    function pick(rows, p) {
+      var best = 0, out = [];
+      rows.forEach(function (r) {
+        var keys = Object.keys(r.t), score = 0, clash = false;
+        keys.forEach(function (k) { if (k in p) { if (String(p[k]) === r.t[k]) score++; else clash = true; } });
+        if (clash) return;
+        if (score > best) { best = score; out = [r.id]; } else if (score === best) out.push(r.id);
+      });
+      return out;
+    }
+    function show(v) {
+      var keys = Object.keys(v);
+      return '{\n' + keys.map(function (k) {
+        var x = v[k];
+        return '  "' + k + '": ' + (x === undefined ? 'undefined' : JSON.stringify(x));
+      }).join(',\n') + '\n}';
+    }
+    function flush() {
+      var list = document.getElementById('dlp-list');
+      if (!list) return;
+      while (queue.length) {
+        var item = queue.shift(); log.unshift(item);
+        if (list.firstChild && list.firstChild.className === 'dlp-empty') list.innerHTML = '';
+        var m = Object.assign({}, META[item.p.event] || {});
+        var li = document.createElement('li'); li.className = 'new';
+        var head = document.createElement('div'); head.className = 'dlp-ev';
+        var b = document.createElement('b'); b.textContent = item.p.event || '(sem event)';
+        var t = document.createElement('time'); t.textContent = pad(item.time.getHours()) + ':' + pad(item.time.getMinutes()) + ':' + pad(item.time.getSeconds());
+        head.appendChild(b); head.appendChild(t); li.appendChild(head);
+        if (m.when) { var w = document.createElement('p'); w.className = 'dlp-when'; var s = document.createElement('span'); s.textContent = 'Quando dispara: '; w.appendChild(s); w.appendChild(document.createTextNode(m.when)); li.appendChild(w); }
+        m.els = pick(m.rows || [], item.p);
+        if (m.els && m.els.length) { var e = document.createElement('div'); e.className = 'dlp-els'; m.els.forEach(function (id) { var c = document.createElement('i'); c.textContent = id; e.appendChild(c); }); li.appendChild(e); }
+        var pre = document.createElement('pre'); pre.textContent = show(item.p); li.appendChild(pre);
+        list.insertBefore(li, list.firstChild);
+      }
+      document.getElementById('dlp-n').textContent = log.length;
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      flush();
+      var panel = document.getElementById('dlp'), tog = document.getElementById('dlp-toggle');
+      tog.addEventListener('click', function () { panel.classList.add('open'); tog.hidden = true; });
+      document.getElementById('dlp-close').addEventListener('click', function () { panel.classList.remove('open'); tog.hidden = false; });
+      document.getElementById('dlp-clear').addEventListener('click', function () { log.length = 0; document.getElementById('dlp-list').innerHTML = '<li class="dlp-empty">Painel limpo. Os próximos eventos aparecem aqui.</li>'; document.getElementById('dlp-n').textContent = '0'; });
+      document.getElementById('dlp-copy').addEventListener('click', function () {
+        var btn = this, text = '[\n' + dl.filter(function (x) { return x && x.event; }).map(show).join(',\n') + '\n]';
+        function fallback() { var ta = document.getElementById('dlp-fallback'); ta.value = text; ta.hidden = false; ta.focus(); ta.select(); btn.textContent = 'Selecione e copie'; }
+        try { navigator.clipboard.writeText(text).then(function () { btn.textContent = 'Copiado'; setTimeout(function () { btn.textContent = 'Copiar JSON'; }, 1800); }, fallback); } catch (err) { fallback(); }
+      });
+    });
+  })();
+</script>
+<!-- Cole aqui o snippet do Google Tag Manager (parte do <head>), por exemplo:
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+
+/* Layout: um aparelho centralizado (app de banco); no celular, o app ocupa a tela inteira.
+   Paleta de 3 cores: azul-marinho, cinza-claro e branco. Tons "suaves" são o azul-marinho com transparência. */
+:root {
+  --navy: #0B2545;
+  --gray: #E8ECF1;
+  --white: #FFFFFF;
+  --navy-70: rgba(11, 37, 69, .70);
+  --navy-12: rgba(11, 37, 69, .12);
+  --white-70: rgba(255, 255, 255, .72);
+  --white-12: rgba(255, 255, 255, .12);
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--gray); color: var(--navy); font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; line-height: 1.15; letter-spacing: -.01em; text-wrap: balance; }
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; border-radius: 8px; }
+.access :focus-visible, .home-head :focus-visible, .s-dark :focus-visible { outline-color: var(--white); }
+
+.stage { min-height: 100vh; display: flex; justify-content: center; align-items: center; padding-block: 24px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.device { position: relative; width: min(400px, 100%); height: min(820px, calc(100vh - 48px)); min-height: 600px; background: var(--gray); border-radius: 36px; overflow: hidden; box-shadow: 0 18px 50px var(--navy-12); border: 1px solid var(--navy-12); display: flex; flex-direction: column; }
+.demo-tag { position: absolute; z-index: 30; top: 10px; left: 50%; transform: translateX(-50%); font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--navy); background: var(--white); border: 1px solid var(--navy-12); padding: 3px 10px; border-radius: 999px; white-space: nowrap; pointer-events: none; }
+
+.screen { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.scroll { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; }
+.screen.with-tabs .scroll { padding-bottom: 84px; }
+
+/* ---------- Acesso (deslogado) ---------- */
+.access { background: var(--navy); color: var(--white); }
+.access .scroll { display: flex; flex-direction: column; gap: 22px; padding: 44px 20px 24px; }
+.brandbar { display: flex; align-items: center; justify-content: space-between; }
+.logo { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -.02em; }
+.icon-btn { width: 40px; height: 40px; border-radius: 999px; display: inline-grid; place-items: center; background: transparent; border: 1px solid transparent; }
+.access .icon-btn, .home-head .icon-btn { color: var(--white); background: var(--white-12); }
+.icon-btn svg { width: 20px; height: 20px; }
+.greet-big { font-family: var(--font-display); font-size: 30px; font-weight: 700; }
+.saved { display: flex; align-items: center; gap: 12px; background: var(--white-12); border: 1px solid var(--white-12); border-radius: 18px; padding: 14px; }
+.avatar { width: 44px; height: 44px; border-radius: 999px; background: var(--white); color: var(--navy); display: grid; place-items: center; font-weight: 800; flex: none; }
+.saved .who { flex: 1; min-width: 0; }
+.saved .who b { display: block; }
+.saved .who span { font-size: 13px; color: var(--white-70); font-family: var(--font-mono); }
+.link-btn { background: none; border: 0; padding: 4px 0; font-weight: 700; font-size: 13.5px; color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.cta { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 15px 18px; border-radius: 14px; border: 0; background: var(--navy); color: var(--white); font-weight: 800; font-size: 16px; }
+.access .cta { background: var(--white); color: var(--navy); }
+.cta.ghost { background: var(--white); color: var(--navy); border: 1px solid var(--navy-12); }
+.pub-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.pub { display: grid; justify-items: center; gap: 6px; background: none; border: 0; color: var(--white); font-size: 12px; font-weight: 600; text-align: center; padding: 0; }
+.pub .ic { width: 52px; height: 52px; border-radius: 16px; background: var(--white-12); display: grid; place-items: center; }
+.pub .ic svg { width: 22px; height: 22px; }
+.section-label { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--navy-70); }
+.access .section-label { color: var(--white-70); }
+
+/* ---------- Carrossel ---------- */
+.carousel { display: grid; gap: 10px; }
+.track { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; scroll-behavior: smooth; }
+.track::-webkit-scrollbar { display: none; }
+.slide { flex: 0 0 100%; scroll-snap-align: start; border-radius: 18px; padding: 18px; min-height: 150px; display: grid; gap: 8px; align-content: start; }
+.slide h3 { font-size: 19px; }
+.slide p { font-size: 13.5px; }
+.slide .sbtn { justify-self: start; margin-top: 4px; padding: 9px 14px; border-radius: 999px; border: 0; font-weight: 800; font-size: 13.5px; display: inline-block; }
+.slide .tag { justify-self: start; font-size: 10.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; }
+.slide.s-light { background: var(--white); color: var(--navy); border: 1px solid var(--navy-12); }
+.slide.s-light p { color: var(--navy-70); }
+.slide.s-light .sbtn, .slide.s-light .tag { background: var(--navy); color: var(--white); }
+.slide.s-dark { background: var(--navy); color: var(--white); }
+.slide.s-dark p { color: var(--white-70); }
+.slide.s-dark .sbtn, .slide.s-dark .tag, .slide.s-glass .sbtn, .slide.s-glass .tag { background: var(--white); color: var(--navy); }
+.slide.s-glass { background: var(--white-12); color: var(--white); border: 1px solid var(--white-12); }
+.slide.s-glass p { color: var(--white-70); }
+.dots { display: flex; gap: 6px; justify-content: center; }
+.dot { width: 22px; height: 5px; border-radius: 999px; border: 0; padding: 0; background: var(--navy-12); }
+.dot[aria-current="true"] { background: var(--navy); }
+.access .dot { background: var(--white-12); }
+.access .dot[aria-current="true"] { background: var(--white); }
+
+/* ---------- Senha ---------- */
+.pwd { background: var(--white); }
+.pwd .topbar { display: flex; align-items: center; gap: 8px; padding: 40px 12px 8px; }
+.pwd .topbar .icon-btn { color: var(--navy); }
+.pwd .body { flex: 1; display: flex; flex-direction: column; gap: 18px; padding: 8px 20px 20px; }
+.pwd h1 { font-size: 24px; }
+.acct-line { color: var(--navy-70); font-size: 14px; }
+.acct-line b { color: var(--navy); font-family: var(--font-mono); font-weight: 500; }
+.pin { display: flex; gap: 12px; justify-content: center; padding: 10px 0; }
+.pin i { width: 14px; height: 14px; border-radius: 999px; border: 2px solid var(--navy); }
+.pin i.on { background: var(--navy); }
+.pin.shake { animation: shake .35s; }
+@keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.keypad { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: auto; }
+.key { height: 56px; border-radius: 14px; border: 0; background: var(--gray); color: var(--navy); font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.key:active { background: var(--navy-12); }
+.key.ghost { background: transparent; font-size: 14px; color: var(--navy-70); }
+.err { color: var(--navy); font-weight: 800; font-size: 14px; text-align: center; background: var(--gray); border-radius: 10px; padding: 8px 10px; }
+.err::before { content: "! "; }
+.hint { font-size: 12.5px; color: var(--navy-70); text-align: center; }
+
+/* ---------- Área logada ---------- */
+.home-head { background: var(--navy); color: var(--white); padding: 40px 18px 22px; display: grid; gap: 16px; }
+.head-row { display: flex; align-items: center; gap: 10px; }
+.head-row .who { flex: 1; min-width: 0; }
+.head-row .who b { display: block; font-size: 16px; }
+.head-row .who .acct { display: block; font-size: 12.5px; color: var(--white-70); font-family: var(--font-mono); }
+.head-row .avatar { width: 40px; height: 40px; font-size: 14px; }
+.balance .lbl { font-size: 13px; color: var(--white-70); font-weight: 600; }
+.balance .amt { font-family: var(--font-display); font-weight: 700; font-size: 32px; font-variant-numeric: tabular-nums; }
+.balance a { font-size: 13.5px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+
+.content { display: grid; gap: 18px; padding: 18px; }
+.shortcuts { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; margin: 0 -18px; padding: 0 18px 2px; }
+.shortcuts::-webkit-scrollbar { display: none; }
+.sc { flex: 0 0 auto; width: 72px; display: grid; justify-items: center; gap: 6px; background: none; border: 0; padding: 0; font-size: 12px; font-weight: 700; text-align: center; color: var(--navy); }
+.sc .ic { width: 56px; height: 56px; border-radius: 18px; background: var(--white); display: grid; place-items: center; color: var(--navy); }
+.sc .ic svg { width: 24px; height: 24px; }
+.card { background: var(--white); border-radius: 18px; padding: 16px; display: grid; gap: 10px; }
+.card-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.card-head h2 { font-size: 16px; font-family: var(--font-body); font-weight: 800; letter-spacing: 0; }
+.card-head a, .card-head button { font-size: 13px; font-weight: 800; color: var(--navy); background: none; border: 0; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+.big { font-family: var(--font-display); font-weight: 700; font-size: 24px; font-variant-numeric: tabular-nums; }
+.muted { color: var(--navy-70); font-size: 13px; }
+.meter { height: 7px; border-radius: 999px; background: var(--gray); overflow: hidden; }
+.meter i { display: block; height: 100%; width: 51%; background: var(--navy); border-radius: 999px; }
+.legend { display: flex; justify-content: space-between; font-size: 12px; color: var(--navy-70); font-variant-numeric: tabular-nums; }
+
+.tx { list-style: none; margin: 0; padding: 0; display: grid; }
+.tx li { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--gray); }
+.tx li:last-child { border-bottom: 0; }
+.tx .tic { width: 36px; height: 36px; border-radius: 12px; background: var(--gray); display: grid; place-items: center; font-weight: 800; font-size: 13px; color: var(--navy); }
+.tx .who { min-width: 0; }
+.tx .who b { display: block; font-weight: 700; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tx .who span { font-size: 12px; color: var(--navy-70); }
+.tx .v { font-weight: 800; font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.appbar { display: flex; align-items: center; gap: 8px; padding: 40px 12px 10px; background: var(--white); border-bottom: 1px solid var(--navy-12); }
+.appbar h1 { font-size: 20px; flex: 1; }
+.appbar .icon-btn { color: var(--navy); }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { padding: 7px 14px; border-radius: 999px; border: 1px solid var(--navy-12); background: var(--white); color: var(--navy); font-weight: 700; font-size: 13px; }
+.chip[aria-pressed="true"] { background: var(--navy); color: var(--white); border-color: var(--navy); }
+
+.plastic { aspect-ratio: 1.586; max-width: 100%; border-radius: 18px; background: var(--navy); color: var(--white); padding: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+.plastic .chipc { width: 36px; height: 26px; border-radius: 6px; background: var(--gray); }
+.plastic .row { display: flex; justify-content: space-between; align-items: end; font-family: var(--font-mono); font-size: 13px; letter-spacing: .06em; }
+.plastic .tier { font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: 0; }
+.actions-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.act { padding: 12px 6px; border-radius: 14px; border: 0; background: var(--white); color: var(--navy); font-weight: 700; font-size: 12.5px; display: grid; justify-items: center; gap: 6px; }
+.act svg { width: 20px; height: 20px; }
+.prod { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--gray); }
+.prod:last-child { border-bottom: 0; }
+.prod b { display: block; font-size: 14.5px; }
+.prod span { font-size: 12.5px; color: var(--navy-70); }
+.pill-btn { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--navy); background: var(--white); color: var(--navy); font-weight: 800; font-size: 13px; }
+
+.field { display: grid; gap: 6px; }
+.field label { font-weight: 700; font-size: 13.5px; }
+.field input { width: 100%; padding: 13px 14px; border-radius: 12px; border: 1px solid var(--navy-12); background: var(--white); color: var(--navy); font-size: 16px; }
+.field input:focus { outline: none; border-color: var(--navy); box-shadow: 0 0 0 3px var(--navy-12); }
+.field .h { font-size: 12px; color: var(--navy-70); }
+.steps { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; }
+.steps li { flex: 1; height: 4px; border-radius: 999px; background: var(--navy-12); }
+.steps li.on { background: var(--navy); }
+.review { margin: 0; border-radius: 14px; overflow: hidden; background: var(--white); }
+.review div { display: flex; justify-content: space-between; gap: 12px; padding: 11px 14px; border-bottom: 1px solid var(--gray); font-size: 14px; }
+.review div:last-child { border-bottom: 0; }
+.review dt { color: var(--navy-70); }
+.review dd { margin: 0; font-weight: 800; text-align: right; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.ok-mark { width: 56px; height: 56px; border-radius: 999px; background: var(--navy); color: var(--white); display: grid; place-items: center; }
+
+.tabbar { position: absolute; left: 0; right: 0; bottom: 0; z-index: 20; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); background: var(--white); border-top: 1px solid var(--navy-12); padding: 8px 6px calc(10px + env(safe-area-inset-bottom, 0px)); }
+.tab { display: grid; justify-items: center; gap: 3px; font-size: 11px; font-weight: 700; color: var(--navy-70); padding: 4px 0; }
+.tab svg { width: 22px; height: 22px; }
+.tab[aria-current="page"] { color: var(--navy); font-weight: 800; }
+.tab[aria-current="page"]:not(.pix-tab) svg { stroke-width: 2.4; }
+.tab.pix-tab .pic { width: 44px; height: 44px; margin-top: -20px; border-radius: 16px; background: var(--navy); color: var(--white); display: grid; place-items: center; box-shadow: 0 6px 16px var(--navy-12); }
+
+.toast { position: absolute; z-index: 40; left: 16px; right: 16px; bottom: 96px; background: var(--navy); color: var(--white); padding: 11px 14px; border-radius: 12px; font-weight: 700; font-size: 13.5px; text-align: center; }
+
+@media (max-width: 520px) {
+  .stage { padding: 0; }
+  .device { width: 100%; height: 100vh; height: 100dvh; min-height: 0; border-radius: 0; border: 0; box-shadow: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+
+/* ---------- Painel do dataLayer (só no index-datalayer.html) ---------- */
+.stage { gap: 28px; }
+.dlp { display: none; flex-direction: column; gap: 10px; width: 420px; height: min(820px, calc(100vh - 48px)); min-height: 600px; background: var(--white); border: 1px solid var(--navy-12); border-radius: 24px; padding: 16px; color: var(--navy); }
+.dlp-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dlp-head strong { font-family: var(--font-mono); font-size: 15px; }
+.dlp-head .n { font-family: var(--font-mono); font-size: 12px; background: var(--navy); color: var(--white); border-radius: 999px; padding: 1px 8px; }
+.dlp-btns { margin-left: auto; display: flex; gap: 6px; }
+.dlp-btns button { border: 1px solid var(--navy-12); background: var(--gray); color: var(--navy); border-radius: 8px; padding: 6px 10px; font-size: 12.5px; font-weight: 700; }
+.dlp-note { font-size: 12.5px; color: var(--navy-70); background: var(--gray); border-radius: 10px; padding: 8px 10px; }
+.dlp-list { list-style: none; margin: 0; padding: 0; overflow: auto; flex: 1; min-height: 0; display: grid; gap: 8px; align-content: start; }
+.dlp-list li { border: 1px solid var(--navy-12); border-radius: 12px; padding: 10px 12px; display: grid; gap: 6px; min-width: 0; }
+.dlp-list li.new { animation: dlpin .5s ease-out; }
+@keyframes dlpin { from { background: var(--gray); } to { background: var(--white); } }
+.dlp-ev { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.dlp-ev b { font-family: var(--font-mono); font-size: 13px; }
+.dlp-ev time { font-family: var(--font-mono); font-size: 11.5px; color: var(--navy-70); }
+.dlp-when { font-size: 12.5px; line-height: 1.45; }
+.dlp-when span { font-weight: 800; }
+.dlp-els { display: flex; flex-wrap: wrap; gap: 4px; }
+.dlp-els i { font-style: normal; font-family: var(--font-mono); font-size: 11px; background: var(--gray); border-radius: 6px; padding: 1px 6px; }
+.dlp-list pre { margin: 0; font-family: var(--font-mono); font-size: 11.5px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--gray); border-radius: 8px; padding: 8px; }
+.dlp-empty { color: var(--navy-70); font-size: 13px; }
+.dlp-toggle { position: fixed; z-index: 60; right: calc(16px + env(safe-area-inset-right, 0px)); bottom: calc(96px + env(safe-area-inset-bottom, 0px)); padding: 10px 14px; border-radius: 999px; border: 0; background: var(--navy); color: var(--white); font-family: var(--font-mono); font-size: 12.5px; box-shadow: 0 8px 24px var(--navy-12); }
+#dlp-fallback { width: 100%; height: 110px; font-family: var(--font-mono); font-size: 11.5px; border-radius: 8px; border: 1px solid var(--navy-12); }
+@media (min-width: 1000px) { .dlp { display: flex; } .dlp-toggle, #dlp-close { display: none; } }
+@media (max-width: 999px) {
+  .dlp.open { display: flex; position: fixed; z-index: 70; inset: 0; width: auto; height: auto; min-height: 0; border-radius: 0; padding: calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-pix" viewBox="0 0 24 24"><path d="M12 3l9 9-9 9-9-9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 12h7M12 8.5v7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18" stroke="currentColor" stroke-width="1.8"/></symbol>
+  <symbol id="i-grow" viewBox="0 0 24 24"><path d="M4 18l6-6 4 4 6-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 8h5v5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="4" cy="6" r="1.2" fill="currentColor"/><circle cx="4" cy="12" r="1.2" fill="currentColor"/><circle cx="4" cy="18" r="1.2" fill="currentColor"/></symbol>
+  <symbol id="i-bar" viewBox="0 0 24 24"><path d="M4 6v12M7 6v12M10 6v12M14 6v12M16 6v12M20 6v12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M4 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M11 18h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M10.6 5.6c.5-.1.9-.1 1.4-.1 6.4 0 10 6.5 10 6.5s-1.1 2-3.2 3.8M6.2 7.2C3.6 9 2 12 2 12s3.6 6.5 10 6.5c1.6 0 3-.4 4.2-1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0112 0v5l1.5 2h-15z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 20.5h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-exit" viewBox="0 0 24 24"><path d="M14 4h4a2 2 0 012 2v12a2 2 0 01-2 2h-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M10 8l-4 4 4 4M6 12h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9.5 9.5a2.5 2.5 0 114 2c-1 .6-1.5 1.1-1.5 2.2M12 17h.01" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V7a4 4 0 018 0v3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 12h9M18 12v3M21 12v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-del" viewBox="0 0 24 24"><path d="M9 6h11v12H9l-6-6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10l4 4M16 10l-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+</svg>
+
+<div class="stage">
+  <div class="device" id="app">
+    <span class="demo-tag">Banco fictício · ambiente de teste</span>
+
+    <!-- ===================== ACESSO (deslogado) ===================== -->
+    <section class="screen access" data-page="acesso" hidden>
+      <div class="scroll">
+        <div class="brandbar">
+          <span class="logo">
+            <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="9" fill="var(--white)"/><path d="M10 23V9.5l12 13V9" stroke="var(--navy)" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Nuzzi
+          </span>
+          <button class="icon-btn" type="button" data-action="quick_action" data-item="ajuda" aria-label="Ajuda"><svg aria-hidden="true"><use href="#i-help"/></svg></button>
+        </div>
+
+        <p class="greet-big"><span class="js-greeting">Olá</span>, Marina</p>
+
+        <div class="saved">
+          <span class="avatar" aria-hidden="true">MA</span>
+          <div class="who"><b>Marina Alves</b><span>Ag 0001 · CC 12345-6</span></div>
+          <button class="link-btn" type="button" data-action="quick_action" data-item="trocar_conta">Trocar</button>
+        </div>
+
+        <a class="cta" href="#entrar" data-track="acesso_entrar" data-track-type="cta">Acessar minha conta</a>
+
+        <div class="pub-grid">
+          <a class="pub" href="#pix" data-track="acesso_pix" data-track-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-pix"/></svg></span>Pix</a>
+          <button class="pub" type="button" data-action="quick_action" data-item="token"><span class="ic"><svg aria-hidden="true"><use href="#i-key"/></svg></span>Token</button>
+          <button class="pub" type="button" data-action="quick_action" data-item="bloquear_cartao"><span class="ic"><svg aria-hidden="true"><use href="#i-lock"/></svg></span>Bloquear cartão</button>
+          <button class="pub" type="button" data-action="lead" data-item="abertura_conta"><span class="ic"><svg aria-hidden="true"><use href="#i-plus"/></svg></span>Abrir conta</button>
+        </div>
+
+        <div class="carousel" data-carousel="acesso_destaques">
+          <p class="section-label">Para você</p>
+          <div class="track">
+            <div class="slide s-glass" data-promo="bnr_abra_conta" data-promo-name="Abra sua conta em 5 minutos" data-slot="acesso_destaque_1">
+              <span class="tag">Novo cliente</span>
+              <h3>Abra sua conta em 5 minutos</h3>
+              <p>Conta sem mensalidade, Pix ilimitado e cartão virtual no mesmo dia.</p>
+              <button class="sbtn promo-cta" type="button" data-action="lead" data-item="abertura_conta">Quero abrir</button>
+            </div>
+            <div class="slide s-glass" data-promo="bnr_cartao_black" data-promo-name="Cartão Nuzzi Black" data-slot="acesso_destaque_2">
+              <span class="tag">Cartões</span>
+              <h3>Nuzzi Black: 2,1 pontos por dólar</h3>
+              <p>Pontos sem validade e anuidade zerada com R$ 5.000 por mês na fatura.</p>
+              <a class="sbtn promo-cta" href="#cartoes">Conhecer o Black</a>
+            </div>
+            <div class="slide s-glass" data-promo="bnr_cdb_liquidez" data-promo-name="CDB 104% do CDI" data-slot="acesso_destaque_3">
+              <span class="tag">Investimentos</span>
+              <h3>CDB com 104% do CDI e resgate quando quiser</h3>
+              <p>A partir de R$ 1, com garantia do FGC. Taxa fictícia.</p>
+              <a class="sbtn promo-cta" href="#investimentos">Ver investimentos</a>
+            </div>
+          </div>
+          <div class="dots" role="group" aria-label="Escolher destaque"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SENHA ===================== -->
+    <section class="screen pwd" data-page="entrar" hidden>
+      <div class="topbar">
+        <a class="icon-btn" href="#acesso" data-track="senha_voltar" data-track-type="cta" aria-label="Voltar"><svg aria-hidden="true"><use href="#i-back"/></svg></a>
+      </div>
+      <div class="body">
+        <div style="display:grid;gap:6px">
+          <h1>Digite sua senha eletrônica</h1>
+          <p class="acct-line">Marina Alves · <b>Ag 0001 · CC 12345-6</b></p>
+          <p class="acct-line" id="login-context" hidden></p>
+        </div>
+        <div class="pin" id="pin" aria-live="polite" aria-label="0 de 6 dígitos"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <p class="err" id="login-error" role="alert" hidden></p>
+        <p class="hint">Teste: qualquer senha de 6 dígitos entra. 000000 simula senha incorreta.</p>
+        <div class="keypad" id="keypad" aria-label="Teclado numérico">
+          <button class="key" type="button" data-key="1">1</button><button class="key" type="button" data-key="2">2</button><button class="key" type="button" data-key="3">3</button>
+          <button class="key" type="button" data-key="4">4</button><button class="key" type="button" data-key="5">5</button><button class="key" type="button" data-key="6">6</button>
+          <button class="key" type="button" data-key="7">7</button><button class="key" type="button" data-key="8">8</button><button class="key" type="button" data-key="9">9</button>
+          <button class="key ghost" type="button" data-action="quick_action" data-item="esqueci_senha">Esqueci</button>
+          <button class="key" type="button" data-key="0">0</button>
+          <button class="key ghost" type="button" data-key="del" aria-label="Apagar"><svg width="24" height="24" aria-hidden="true"><use href="#i-del"/></svg></button>
+        </div>
+        <button class="cta" type="button" id="btn-entrar">Entrar</button>
+      </div>
+    </section>
+
+    <!-- ===================== INÍCIO (logado) ===================== -->
+    <section class="screen with-tabs" data-page="inicio" hidden>
+      <div class="scroll">
+        <div class="home-head">
+          <div class="head-row">
+            <span class="avatar" aria-hidden="true">MA</span>
+            <div class="who"><b><span class="js-greeting">Olá</span>, Marina</b><span class="acct">Ag 0001 · CC 12345-6</span></div>
+            <button class="icon-btn" type="button" id="btn-saldo" data-action="toggle_balance" aria-pressed="false" aria-label="Ocultar saldo"><svg aria-hidden="true"><use href="#i-eye"/></svg></button>
+            <button class="icon-btn" type="button" data-action="quick_action" data-item="notificacoes" aria-label="Notificações"><svg aria-hidden="true"><use href="#i-bell"/></svg></button>
+            <button class="icon-btn" type="button" id="btn-sair" aria-label="Sair"><svg aria-hidden="true"><use href="#i-exit"/></svg></button>
+          </div>
+          <div class="balance">
+            <p class="lbl">Saldo em conta</p>
+            <p class="amt js-saldo">R$ 0,00</p>
+            <a href="#extrato" data-track="inicio_ver_extrato" data-track-type="cta">Ver extrato</a>
+          </div>
+        </div>
+        <div class="content">
+          <div class="shortcuts" role="list" aria-label="Atalhos">
+            <a class="sc" role="listitem" href="#pix" data-track="atalho_pix" data-track-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-pix"/></svg></span>Pix</a>
+            <button class="sc" role="listitem" type="button" data-action="quick_action" data-item="pagar_boleto"><span class="ic"><svg aria-hidden="true"><use href="#i-bar"/></svg></span>Pagar</button>
+            <button class="sc" role="listitem" type="button" data-action="quick_action" data-item="transferir"><span class="ic"><svg aria-hidden="true"><use href="#i-send"/></svg></span>Transferir</button>
+            <button class="sc" role="listitem" type="button" data-action="quick_action" data-item="recarga"><span class="ic"><svg aria-hidden="true"><use href="#i-phone"/></svg></span>Recarga</button>
+            <a class="sc" role="listitem" href="#cartoes" data-track="atalho_cartoes" data-track-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-card"/></svg></span>Cartões</a>
+            <a class="sc" role="listitem" href="#investimentos" data-track="atalho_investir" data-track-type="shortcut"><span class="ic"><svg aria-hidden="true"><use href="#i-grow"/></svg></span>Investir</a>
+          </div>
+
+          <div class="carousel" data-carousel="inicio_ofertas">
+            <div class="track">
+              <div class="slide s-dark" data-promo="bnr_credito_preaprovado" data-promo-name="Crédito pessoal pré-aprovado" data-slot="inicio_oferta_1">
+                <span class="tag">Pré-aprovado</span>
+                <h3>R$ 30.000 de crédito pessoal disponível</h3>
+                <p>A partir de 1,49% ao mês, em até 48 parcelas.</p>
+                <button class="sbtn promo-cta" type="button" data-action="offer_accept" data-item="credito_preaprovado">Simular parcelas</button>
+              </div>
+              <div class="slide s-light" data-promo="bnr_seguro_cartao" data-promo-name="Seguro cartão protegido" data-slot="inicio_oferta_2">
+                <span class="tag">Novo</span>
+                <h3>Proteja seu cartão contra perda e roubo</h3>
+                <p>R$ 6,90 por mês, com reembolso de compras até 72 horas antes do bloqueio.</p>
+                <button class="sbtn promo-cta" type="button" data-action="offer_accept" data-item="seguro_cartao">Contratar seguro</button>
+              </div>
+              <div class="slide s-light" data-promo="bnr_pix_agendado" data-promo-name="Pix agendado sem tarifa" data-slot="inicio_oferta_3">
+                <span class="tag">Pix</span>
+                <h3>Agende Pix para até 12 meses, sem tarifa</h3>
+                <p>Aluguel, mesada e contas recorrentes saem na data certa.</p>
+                <a class="sbtn promo-cta" href="#pix">Agendar um Pix</a>
+              </div>
+            </div>
+            <div class="dots" role="group" aria-label="Escolher oferta"></div>
+          </div>
+
+          <a class="card" href="#cartoes" data-track="inicio_card_fatura" data-track-type="card" data-track-text="Cartão Nuzzi Mais">
+            <div class="card-head"><h2>Cartão Nuzzi Mais</h2><span class="muted">vence 10/11</span></div>
+            <p class="muted">Fatura atual</p>
+            <p class="big">R$ 2.318,40</p>
+            <div class="meter" aria-hidden="true"><i></i></div>
+            <div class="legend"><span>Usado R$ 7.700,00</span><span>Limite R$ 15.000,00</span></div>
+          </a>
+
+          <div class="card">
+            <div class="card-head"><h2>Últimos lançamentos</h2><a href="#extrato" data-track="inicio_extrato_completo" data-track-type="cta">Ver tudo</a></div>
+            <ul class="tx" id="tx-resumo"></ul>
+          </div>
+
+          <a class="card" href="#investimentos" data-track="inicio_card_investimentos" data-track-type="card" data-track-text="Investimentos">
+            <div class="card-head"><h2>Investimentos</h2><span class="muted">rende 104% do CDI</span></div>
+            <p class="big js-investido">R$ 42.180,00</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== EXTRATO ===================== -->
+    <section class="screen with-tabs" data-page="extrato" hidden>
+      <div class="appbar"><h1>Extrato</h1></div>
+      <div class="scroll">
+        <div class="content">
+          <div class="chips" role="group" aria-label="Filtrar lançamentos">
+            <button class="chip" type="button" data-filter="todos" aria-pressed="true">Tudo</button>
+            <button class="chip" type="button" data-filter="entradas" aria-pressed="false">Entradas</button>
+            <button class="chip" type="button" data-filter="saidas" aria-pressed="false">Saídas</button>
+          </div>
+          <div class="card"><ul class="tx" id="tx-full"></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PIX ===================== -->
+    <section class="screen with-tabs" data-page="pix" hidden>
+      <div class="appbar"><a class="icon-btn" href="#inicio" data-track="pix_voltar" data-track-type="cta" aria-label="Voltar"><svg aria-hidden="true"><use href="#i-back"/></svg></a><h1>Pix</h1></div>
+      <div class="scroll">
+        <div class="content">
+          <ol class="steps" aria-label="Etapas do Pix"><li class="on"></li><li></li><li></li></ol>
+          <form id="pix-form" data-pix-step="1" novalidate style="display:grid;gap:14px">
+            <h2 style="font-size:20px">Para quem você quer enviar?</h2>
+            <div class="field"><label for="pix-chave">Chave Pix</label><input id="pix-chave" autocomplete="off" placeholder="E-mail, celular, CPF, CNPJ ou aleatória"><span class="h">Use uma chave inventada, como ana@exemplo.com.</span></div>
+            <div class="field"><label for="pix-valor">Valor</label><input id="pix-valor" inputmode="decimal" autocomplete="off" placeholder="R$ 0,00"><span class="h" id="pix-saldo-hint"></span></div>
+            <div class="field"><label for="pix-desc">Mensagem (opcional)</label><input id="pix-desc" maxlength="60" autocomplete="off" placeholder="Ex.: aluguel de outubro"></div>
+            <p class="err" id="pix-error" role="alert" hidden style="text-align:left"></p>
+            <button class="cta" type="submit">Continuar</button>
+          </form>
+          <div data-pix-step="2" hidden style="display:grid;gap:14px">
+            <h2 style="font-size:20px">Confira antes de enviar</h2>
+            <dl class="review" id="pix-review"></dl>
+            <button class="cta" type="button" id="pix-confirmar">Confirmar Pix</button>
+            <button class="cta ghost" type="button" id="pix-corrigir">Corrigir dados</button>
+          </div>
+          <div data-pix-step="3" hidden style="display:grid;gap:14px;justify-items:start">
+            <div class="ok-mark"><svg width="28" height="28" aria-hidden="true"><use href="#i-check"/></svg></div>
+            <h2 style="font-size:22px" id="pix-ok-title">Pix enviado</h2>
+            <dl class="review" id="pix-receipt" style="width:100%"></dl>
+            <a class="cta" href="#inicio" data-track="pix_comprovante_inicio" data-track-type="cta">Voltar ao início</a>
+            <button class="cta ghost" type="button" id="pix-novo">Fazer outro Pix</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CARTÕES ===================== -->
+    <section class="screen with-tabs" data-page="cartoes" hidden>
+      <div class="appbar"><h1>Cartões</h1></div>
+      <div class="scroll">
+        <div class="content">
+          <div class="plastic" aria-label="Cartão Nuzzi Mais final 4821"><div class="chipc"></div><div class="row"><span class="tier">Nuzzi Mais</span><span>•••• 4821</span></div></div>
+          <div class="card">
+            <div class="card-head"><h2>Fatura atual</h2><span class="muted">vence 10/11</span></div>
+            <p class="big">R$ 2.318,40</p>
+            <div class="meter" aria-hidden="true"><i></i></div>
+            <div class="legend"><span>Usado R$ 7.700,00</span><span>Disponível R$ 7.300,00</span></div>
+          </div>
+          <div class="actions-row">
+            <button class="act" type="button" data-action="quick_action" data-item="cartao_virtual"><svg aria-hidden="true"><use href="#i-card"/></svg>Cartão virtual</button>
+            <button class="act" type="button" data-action="quick_action" data-item="bloquear_cartao"><svg aria-hidden="true"><use href="#i-lock"/></svg>Bloquear</button>
+            <button class="act" type="button" data-action="quick_action" data-item="ajustar_limite"><svg aria-hidden="true"><use href="#i-grow"/></svg>Ajustar limite</button>
+          </div>
+          <div class="slide s-dark" data-promo="bnr_upgrade_black" data-promo-name="Upgrade para Nuzzi Black" data-slot="cartoes_oferta_1" style="min-height:0">
+            <span class="tag">Para você</span>
+            <h3>Troque para o Nuzzi Black</h3>
+            <p>2,1 pontos por dólar e 4 acessos por ano a salas VIP. Sujeito a análise.</p>
+            <button class="sbtn promo-cta" type="button" data-action="card_request" data-item="black">Pedir o Black</button>
+          </div>
+          <div class="card">
+            <div class="card-head"><h2>Cartão adicional</h2></div>
+            <p class="muted">Para alguém da família, sem anuidade, com limite que você define.</p>
+            <button class="pill-btn" type="button" data-action="card_request" data-item="adicional" style="justify-self:start">Pedir adicional</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== INVESTIMENTOS ===================== -->
+    <section class="screen with-tabs" data-page="investimentos" hidden>
+      <div class="appbar"><h1>Investimentos</h1></div>
+      <div class="scroll">
+        <div class="content">
+          <div class="card">
+            <p class="muted">Total investido</p>
+            <p class="big js-investido">R$ 42.180,00</p>
+            <p class="muted">Rendeu R$ 412,36 no mês</p>
+          </div>
+          <div class="card">
+            <div class="card-head"><h2>Renda fixa</h2><span class="muted">taxas fictícias</span></div>
+            <div class="prod"><div><b>CDB Liquidez Diária</b><span>104% do CDI · resgate a qualquer momento</span></div><button class="pill-btn" type="button" data-action="investment_intent" data-item="cdb_liquidez">Investir</button></div>
+            <div class="prod"><div><b>LCI 90 dias</b><span>92% do CDI · isento de IR</span></div><button class="pill-btn" type="button" data-action="investment_intent" data-item="lci_90">Investir</button></div>
+            <div class="prod"><div><b>CDB 2 anos</b><span>IPCA + 6,4% a.a. · no vencimento</span></div><button class="pill-btn" type="button" data-action="investment_intent" data-item="cdb_ipca_2a">Investir</button></div>
+            <div class="prod"><div><b>Fundo Nuzzi DI</b><span>100,2% do CDI em 12 meses · D+1</span></div><button class="pill-btn" type="button" data-action="investment_intent" data-item="fundo_di">Investir</button></div>
+          </div>
+          <p class="muted">Rentabilidade passada não garante rentabilidade futura.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ABAS ===================== -->
+    <nav class="tabbar" id="tabbar" aria-label="Navegação do app" hidden>
+      <a class="tab" href="#inicio" data-tab="inicio" data-track="tab_inicio" data-track-type="tab_bar"><svg aria-hidden="true"><use href="#i-home"/></svg>Início</a>
+      <a class="tab" href="#extrato" data-tab="extrato" data-track="tab_extrato" data-track-type="tab_bar"><svg aria-hidden="true"><use href="#i-list"/></svg>Extrato</a>
+      <a class="tab pix-tab" href="#pix" data-tab="pix" data-track="tab_pix" data-track-type="tab_bar"><span class="pic"><svg aria-hidden="true"><use href="#i-pix"/></svg></span>Pix</a>
+      <a class="tab" href="#cartoes" data-tab="cartoes" data-track="tab_cartoes" data-track-type="tab_bar"><svg aria-hidden="true"><use href="#i-card"/></svg>Cartões</a>
+      <a class="tab" href="#investimentos" data-tab="investimentos" data-track="tab_investir" data-track-type="tab_bar"><svg aria-hidden="true"><use href="#i-grow"/></svg>Investir</a>
+    </nav>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  </div>
+
+  <aside class="dlp" id="dlp" aria-label="Eventos do dataLayer">
+    <div class="dlp-head">
+      <strong>dataLayer</strong><span class="n" id="dlp-n">0</span>
+      <div class="dlp-btns">
+        <button type="button" id="dlp-copy">Copiar JSON</button>
+        <button type="button" id="dlp-clear">Limpar</button>
+        <button type="button" id="dlp-close">Fechar</button>
+      </div>
+    </div>
+    <p class="dlp-note">Cada push aparece aqui no momento em que dispara, o mais recente no topo, com a regra de disparo do plano e o elemento do mapa (EL-xx) que gerou o push. Parâmetros enviados como undefined aparecem como undefined.</p>
+    <textarea id="dlp-fallback" readonly hidden aria-label="JSON do dataLayer para copiar"></textarea>
+    <ol class="dlp-list" id="dlp-list"><li class="dlp-empty">Nenhum evento ainda. Use o app ao lado.</li></ol>
+  </aside>
+
+</div>
+
+
+<button class="dlp-toggle" id="dlp-toggle" type="button">dataLayer</button>
+
+<script>
+(function () {
+  var dl = window.dataLayer = window.dataLayer || [];
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+
+  var S = { logged: false, user: null, next: null, route: null, seen: new Set(), balance: 18432.90, invested: 42180.00, hideBal: false, pending: null, pin: '', pinStarted: false, filter: 'todos' };
+
+  var extrato = [
+    { d: '17/10', who: 'Pix recebido', sub: 'Lucas Andrade', v: 350.00 },
+    { d: '16/10', who: 'Supermercado Pão de Mel', sub: 'Cartão de débito', v: -412.37 },
+    { d: '15/10', who: 'Salário', sub: 'Empresa Exemplo Ltda', v: 9800.00 },
+    { d: '14/10', who: 'Conta de luz', sub: 'Pagamento de boleto', v: -218.90 },
+    { d: '12/10', who: 'Pix enviado', sub: 'Ana Ribeiro', v: -120.00 },
+    { d: '11/10', who: 'Aplicação CDB Liquidez Diária', sub: 'Investimentos', v: -2000.00 },
+    { d: '10/10', who: 'Farmácia Boa Saúde', sub: 'Cartão de débito', v: -86.40 },
+    { d: '08/10', who: 'Pix recebido', sub: 'Carla Menezes', v: 75.00 }
+  ];
+
+  /* ---------- tracking ---------- */
+  // Parâmetros opcionais sem valor vão como undefined: isso limpa o valor anterior no modelo
+  // de dados do GTM (senão a tag leria, por exemplo, o user_id de um login anterior).
+  function track(event, params) {
+    var p = { event: event };
+    Object.keys(params || {}).forEach(function (k) { p[k] = params[k]; });
+    dl.push(p);
+  }
+  function pad(n) { return String(n).padStart(2, '0'); }
+  /* ---------- rotas ---------- */
+  var ROUTES = {
+    acesso: { title: 'Acesso', type: 'publico', auth: false },
+    entrar: { title: 'Senha', type: 'login', auth: false },
+    inicio: { title: 'Início', type: 'area_logada', auth: true, tab: 'inicio' },
+    extrato: { title: 'Extrato', type: 'area_logada', auth: true, tab: 'extrato' },
+    pix: { title: 'Pix', type: 'area_logada', auth: true, tab: 'pix' },
+    cartoes: { title: 'Cartões', type: 'area_logada', auth: true, tab: 'cartoes' },
+    investimentos: { title: 'Investimentos', type: 'area_logada', auth: true, tab: 'investimentos' }
+  };
+  function home() { return S.logged ? 'inicio' : 'acesso'; }
+  function goTo(r) { if (location.hash === '#' + r) route(); else location.hash = r; }
+
+  function route() {
+    var r = (location.hash || '').replace('#', '') || home();
+    if (!ROUTES[r]) r = home();
+    if (ROUTES[r].auth && !S.logged) { S.next = r; track('auth_required', { target_path: '/' + r, page_path: S.route ? '/' + S.route : undefined }); location.hash = 'entrar'; return; }
+    if ((r === 'acesso' || r === 'entrar') && S.logged) { location.hash = 'inicio'; return; }
+    S.route = r; S.seen = new Set();
+    $$('[data-page]').forEach(function (p) { p.hidden = p.getAttribute('data-page') !== r; });
+    var tab = ROUTES[r].tab;
+    $('#tabbar').hidden = !tab;
+    $$('.tab').forEach(function (a) { if (a.getAttribute('data-tab') === tab) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    var sc = $('[data-page="' + r + '"] .scroll'); if (sc) sc.scrollTop = 0;
+    if (r === 'entrar') loginPrepare();
+    if (r === 'pix') pixReset();
+    if (r === 'inicio' || r === 'investimentos') renderBalance();
+    if (r === 'inicio') renderResumo();
+    if (r === 'extrato') renderExtrato();
+    track('page_view', {
+      page_path: '/' + r,
+      page_title: ROUTES[r].title,
+      page_type: ROUTES[r].type,
+      login_status: S.logged ? 'logged_in' : 'logged_out',
+      user_id: S.logged ? S.user.id : undefined
+    });
+    observePromos();
+  }
+
+  /* ---------- banners ---------- */
+  function promoData(el) {
+    return { promotion_id: el.getAttribute('data-promo'), promotion_name: el.getAttribute('data-promo-name'), creative_slot: el.getAttribute('data-slot'), location_id: '/' + S.route };
+  }
+  function impression(el) {
+    if (el.closest('[hidden]')) return;
+    var k = el.getAttribute('data-promo');
+    if (S.seen.has(k)) return;
+    S.seen.add(k);
+    track('view_promotion', promoData(el));
+  }
+  var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) impression(e.target); });
+  }, { threshold: 0.6 }) : null;
+  function observePromos() {
+    var els = $$('[data-page="' + S.route + '"] [data-promo]');
+    if (!io) { els.forEach(impression); return; }
+    io.disconnect();
+    els.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---------- carrosséis (arrastar ou indicadores) ---------- */
+  $$('[data-carousel]').forEach(function (car) {
+    var id = car.getAttribute('data-carousel');
+    var trackEl = $('.track', car), slides = $$('.slide', car), dots = $('.dots', car);
+    var cur = 0, byDot = false, timer = null;
+    slides.forEach(function (s, i) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'dot'; b.setAttribute('aria-label', 'Destaque ' + (i + 1));
+      b.setAttribute('aria-current', i === 0 ? 'true' : 'false');
+      b.addEventListener('click', function () {
+        if (i === cur) return;
+        byDot = true;
+        trackEl.scrollTo({ left: slides[i].offsetLeft - trackEl.offsetLeft, behavior: 'smooth' });
+        track('carousel_navigate', { carousel_id: id, control: 'indicador', slide_index: i + 1, promotion_id: slides[i].getAttribute('data-promo') });
+      });
+      dots.appendChild(b);
+    });
+    trackEl.addEventListener('scroll', function () {
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        var i = Math.round(trackEl.scrollLeft / Math.max(1, trackEl.clientWidth + 12));
+        i = Math.max(0, Math.min(slides.length - 1, i));
+        if (i === cur) { byDot = false; return; }
+        cur = i;
+        $$('.dot', dots).forEach(function (d, k) { d.setAttribute('aria-current', k === cur ? 'true' : 'false'); });
+        if (!byDot) track('carousel_navigate', { carousel_id: id, control: 'arrastar', slide_index: cur + 1, promotion_id: slides[cur].getAttribute('data-promo') });
+        byDot = false;
+      }, 140);
+    }, { passive: true });
+  });
+
+  /* ---------- cliques ---------- */
+  document.addEventListener('click', function (e) {
+    var promoCta = e.target.closest('.promo-cta');
+    if (promoCta && promoCta.closest('[data-promo]')) track('select_promotion', promoData(promoCta.closest('[data-promo]')));
+
+    var t = e.target.closest('[data-track]');
+    if (t) track('select_content', { content_type: t.getAttribute('data-track-type') || 'link', item_id: t.getAttribute('data-track'), link_text: (t.getAttribute('data-track-text') || t.getAttribute('aria-label') || t.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60), page_path: '/' + S.route });
+
+    var a = e.target.closest('[data-action]');
+    if (!a) return;
+    var act = a.getAttribute('data-action'), item = a.getAttribute('data-item');
+    if (act === 'quick_action') {
+      track('quick_action', { action_id: item, page_path: '/' + S.route }); toast('Simulação: fluxo não implementado neste modelo.');
+    } else if (act === 'lead') {
+      track('generate_lead', { lead_type: item, page_path: '/' + S.route }); toast('Recebemos seu pedido de abertura de conta (simulação).');
+    } else if (act === 'toggle_balance') {
+      S.hideBal = !S.hideBal; renderBalance(); track('toggle_balance', { state: S.hideBal ? 'hidden' : 'visible' });
+    } else if (act === 'offer_accept') {
+      track('offer_click', { offer_id: item }); toast('Oferta registrada (simulação).');
+    } else if (act === 'card_request') {
+      track('card_request', { card_tier: item }); toast('Pedido de cartão registrado (simulação).');
+    } else if (act === 'investment_intent') {
+      track('investment_intent', { product_id: item }); toast('Simulação: aplicação não implementada.');
+    }
+  });
+
+  /* ---------- senha (teclado numérico) ---------- */
+  function renderPin() {
+    $$('#pin i').forEach(function (d, k) { d.classList.toggle('on', k < S.pin.length); });
+    $('#pin').setAttribute('aria-label', S.pin.length + ' de 6 dígitos');
+    $('#btn-entrar').disabled = false;
+  }
+  function loginPrepare() {
+    S.pin = ''; S.pinStarted = false; renderPin();
+    $('#login-error').hidden = true;
+    var ctx = $('#login-context');
+    ctx.hidden = !S.next;
+    if (S.next) ctx.textContent = 'Entre para continuar em ' + ROUTES[S.next].title + '.';
+  }
+  function pressKey(k) {
+    if (!S.pinStarted) { S.pinStarted = true; track('form_start', { form_id: 'login', page_path: '/entrar' }); }
+    if (k === 'del') S.pin = S.pin.slice(0, -1);
+    else if (S.pin.length < 6) S.pin += k;
+    $('#login-error').hidden = true;
+    renderPin();
+  }
+  function loginFail(type, msg) {
+    $('#login-error').textContent = msg; $('#login-error').hidden = false;
+    var pin = $('#pin'); pin.classList.remove('shake'); void pin.offsetWidth; pin.classList.add('shake');
+    track('login_error', { form_id: 'login', error_type: type });
+  }
+  function submitLogin() {
+    if (S.pin.length < 6) return loginFail('senha_incompleta', 'A senha tem 6 dígitos.');
+    if (S.pin === '000000') { S.pin = ''; renderPin(); return loginFail('senha_incorreta', 'Senha incorreta. Tente de novo.'); }
+    S.logged = true;
+    S.user = { id: 'u_8f2c41a9', segment: 'pf_alta_renda' };
+    S.pin = '';
+    track('login', { method: 'senha_eletronica', user_id: S.user.id, customer_segment: S.user.segment });
+    var n = S.next || 'inicio'; S.next = null;
+    goTo(n);
+  }
+  $$('[data-key]').forEach(function (b) { b.addEventListener('click', function () { pressKey(b.getAttribute('data-key')); }); });
+  $('#btn-entrar').addEventListener('click', submitLogin);
+  document.addEventListener('keydown', function (e) {
+    if (S.route !== 'entrar') return;
+    if (/^[0-9]$/.test(e.key)) pressKey(e.key);
+    else if (e.key === 'Backspace') pressKey('del');
+    else if (e.key === 'Enter') submitLogin();
+  });
+
+  $('#btn-sair').addEventListener('click', function () {
+    track('logout', { user_id: S.user && S.user.id });
+    S.logged = false; S.user = null; S.next = null; S.hideBal = false;
+    goTo('acesso');
+  });
+
+  /* ---------- área logada ---------- */
+  function renderBalance() {
+    $$('.js-saldo').forEach(function (el) { el.textContent = S.hideBal ? 'R$ ••••••' : brl.format(S.balance); });
+    $$('.js-investido').forEach(function (el) { el.textContent = S.hideBal ? 'R$ ••••••' : brl.format(S.invested); });
+    var b = $('#btn-saldo');
+    b.setAttribute('aria-pressed', String(S.hideBal));
+    b.setAttribute('aria-label', S.hideBal ? 'Mostrar saldo' : 'Ocultar saldo');
+    $('use', b).setAttribute('href', S.hideBal ? '#i-eye-off' : '#i-eye');
+  }
+  function txItem(t) {
+    var li = document.createElement('li');
+    var ic = document.createElement('span'); ic.className = 'tic'; ic.textContent = t.v > 0 ? '+' : '−';
+    var w = document.createElement('div'); w.className = 'who';
+    var b = document.createElement('b'); b.textContent = t.who;
+    var s = document.createElement('span'); s.textContent = t.sub + ' · ' + t.d;
+    w.appendChild(b); w.appendChild(s);
+    var v = document.createElement('span'); v.className = 'v' + (t.v > 0 ? ' in' : '');
+    v.textContent = (t.v > 0 ? '+ ' : '− ') + brl.format(Math.abs(t.v));
+    li.appendChild(ic); li.appendChild(w); li.appendChild(v);
+    return li;
+  }
+  function renderResumo() {
+    var ul = $('#tx-resumo'); ul.innerHTML = '';
+    extrato.slice(0, 3).forEach(function (t) { ul.appendChild(txItem(t)); });
+  }
+  function renderExtrato() {
+    var ul = $('#tx-full'); ul.innerHTML = '';
+    var rows = extrato.filter(function (t) { return S.filter === 'todos' || (S.filter === 'entradas' ? t.v > 0 : t.v < 0); });
+    if (!rows.length) { var li = document.createElement('li'); li.textContent = 'Nenhum lançamento neste filtro.'; ul.appendChild(li); return; }
+    rows.forEach(function (t) { ul.appendChild(txItem(t)); });
+  }
+  $$('[data-filter]').forEach(function (c) {
+    c.addEventListener('click', function () {
+      var f = c.getAttribute('data-filter');
+      if (f === S.filter) return;
+      S.filter = f;
+      $$('[data-filter]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === c)); });
+      renderExtrato();
+      track('statement_filter', { filter: f });
+    });
+  });
+
+  /* ---------- Pix ---------- */
+  var pixStarted = false;
+  function pixStep(n) {
+    $$('[data-pix-step]').forEach(function (el) { el.hidden = Number(el.getAttribute('data-pix-step')) !== n; });
+    $$('.steps li').forEach(function (li, k) { li.classList.toggle('on', k < n); });
+  }
+  function pixReset() {
+    $('#pix-form').reset(); $('#pix-error').hidden = true; pixStarted = false; S.pending = null;
+    $('#pix-saldo-hint').textContent = 'Saldo disponível: ' + brl.format(S.balance);
+    pixStep(1);
+  }
+  function parseBRL(s) { var n = parseFloat(String(s).replace(/[R$\s.]/g, '').replace(',', '.')); return isNaN(n) ? 0 : Math.round(n * 100) / 100; }
+  function keyType(k) {
+    if (k.indexOf('@') > -1) return 'email';
+    if (/^\+/.test(k)) return 'telefone';
+    var d = k.replace(/\D/g, '');
+    if (d.length === 11 && d === k.replace(/[.\-]/g, '')) return 'cpf';
+    if (d.length === 14) return 'cnpj';
+    return 'aleatoria';
+  }
+  function mask(k) { return k.length <= 4 ? '••••' : k.slice(0, 3) + '•••' + k.slice(-3); }
+  function fillDl(el, rows) {
+    el.innerHTML = '';
+    rows.forEach(function (r) {
+      var d = document.createElement('div');
+      var dt = document.createElement('dt'); dt.textContent = r[0];
+      var dd = document.createElement('dd'); dd.textContent = r[1];
+      d.appendChild(dt); d.appendChild(dd); el.appendChild(d);
+    });
+  }
+  $('#pix-form').addEventListener('focusin', function () {
+    if (!pixStarted) { pixStarted = true; track('pix_start', { page_path: '/pix' }); }
+  });
+  $('#pix-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var chave = $('#pix-chave').value.trim(), v = parseBRL($('#pix-valor').value), err = null;
+    if (!chave) err = ['chave_vazia', 'Informe a chave Pix de quem vai receber.'];
+    else if (!(v > 0)) err = ['valor_invalido', 'Informe um valor maior que zero, como 150,00.'];
+    else if (v > S.balance) err = ['saldo_insuficiente', 'O valor passa do saldo disponível de ' + brl.format(S.balance) + '.'];
+    if (err) { $('#pix-error').textContent = err[1]; $('#pix-error').hidden = false; track('pix_error', { error_type: err[0] }); return; }
+    $('#pix-error').hidden = true;
+    S.pending = { chave: chave, v: v, tipo: keyType(chave), desc: $('#pix-desc').value.trim() };
+    fillDl($('#pix-review'), [
+      ['Para (chave)', S.pending.chave],
+      ['Tipo de chave', S.pending.tipo],
+      ['Valor', brl.format(v)],
+      ['Mensagem', S.pending.desc || 'Sem mensagem'],
+      ['Saldo após o Pix', brl.format(S.balance - v)]
+    ]);
+    pixStep(2);
+    track('pix_review', { value: v, currency: 'BRL', pix_key_type: S.pending.tipo });
+  });
+  $('#pix-corrigir').addEventListener('click', function () { pixStep(1); track('pix_edit', { step: 'revisao' }); });
+  $('#pix-confirmar').addEventListener('click', function () {
+    var p = S.pending; if (!p) return;
+    var id = 'E' + Date.now();
+    S.balance = Math.round((S.balance - p.v) * 100) / 100;
+    var now = new Date();
+    extrato.unshift({ d: pad(now.getDate()) + '/' + pad(now.getMonth() + 1), who: 'Pix enviado', sub: 'Chave ' + mask(p.chave), v: -p.v });
+    $('#pix-ok-title').textContent = 'Pix de ' + brl.format(p.v) + ' enviado';
+    fillDl($('#pix-receipt'), [
+      ['Identificador', id],
+      ['Para (chave)', mask(p.chave)],
+      ['Data e hora', pad(now.getDate()) + '/' + pad(now.getMonth() + 1) + '/' + now.getFullYear() + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes())],
+      ['Saldo atual', brl.format(S.balance)]
+    ]);
+    pixStep(3);
+    track('pix_success', { transaction_id: id, value: p.v, currency: 'BRL', pix_key_type: p.tipo });
+    S.pending = null;
+  });
+  $('#pix-novo').addEventListener('click', function () { pixReset(); track('pix_restart', {}); });
+
+  /* ---------- toast ---------- */
+  var toastT = null;
+  function toast(msg) { var t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(function () { t.hidden = true; }, 3000); }
+
+  /* ---------- saudação ---------- */
+  var h = new Date().getHours();
+  $$('.js-greeting').forEach(function (el) { el.textContent = h < 12 ? 'Bom dia' : (h < 18 ? 'Boa tarde' : 'Boa noite'); });
+
+  window.addEventListener('hashchange', route);
+  route();
+})();
+</script>
+</body>
+</html>
