@@ -3,6 +3,8 @@
 
 Uso: python3 tools/gerar_prints.py        (requer: pip install playwright pillow && playwright install chromium)
 
+Também salva um recorte centrado no elemento em docs/prints/recorte/<ID>.jpg, usado na planilha.
+
 Lê catalogs.tagMap do tracking-plan.json, coloca o app no estado certo para cada linha
 (deslogado, logado, banner do carrossel, etapa do Pix, erro de senha), destaca o elemento
 e salva em docs/prints/<ID>.jpg.
@@ -19,6 +21,22 @@ plan = json.loads((ROOT / "tracking-plan" / "tracking-plan.json").read_text(enco
 URL = (ROOT / "index.html").resolve().as_uri()
 OUT = ROOT / "docs" / "prints"
 OUT.mkdir(parents=True, exist_ok=True)
+CROP = OUT / "recorte"
+CROP.mkdir(exist_ok=True)
+
+
+def save_crop(img, box_px, whole, path):
+    """Recorta uma faixa da tela em volta do elemento (ou a tela inteira) e salva com 320 px de largura."""
+    W, H = img.size
+    if whole:
+        c = img
+    else:
+        y0, y1 = box_px
+        cy, hh = (y0 + y1) // 2, max(y1 - y0 + 120, int(W * 0.75))
+        top = max(0, min(H - hh, cy - hh // 2))
+        c = img.crop((0, top, W, min(H, top + hh)))
+    w = 320 if not whole else 200
+    c.resize((w, int(c.height * w / c.width)), Image.LANCZOS).save(path, quality=78, optimize=True)
 
 SCROLL_JS = """
 (sel) => {
@@ -130,7 +148,14 @@ def main():
                 raise SystemExit(f"{row['id']}: elemento não encontrado ({sel})")
             page.wait_for_timeout(120)
             png = page.locator("#app").screenshot()
-            Image.open(io.BytesIO(png)).convert("RGB").save(OUT / f"{row['id']}.jpg", quality=82, optimize=True)
+            img = Image.open(io.BytesIO(png)).convert("RGB")
+            img.save(OUT / f"{row['id']}.jpg", quality=82, optimize=True)
+            box = page.evaluate("""() => { const a = document.querySelector('#app').getBoundingClientRect();
+              const hs = [...document.querySelectorAll('.__hl')].filter(n => n.style.border);
+              const tops = hs.map(n => n.getBoundingClientRect().top - a.top), bots = hs.map(n => n.getBoundingClientRect().bottom - a.top);
+              return [Math.min(...tops), Math.max(...bots)]; }""")
+            scale = img.width / page.locator("#app").bounding_box()["width"]
+            save_crop(img, (int(box[0] * scale), int(box[1] * scale)), whole, CROP / f"{row['id']}.jpg")
             print(row["id"], el)
         browser.close()
 

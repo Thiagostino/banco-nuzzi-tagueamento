@@ -53,7 +53,7 @@ A descrição de cada evento segue seis partes, nesta ordem:
 | Produto | `card_request`, `investment_intent`, `generate_lead` |
 | Pix | `pix_start`, `pix_error`, `pix_review`, `pix_edit`, `pix_success`, `pix_restart` |
 
-O **mapa de tagueamento** (`catalogs.tagMap` no JSON, aba Mapa de tagueamento na planilha e seção Mapa por tela em `tracking-plan/eventos.md`) liga cada tela e cada elemento do app aos eventos que ele dispara, em ordem, com os valores fixos enviados. Cada linha do mapa tem um ID (EL-01 a EL-71) e um print do app com o elemento destacado, em `docs/prints/`, gerado por `tools/gerar_prints.py`. Na planilha Excel, o print fica embutido na própria linha. O validador falha se um elemento com `data-track` ou `data-promo` ficar fora do mapa ou se faltar o print.
+O **mapa de tagueamento** (`catalogs.tagMap` no JSON, aba Mapa de tagueamento na planilha e seção Mapa por tela em `tracking-plan/eventos.md`) liga cada tela e cada elemento do app aos eventos que ele dispara, em ordem, com os valores fixos enviados. Cada linha do mapa tem um ID (EL-01 a EL-71) e um print do app com o elemento destacado, em `docs/prints/` (tela inteira) e `docs/prints/recorte/` (recorte centrado no elemento), gerados por `tools/gerar_prints.py`. Na planilha Excel, o print fica embutido na própria linha. O validador falha se um elemento com `data-track` ou `data-promo` ficar fora do mapa ou se faltar o print.
 
 ## Estrutura
 

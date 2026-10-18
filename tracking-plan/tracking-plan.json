@@ -1941,7 +1941,8 @@
         "events": "page_view",
         "fixed_values": "page_path=/acesso · page_type=publico · login_status=logged_out",
         "note": "",
-        "print": "docs/prints/EL-01.jpg"
+        "print": "docs/prints/EL-01.jpg",
+        "crop": "docs/prints/recorte/EL-01.jpg"
       },
       {
         "id": "EL-02",
@@ -1953,7 +1954,8 @@
         "events": "quick_action",
         "fixed_values": "action_id=ajuda · page_path=/acesso",
         "note": "",
-        "print": "docs/prints/EL-02.jpg"
+        "print": "docs/prints/EL-02.jpg",
+        "crop": "docs/prints/recorte/EL-02.jpg"
       },
       {
         "id": "EL-03",
@@ -1965,7 +1967,8 @@
         "events": "quick_action",
         "fixed_values": "action_id=trocar_conta · page_path=/acesso",
         "note": "",
-        "print": "docs/prints/EL-03.jpg"
+        "print": "docs/prints/EL-03.jpg",
+        "crop": "docs/prints/recorte/EL-03.jpg"
       },
       {
         "id": "EL-04",
@@ -1977,7 +1980,8 @@
         "events": "select_content → page_view",
         "fixed_values": "item_id=acesso_entrar · content_type=cta · depois page_path=/entrar",
         "note": "",
-        "print": "docs/prints/EL-04.jpg"
+        "print": "docs/prints/EL-04.jpg",
+        "crop": "docs/prints/recorte/EL-04.jpg"
       },
       {
         "id": "EL-05",
@@ -1989,7 +1993,8 @@
         "events": "select_content → auth_required → page_view",
         "fixed_values": "item_id=acesso_pix · target_path=/pix · depois page_path=/entrar",
         "note": "Depois do login, o app abre o Pix direto.",
-        "print": "docs/prints/EL-05.jpg"
+        "print": "docs/prints/EL-05.jpg",
+        "crop": "docs/prints/recorte/EL-05.jpg"
       },
       {
         "id": "EL-06",
@@ -2001,7 +2006,8 @@
         "events": "quick_action",
         "fixed_values": "action_id=token · page_path=/acesso",
         "note": "",
-        "print": "docs/prints/EL-06.jpg"
+        "print": "docs/prints/EL-06.jpg",
+        "crop": "docs/prints/recorte/EL-06.jpg"
       },
       {
         "id": "EL-07",
@@ -2013,7 +2019,8 @@
         "events": "quick_action",
         "fixed_values": "action_id=bloquear_cartao · page_path=/acesso",
         "note": "O mesmo action_id existe na tela Cartões; separe por page_path.",
-        "print": "docs/prints/EL-07.jpg"
+        "print": "docs/prints/EL-07.jpg",
+        "crop": "docs/prints/recorte/EL-07.jpg"
       },
       {
         "id": "EL-08",
@@ -2025,7 +2032,8 @@
         "events": "generate_lead",
         "fixed_values": "lead_type=abertura_conta · page_path=/acesso",
         "note": "Sem select_promotion, porque não é banner.",
-        "print": "docs/prints/EL-08.jpg"
+        "print": "docs/prints/EL-08.jpg",
+        "crop": "docs/prints/recorte/EL-08.jpg"
       },
       {
         "id": "EL-09",
@@ -2037,7 +2045,8 @@
         "events": "carousel_navigate",
         "fixed_values": "carousel_id=acesso_destaques · control=arrastar ou indicador",
         "note": "",
-        "print": "docs/prints/EL-09.jpg"
+        "print": "docs/prints/EL-09.jpg",
+        "crop": "docs/prints/recorte/EL-09.jpg"
       },
       {
         "id": "EL-10",
@@ -2049,7 +2058,8 @@
         "events": "view_promotion",
         "fixed_values": "promotion_id=bnr_abra_conta · creative_slot=acesso_destaque_1",
         "note": "",
-        "print": "docs/prints/EL-10.jpg"
+        "print": "docs/prints/EL-10.jpg",
+        "crop": "docs/prints/recorte/EL-10.jpg"
       },
       {
         "id": "EL-11",
@@ -2061,7 +2071,8 @@
         "events": "select_promotion → generate_lead",
         "fixed_values": "promotion_id=bnr_abra_conta · lead_type=abertura_conta",
         "note": "",
-        "print": "docs/prints/EL-11.jpg"
+        "print": "docs/prints/EL-11.jpg",
+        "crop": "docs/prints/recorte/EL-11.jpg"
       },
       {
         "id": "EL-12",
@@ -2073,7 +2084,8 @@
         "events": "view_promotion",
         "fixed_values": "promotion_id=bnr_cartao_black · creative_slot=acesso_destaque_2",
         "note": "",
-        "print": "docs/prints/EL-12.jpg"
+        "print": "docs/prints/EL-12.jpg",
+        "crop": "docs/prints/recorte/EL-12.jpg"
       },
       {
         "id": "EL-13",
@@ -2085,7 +2097,8 @@
         "events": "select_promotion → auth_required → page_view",
         "fixed_values": "promotion_id=bnr_cartao_black · target_path=/cartoes · depois page_path=/entrar",
         "note": "",
-        "print": "docs/prints/EL-13.jpg"
+        "print": "docs/prints/EL-13.jpg",
+        "crop": "docs/prints/recorte/EL-13.jpg"
       },
       {
         "id": "EL-14",
@@ -2097,7 +2110,8 @@
         "events": "view_promotion",
         "fixed_values": "promotion_id=bnr_cdb_liquidez · creative_slot=acesso_destaque_3",
         "note": "",
-        "print": "docs/prints/EL-14.jpg"
+        "print": "docs/prints/EL-14.jpg",
+        "crop": "docs/prints/recorte/EL-14.jpg"
       },
       {
         "id": "EL-15",
@@ -2109,7 +2123,8 @@
         "events": "select_promotion → auth_required → page_view",
         "fixed_values": "promotion_id=bnr_cdb_liquidez · target_path=/investimentos · depois page_path=/entrar",
         "note": "",
-        "print": "docs/prints/EL-15.jpg"
+        "print": "docs/prints/EL-15.jpg",
+        "crop": "docs/prints/recorte/EL-15.jpg"
       },
       {
         "id": "EL-16",
@@ -2121,7 +2136,8 @@
         "events": "page_view",
         "fixed_values": "page_path=/entrar · page_type=login",
         "note": "",
-        "print": "docs/prints/EL-16.jpg"
+        "print": "docs/prints/EL-16.jpg",
+        "crop": "docs/prints/recorte/EL-16.jpg"
       },
       {
         "id": "EL-17",
@@ -2133,7 +2149,8 @@
         "events": "select_content → page_view",
         "fixed_values": "item_id=senha_voltar · link_text=Voltar · depois page_path=/acesso",
         "note": "",
-        "print": "docs/prints/EL-17.jpg"
+        "print": "docs/prints/EL-17.jpg",
+        "crop": "docs/prints/recorte/EL-17.jpg"
       },
       {
         "id": "EL-18",
@@ -2145,7 +2162,8 @@
         "events": "form_start",
         "fixed_values": "form_id=login · page_path=/entrar",
         "note": "Só no primeiro dígito de cada visita.",
-        "print": "docs/prints/EL-18.jpg"
+        "print": "docs/prints/EL-18.jpg",
+        "crop": "docs/prints/recorte/EL-18.jpg"
       },
       {
         "id": "EL-19",
@@ -2157,7 +2175,8 @@
         "events": "quick_action",
         "fixed_values": "action_id=esqueci_senha · page_path=/entrar",
         "note": "",
-        "print": "docs/prints/EL-19.jpg"
+        "print": "docs/prints/EL-19.jpg",
+        "crop": "docs/prints/recorte/EL-19.jpg"
       },
       {
         "id": "EL-20",
@@ -2169,7 +2188,8 @@
         "events": "login_error",
         "fixed_values": "form_id=login · error_type=senha_incompleta",
         "note": "",
-        "print": "docs/prints/EL-20.jpg"
+        "print": "docs/prints/EL-20.jpg",
+        "crop": "docs/prints/recorte/EL-20.jpg"
       },
       {
         "id": "EL-21",
@@ -2181,7 +2201,8 @@
         "events": "login_error",
         "fixed_values": "form_id=login · error_type=senha_incorreta",
         "note": "Senha de teste que simula erro.",
-        "print": "docs/prints/EL-21.jpg"
+        "print": "docs/prints/EL-21.jpg",
+        "crop": "docs/prints/recorte/EL-21.jpg"
       },
       {
         "id": "EL-22",
@@ -2193,7 +2214,8 @@
         "events": "login → page_view",
         "fixed_values": "method=senha_eletronica · user_id=u_8f2c41a9 · depois page_path do destino",
         "note": "",
-        "print": "docs/prints/EL-22.jpg"
+        "print": "docs/prints/EL-22.jpg",
+        "crop": "docs/prints/recorte/EL-22.jpg"
       },
       {
         "id": "EL-23",
@@ -2205,7 +2227,8 @@
         "events": "page_view",
         "fixed_values": "page_path=/inicio · page_type=area_logada · user_id",
         "note": "",
-        "print": "docs/prints/EL-23.jpg"
+        "print": "docs/prints/EL-23.jpg",
+        "crop": "docs/prints/recorte/EL-23.jpg"
       },
       {
         "id": "EL-24",
@@ -2217,7 +2240,8 @@
         "events": "toggle_balance",
         "fixed_values": "state=hidden ou visible",
         "note": "O valor do saldo não é enviado.",
-        "print": "docs/prints/EL-24.jpg"
+        "print": "docs/prints/EL-24.jpg",
+        "crop": "docs/prints/recorte/EL-24.jpg"
       },
       {
         "id": "EL-25",
@@ -2229,7 +2253,8 @@
         "events": "quick_action",
         "fixed_values": "action_id=notificacoes · page_path=/inicio",
         "note": "",
-        "print": "docs/prints/EL-25.jpg"
+        "print": "docs/prints/EL-25.jpg",
+        "crop": "docs/prints/recorte/EL-25.jpg"
       },
       {
         "id": "EL-26",
@@ -2241,7 +2266,8 @@
         "events": "logout → page_view",
         "fixed_values": "user_id · depois page_path=/acesso · login_status=logged_out",
         "note": "",
-        "print": "docs/prints/EL-26.jpg"
+        "print": "docs/prints/EL-26.jpg",
+        "crop": "docs/prints/recorte/EL-26.jpg"
       },
       {
         "id": "EL-27",
@@ -2253,7 +2279,8 @@
         "events": "select_content → page_view",
         "fixed_values": "item_id=inicio_ver_extrato · depois page_path=/extrato",
         "note": "",
-        "print": "docs/prints/EL-27.jpg"
+        "print": "docs/prints/EL-27.jpg",
+        "crop": "docs/prints/recorte/EL-27.jpg"
       },
       {
         "id": "EL-28",
@@ -2265,7 +2292,8 @@
         "events": "select_content → page_view",
         "fixed_values": "item_id=atalho_pix · content_type=shortcut · depois page_path=/pix",
         "note": "",
-        "print": "docs/prints/EL-28.jpg"
+        "print": "docs/prints/EL-28.jpg",
+        "crop": "docs/prints/recorte/EL-28.jpg"
       },
       {
         "id": "EL-29",
@@ -2277,7 +2305,8 @@
         "events": "quick_action",
         "fixed_values": "action_id=pagar_boleto · page_path=/inicio",
         "note": "",
-        "print": "docs/prints/EL-29.jpg"
+        "print": "docs/prints/EL-29.jpg",
+        "crop": "docs/prints/recorte/EL-29.jpg"
       },
       {
         "id": "EL-30",
@@ -2289,7 +2318,8 @@
         "events": "quick_action",
         "fixed_values": "action_id=transferir · page_path=/inicio",
         "note": "",
-        "print": "docs/prints/EL-30.jpg"
+        "print": "docs/prints/EL-30.jpg",
+        "crop": "docs/prints/recorte/EL-30.jpg"
       },
       {
         "id": "EL-31",
@@ -2301,7 +2331,8 @@
         "events": "quick_action",
         "fixed_values": "action_id=recarga · page_path=/inicio",
         "note": "",
-        "print": "docs/prints/EL-31.jpg"
+        "print": "docs/prints/EL-31.jpg",
+        "crop": "docs/prints/recorte/EL-31.jpg"
       },
       {
         "id": "EL-32",
@@ -2313,7 +2344,8 @@
         "events": "select_content → page_view",
         "fixed_values": "item_id=atalho_cartoes · depois page_path=/cartoes",
         "note": "",
-        "print": "docs/prints/EL-32.jpg"
+        "print": "docs/prints/EL-32.jpg",
+        "crop": "docs/prints/recorte/EL-32.jpg"
       },
       {
         "id": "EL-33",
@@ -2325,7 +2357,8 @@
         "events": "select_content → page_view",
         "fixed_values": "item_id=atalho_investir · depois page_path=/investimentos",
         "note": "",
-        "print": "docs/prints/EL-33.jpg"
+        "print": "docs/prints/EL-33.jpg",
+        "crop": "docs/prints/recorte/EL-33.jpg"
       },
       {
         "id": "EL-34",
@@ -2337,7 +2370,8 @@
         "events": "carousel_navigate",
         "fixed_values": "carousel_id=inicio_ofertas · control=arrastar ou indicador",
         "note": "",
-        "print": "docs/prints/EL-34.jpg"
+        "print": "docs/prints/EL-34.jpg",
+        "crop": "docs/prints/recorte/EL-34.jpg"
       },
       {
         "id": "EL-35",
@@ -2349,7 +2383,8 @@
         "events": "view_promotion",
         "fixed_values": "promotion_id=bnr_credito_preaprovado · creative_slot=inicio_oferta_1",
         "note": "",
-        "print": "docs/prints/EL-35.jpg"
+        "print": "docs/prints/EL-35.jpg",
+        "crop": "docs/prints/recorte/EL-35.jpg"
       },
       {
         "id": "EL-36",
@@ -2361,7 +2396,8 @@
         "events": "select_promotion → offer_click",
         "fixed_values": "promotion_id=bnr_credito_preaprovado · offer_id=credito_preaprovado",
         "note": "offer_click está em Ajustar (sinal duplicado).",
-        "print": "docs/prints/EL-36.jpg"
+        "print": "docs/prints/EL-36.jpg",
+        "crop": "docs/prints/recorte/EL-36.jpg"
       },
       {
         "id": "EL-37",
@@ -2373,7 +2409,8 @@
         "events": "view_promotion",
         "fixed_values": "promotion_id=bnr_seguro_cartao · creative_slot=inicio_oferta_2",
         "note": "",
-        "print": "docs/prints/EL-37.jpg"
+        "print": "docs/prints/EL-37.jpg",
+        "crop": "docs/prints/recorte/EL-37.jpg"
       },
       {
         "id": "EL-38",
@@ -2385,7 +2422,8 @@
         "events": "select_promotion → offer_click",
         "fixed_values": "promotion_id=bnr_seguro_cartao · offer_id=seguro_cartao",
         "note": "",
-        "print": "docs/prints/EL-38.jpg"
+        "print": "docs/prints/EL-38.jpg",
+        "crop": "docs/prints/recorte/EL-38.jpg"
       },
       {
         "id": "EL-39",
@@ -2397,7 +2435,8 @@
         "events": "view_promotion",
         "fixed_values": "promotion_id=bnr_pix_agendado · creative_slot=inicio_oferta_3",
         "note": "",
-        "print": "docs/prints/EL-39.jpg"
+        "print": "docs/prints/EL-39.jpg",
+        "crop": "docs/prints/recorte/EL-39.jpg"
       },
       {
         "id": "EL-40",
@@ -2409,7 +2448,8 @@
         "events": "select_promotion → page_view",
         "fixed_values": "promotion_id=bnr_pix_agendado · depois page_path=/pix",
         "note": "",
-        "print": "docs/prints/EL-40.jpg"
+        "print": "docs/prints/EL-40.jpg",
+        "crop": "docs/prints/recorte/EL-40.jpg"
       },
       {
         "id": "EL-41",
@@ -2421,7 +2461,8 @@
         "events": "select_content → page_view",
         "fixed_values": "item_id=inicio_card_fatura · link_text=Cartão Nuzzi Mais · depois page_path=/cartoes",
         "note": "link_text fixo: o valor da fatura não vai.",
-        "print": "docs/prints/EL-41.jpg"
+        "print": "docs/prints/EL-41.jpg",
+        "crop": "docs/prints/recorte/EL-41.jpg"
       },
       {
         "id": "EL-42",
@@ -2433,7 +2474,8 @@
         "events": "select_content → page_view",
         "fixed_values": "item_id=inicio_extrato_completo · depois page_path=/extrato",
         "note": "",
-        "print": "docs/prints/EL-42.jpg"
+        "print": "docs/prints/EL-42.jpg",
+        "crop": "docs/prints/recorte/EL-42.jpg"
       },
       {
         "id": "EL-43",
@@ -2445,7 +2487,8 @@
         "events": "select_content → page_view",
         "fixed_values": "item_id=inicio_card_investimentos · link_text=Investimentos · depois page_path=/investimentos",
         "note": "link_text fixo: o total investido não vai.",
-        "print": "docs/prints/EL-43.jpg"
+        "print": "docs/prints/EL-43.jpg",
+        "crop": "docs/prints/recorte/EL-43.jpg"
       },
       {
         "id": "EL-44",
@@ -2457,7 +2500,8 @@
         "events": "page_view",
         "fixed_values": "page_path=/extrato",
         "note": "",
-        "print": "docs/prints/EL-44.jpg"
+        "print": "docs/prints/EL-44.jpg",
+        "crop": "docs/prints/recorte/EL-44.jpg"
       },
       {
         "id": "EL-45",
@@ -2469,7 +2513,8 @@
         "events": "statement_filter",
         "fixed_values": "filter=todos, entradas ou saidas",
         "note": "Os lançamentos não são enviados.",
-        "print": "docs/prints/EL-45.jpg"
+        "print": "docs/prints/EL-45.jpg",
+        "crop": "docs/prints/recorte/EL-45.jpg"
       },
       {
         "id": "EL-46",
@@ -2481,7 +2526,8 @@
         "events": "page_view",
         "fixed_values": "page_path=/pix",
         "note": "",
-        "print": "docs/prints/EL-46.jpg"
+        "print": "docs/prints/EL-46.jpg",
+        "crop": "docs/prints/recorte/EL-46.jpg"
       },
       {
         "id": "EL-47",
@@ -2493,7 +2539,8 @@
         "events": "select_content → page_view",
         "fixed_values": "item_id=pix_voltar · depois page_path=/inicio",
         "note": "",
-        "print": "docs/prints/EL-47.jpg"
+        "print": "docs/prints/EL-47.jpg",
+        "crop": "docs/prints/recorte/EL-47.jpg"
       },
       {
         "id": "EL-48",
@@ -2505,7 +2552,8 @@
         "events": "pix_start",
         "fixed_values": "page_path=/pix",
         "note": "Uma vez a cada abertura do Pix.",
-        "print": "docs/prints/EL-48.jpg"
+        "print": "docs/prints/EL-48.jpg",
+        "crop": "docs/prints/recorte/EL-48.jpg"
       },
       {
         "id": "EL-49",
@@ -2517,7 +2565,8 @@
         "events": "pix_error",
         "fixed_values": "error_type=chave_vazia, valor_invalido ou saldo_insuficiente",
         "note": "",
-        "print": "docs/prints/EL-49.jpg"
+        "print": "docs/prints/EL-49.jpg",
+        "crop": "docs/prints/recorte/EL-49.jpg"
       },
       {
         "id": "EL-50",
@@ -2529,7 +2578,8 @@
         "events": "pix_review",
         "fixed_values": "value · currency=BRL · pix_key_type",
         "note": "A chave nunca é enviada.",
-        "print": "docs/prints/EL-50.jpg"
+        "print": "docs/prints/EL-50.jpg",
+        "crop": "docs/prints/recorte/EL-50.jpg"
       },
       {
         "id": "EL-51",
@@ -2541,7 +2591,8 @@
         "events": "pix_success",
         "fixed_values": "transaction_id · value · currency=BRL · pix_key_type",
         "note": "",
-        "print": "docs/prints/EL-51.jpg"
+        "print": "docs/prints/EL-51.jpg",
+        "crop": "docs/prints/recorte/EL-51.jpg"
       },
       {
         "id": "EL-52",
@@ -2553,7 +2604,8 @@
         "events": "pix_edit",
         "fixed_values": "step=revisao",
         "note": "",
-        "print": "docs/prints/EL-52.jpg"
+        "print": "docs/prints/EL-52.jpg",
+        "crop": "docs/prints/recorte/EL-52.jpg"
       },
       {
         "id": "EL-53",
@@ -2565,7 +2617,8 @@
         "events": "select_content → page_view",
         "fixed_values": "item_id=pix_comprovante_inicio · depois page_path=/inicio",
         "note": "",
-        "print": "docs/prints/EL-53.jpg"
+        "print": "docs/prints/EL-53.jpg",
+        "crop": "docs/prints/recorte/EL-53.jpg"
       },
       {
         "id": "EL-54",
@@ -2577,7 +2630,8 @@
         "events": "pix_restart",
         "fixed_values": "(nenhum parâmetro)",
         "note": "",
-        "print": "docs/prints/EL-54.jpg"
+        "print": "docs/prints/EL-54.jpg",
+        "crop": "docs/prints/recorte/EL-54.jpg"
       },
       {
         "id": "EL-55",
@@ -2589,7 +2643,8 @@
         "events": "page_view",
         "fixed_values": "page_path=/cartoes",
         "note": "",
-        "print": "docs/prints/EL-55.jpg"
+        "print": "docs/prints/EL-55.jpg",
+        "crop": "docs/prints/recorte/EL-55.jpg"
       },
       {
         "id": "EL-56",
@@ -2601,7 +2656,8 @@
         "events": "quick_action",
         "fixed_values": "action_id=cartao_virtual · page_path=/cartoes",
         "note": "",
-        "print": "docs/prints/EL-56.jpg"
+        "print": "docs/prints/EL-56.jpg",
+        "crop": "docs/prints/recorte/EL-56.jpg"
       },
       {
         "id": "EL-57",
@@ -2613,7 +2669,8 @@
         "events": "quick_action",
         "fixed_values": "action_id=bloquear_cartao · page_path=/cartoes",
         "note": "",
-        "print": "docs/prints/EL-57.jpg"
+        "print": "docs/prints/EL-57.jpg",
+        "crop": "docs/prints/recorte/EL-57.jpg"
       },
       {
         "id": "EL-58",
@@ -2625,7 +2682,8 @@
         "events": "quick_action",
         "fixed_values": "action_id=ajustar_limite · page_path=/cartoes",
         "note": "",
-        "print": "docs/prints/EL-58.jpg"
+        "print": "docs/prints/EL-58.jpg",
+        "crop": "docs/prints/recorte/EL-58.jpg"
       },
       {
         "id": "EL-59",
@@ -2637,7 +2695,8 @@
         "events": "view_promotion",
         "fixed_values": "promotion_id=bnr_upgrade_black · creative_slot=cartoes_oferta_1",
         "note": "",
-        "print": "docs/prints/EL-59.jpg"
+        "print": "docs/prints/EL-59.jpg",
+        "crop": "docs/prints/recorte/EL-59.jpg"
       },
       {
         "id": "EL-60",
@@ -2649,7 +2708,8 @@
         "events": "select_promotion → card_request",
         "fixed_values": "promotion_id=bnr_upgrade_black · card_tier=black",
         "note": "",
-        "print": "docs/prints/EL-60.jpg"
+        "print": "docs/prints/EL-60.jpg",
+        "crop": "docs/prints/recorte/EL-60.jpg"
       },
       {
         "id": "EL-61",
@@ -2661,7 +2721,8 @@
         "events": "card_request",
         "fixed_values": "card_tier=adicional",
         "note": "Sem select_promotion, porque não é banner.",
-        "print": "docs/prints/EL-61.jpg"
+        "print": "docs/prints/EL-61.jpg",
+        "crop": "docs/prints/recorte/EL-61.jpg"
       },
       {
         "id": "EL-62",
@@ -2673,7 +2734,8 @@
         "events": "page_view",
         "fixed_values": "page_path=/investimentos",
         "note": "",
-        "print": "docs/prints/EL-62.jpg"
+        "print": "docs/prints/EL-62.jpg",
+        "crop": "docs/prints/recorte/EL-62.jpg"
       },
       {
         "id": "EL-63",
@@ -2685,7 +2747,8 @@
         "events": "investment_intent",
         "fixed_values": "product_id=cdb_liquidez",
         "note": "",
-        "print": "docs/prints/EL-63.jpg"
+        "print": "docs/prints/EL-63.jpg",
+        "crop": "docs/prints/recorte/EL-63.jpg"
       },
       {
         "id": "EL-64",
@@ -2697,7 +2760,8 @@
         "events": "investment_intent",
         "fixed_values": "product_id=lci_90",
         "note": "",
-        "print": "docs/prints/EL-64.jpg"
+        "print": "docs/prints/EL-64.jpg",
+        "crop": "docs/prints/recorte/EL-64.jpg"
       },
       {
         "id": "EL-65",
@@ -2709,7 +2773,8 @@
         "events": "investment_intent",
         "fixed_values": "product_id=cdb_ipca_2a",
         "note": "",
-        "print": "docs/prints/EL-65.jpg"
+        "print": "docs/prints/EL-65.jpg",
+        "crop": "docs/prints/recorte/EL-65.jpg"
       },
       {
         "id": "EL-66",
@@ -2721,7 +2786,8 @@
         "events": "investment_intent",
         "fixed_values": "product_id=fundo_di",
         "note": "",
-        "print": "docs/prints/EL-66.jpg"
+        "print": "docs/prints/EL-66.jpg",
+        "crop": "docs/prints/recorte/EL-66.jpg"
       },
       {
         "id": "EL-67",
@@ -2733,7 +2799,8 @@
         "events": "select_content → page_view",
         "fixed_values": "item_id=tab_inicio · content_type=tab_bar · depois page_path=/inicio",
         "note": "Aparece em /inicio, /extrato, /pix, /cartoes e /investimentos.",
-        "print": "docs/prints/EL-67.jpg"
+        "print": "docs/prints/EL-67.jpg",
+        "crop": "docs/prints/recorte/EL-67.jpg"
       },
       {
         "id": "EL-68",
@@ -2745,7 +2812,8 @@
         "events": "select_content → page_view",
         "fixed_values": "item_id=tab_extrato · depois page_path=/extrato",
         "note": "",
-        "print": "docs/prints/EL-68.jpg"
+        "print": "docs/prints/EL-68.jpg",
+        "crop": "docs/prints/recorte/EL-68.jpg"
       },
       {
         "id": "EL-69",
@@ -2757,7 +2825,8 @@
         "events": "select_content → page_view",
         "fixed_values": "item_id=tab_pix · depois page_path=/pix",
         "note": "",
-        "print": "docs/prints/EL-69.jpg"
+        "print": "docs/prints/EL-69.jpg",
+        "crop": "docs/prints/recorte/EL-69.jpg"
       },
       {
         "id": "EL-70",
@@ -2769,7 +2838,8 @@
         "events": "select_content → page_view",
         "fixed_values": "item_id=tab_cartoes · depois page_path=/cartoes",
         "note": "",
-        "print": "docs/prints/EL-70.jpg"
+        "print": "docs/prints/EL-70.jpg",
+        "crop": "docs/prints/recorte/EL-70.jpg"
       },
       {
         "id": "EL-71",
@@ -2781,7 +2851,8 @@
         "events": "select_content → page_view",
         "fixed_values": "item_id=tab_investir · depois page_path=/investimentos",
         "note": "",
-        "print": "docs/prints/EL-71.jpg"
+        "print": "docs/prints/EL-71.jpg",
+        "crop": "docs/prints/recorte/EL-71.jpg"
       }
     ]
   }

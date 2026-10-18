@@ -177,15 +177,17 @@ def xlsx(path):
           "Eventos disparados, em ordem", "Valores fixos enviados", "Observação", "Arquivo do print", "Print (elemento destacado)"]
     mrows = [[m["id"], m["screen"], m["area"], m["element"], m["selector"], m["gesture"], m["events"],
               m["fixed_values"], m["note"], m["print"], ""] for m in c["tagMap"]]
+    # a coluna de print usa o recorte centrado no elemento, mais legível na célula
     sheet("Mapa de tagueamento", mh, mrows, [8, 14, 20, 26, 34, 18, 30, 44, 30, 24, 30], mono_cols=("Seletor no código",))
     from openpyxl.drawing.image import Image as XLImage
     ws = wb["Mapa de tagueamento"]
     for i, m in enumerate(c["tagMap"], start=2):
-        img_path = ROOT / m["print"]
+        img_path = ROOT / m.get("crop", m["print"])
         if not img_path.exists():
             continue
         img = XLImage(str(img_path))
-        img.width, img.height = 200, int(200 * img.height / img.width)
+        w = 240 if "recorte" in str(img_path) else 200
+        img.width, img.height = w, int(w * img.height / img.width)
         ws.add_image(img, f"K{i}")
         ws.row_dimensions[i].height = img.height * 0.75 + 6
     ws.freeze_panes = "B2"
