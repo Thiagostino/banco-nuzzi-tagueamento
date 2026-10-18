@@ -1,0 +1,24 @@
+{
+  "name": "banco-nuzzi",
+  "owner": {
+    "name": "Thiago D'Agostino"
+  },
+  "metadata": {
+    "description": "Tracking plan do app fictício Banco Nuzzi, documentado para pessoas e agentes de IA",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "banco-nuzzi-tagueamento",
+      "source": "./plugins/banco-nuzzi-tagueamento",
+      "description": "Taxonomia, instrumentação e auditoria do dataLayer do app Banco Nuzzi",
+      "version": "1.0.0",
+      "author": {
+        "name": "Thiago D'Agostino"
+      },
+      "license": "MIT",
+      "keywords": ["tagueamento", "dataLayer", "gtm", "ga4", "tracking-plan", "governanca", "lgpd"],
+      "category": "analytics"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tracking plan do Banco Nuzzi",
+  "type": "object",
+  "required": ["name", "version", "conventions", "trackingPlan", "catalogs"],
+  "properties": {
+    "name": { "type": "string" },
+    "version": { "type": "string" },
+    "updatedAt": { "type": "string" },
+    "trackingPlan": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "eventName", "category", "status", "owner", "description", "aiDescription", "aiUses", "connectsTo", "eventProperties", "dataLayerPush", "gtm", "implementationLocations"],
+        "properties": {
+          "eventName": { "type": "string", "pattern": "^[a-z]+(_[a-z]+)*$" },
+          "status": { "enum": ["Implementado", "Em homologação", "Aprovado", "Ajustar", "Descontinuado"] },
+          "description": {
+            "type": "object",
+            "required": ["behavior", "trigger", "disambiguation", "useCases", "keyProperties", "technical"]
+          },
+          "aiUses": {
+            "type": "object",
+            "required": ["answerQuestions", "makeDecisions"]
+          },
+          "eventProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "type", "required", "description", "possibleValues", "example", "lgpd"],
+              "properties": {
+                "name": { "type": "string", "pattern": "^[a-z]+(_[a-z]+)*$" },
+                "type": { "enum": ["string", "number", "boolean"] }
+              }
+            }
+          },
+          "implementationLocations": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["filePath", "codeContext"]
+            }
+          }
+        }
+      }
+    },
+    "catalogs": {
+      "type": "object",
+      "required": ["banners", "screens", "elements", "journeys"]
+    }
+  }
+}

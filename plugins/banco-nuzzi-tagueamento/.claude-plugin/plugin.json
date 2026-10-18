@@ -1,0 +1,8 @@
+{
+  "name": "banco-nuzzi-tagueamento",
+  "description": "Taxonomia, instrumentação e auditoria do dataLayer do app Banco Nuzzi",
+  "version": "1.0.0",
+  "author": {
+    "name": "Thiago D'Agostino"
+  }
+}
