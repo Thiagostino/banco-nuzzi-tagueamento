@@ -1,0 +1,454 @@
+<title>TagOps com IA</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: player com palco 16:9 (protótipo do TagOps) escalado para a largura; controles e cenas abaixo. */
+:root{
+  --bg:#eef0f4; --surface:#ffffff; --fg:#141a26; --muted:#5b6475; --line:#d9dde6; --accent:#e8941a; --accent-ink:#1b1206; --chip:#e4e7ee;
+  --font-ui:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif; --font-code:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0d1119;--surface:#161c28;--fg:#e8ebf2;--muted:#9aa3b5;--line:#2a3243;--accent:#f3a640;--accent-ink:#1b1206;--chip:#222a39;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d1119;--surface:#161c28;--fg:#e8ebf2;--muted:#9aa3b5;--line:#2a3243;--accent:#f3a640;--accent-ink:#1b1206;--chip:#222a39;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-ui);}
+.wrap{max-width:1180px;margin:0 auto;padding-block:20px 32px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:14px}
+.head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px}
+.head h1{margin:0;font-size:clamp(20px,3vw,28px);font-weight:800;letter-spacing:-.01em;text-wrap:balance}
+.head p{margin:0;color:var(--muted);font-size:14px}
+.frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#0b1220;box-shadow:0 10px 30px rgba(10,15,30,.18)}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{font:600 14px var(--font-ui);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:8px;padding:9px 14px;cursor:pointer}
+.btn:focus-visible,.scene:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.voice{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-left:auto;flex-wrap:wrap}
+.voice select{font:13px var(--font-ui);background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:6px;max-width:260px}
+.scenes{display:flex;flex-wrap:wrap;gap:6px}
+.scene{font:600 12.5px var(--font-ui);border:1px solid var(--line);background:var(--chip);color:var(--fg);border-radius:999px;padding:6px 11px;cursor:pointer}
+.scene[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.note{font-size:13px;color:var(--muted);max-width:75ch;margin:0}
+
+/* ---------- Palco (look fixo do app TagOps, um tema só) ---------- */
+#stage{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:0 0;background:#f3f4f7;color:#111827;font-family:var(--font-ui);overflow:hidden}
+.top{height:56px;background:#0b1220;display:flex;align-items:center;gap:14px;padding:0 20px;color:#fff}
+.logo{font-weight:800;font-size:21px}.logo b{color:#f5a524}
+.logo small{font-weight:600;font-size:14px;color:#c7d2fe;margin-left:6px}
+.proj{font-size:12px;color:#9ca3af}
+.sim{margin-left:auto;font-size:11px;font-weight:700;color:#fed7aa;background:#7c2d12;border:1px solid #f97316;border-radius:999px;padding:4px 10px}
+.side{position:absolute;left:0;top:56px;bottom:0;width:178px;background:#111827;padding:14px 10px;display:flex;flex-direction:column;gap:4px}
+.nav{display:flex;align-items:center;gap:10px;color:#cbd5e1;font-size:13.5px;font-weight:600;padding:9px 10px;border-radius:8px}
+.nav i{width:16px;height:16px;border:2px solid #4b5563;border-radius:4px;flex:none}
+.nav.on{background:#1f2937;color:#fff}.nav.on i{border-color:#f5a524}
+.main{position:absolute;left:178px;top:56px;right:0;bottom:0;padding:22px 26px 90px}
+.view{display:none;zoom:1.2}.view.on{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:.2;transform:translateY(6px)}to{opacity:1;transform:none}}
+h2{margin:0 0 4px;font-size:22px;font-weight:800}
+.lead{margin:0 0 14px;color:#6b7280;font-size:13.5px}
+.tag{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:#eef2ff;color:#4338ca;vertical-align:middle;margin-left:6px}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:14px 16px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.b{display:inline-block;font:600 12.5px var(--font-ui);padding:7px 13px;border-radius:7px;border:1px solid #e5e7eb;background:#fff;color:#111827}
+.b.p{background:#f5a524;border-color:#f5a524}.b.ai{background:#4f46e5;border-color:#4f46e5;color:#fff}
+.b.pressed{transform:scale(.96);filter:brightness(.92)}
+.btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+code,.mono{font-family:var(--font-code);font-size:11.5px}
+code{color:#9a3412}
+.in{display:flex;gap:8px;align-items:center}
+.in .box{flex:1;border:1px solid #d1d5db;border-radius:8px;padding:8px 10px;font-family:var(--font-code);font-size:12px;background:#fff;min-height:34px;color:#374151}
+.status{font-size:12.5px;color:#4b5563;margin:10px 0 6px;min-height:18px}
+.spin{display:inline-block;width:11px;height:11px;border:2px solid #c7d2fe;border-top-color:#4f46e5;border-radius:50%;animation:sp .8s linear infinite;vertical-align:-1px;margin-right:6px}
+@keyframes sp{to{transform:rotate(360deg)}}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;color:#6b7280;font-weight:600;border-bottom:1px solid #e5e7eb;padding:6px 6px}
+td{border-bottom:1px solid #f1f5f9;padding:7px 6px;vertical-align:top}
+tr.hid{opacity:0}tr.show{animation:fade .4s ease forwards}
+.src{font-size:10.5px;font-weight:700;border-radius:999px;padding:2px 7px;background:#f3f4f6;color:#374151}
+.edit{outline:2px solid #4f46e5;border-radius:4px;background:#eef2ff}
+.ok{color:#16a34a;font-weight:700}.wa{color:#d97706;font-weight:700}.er{color:#dc2626;font-weight:700}
+.badge{display:inline-block;font-size:11px;font-weight:700;border-radius:999px;padding:3px 9px}
+.badge.g{background:#dcfce7;color:#166534}.badge.y{background:#ffedd5;color:#9a3412}.badge.i{background:#eef2ff;color:#4338ca}.badge.r{background:#fee2e2;color:#b91c1c}
+.file{border:1px dashed #cbd5e1;border-radius:8px;padding:10px 12px;font-size:12.5px}
+pre.md{margin:8px 0 0;background:#0b1220;color:#e5e7eb;border-radius:8px;padding:10px 12px;font:11.5px/1.55 var(--font-code);white-space:pre-wrap;min-height:150px}
+pre.md .h{color:#fbbf24}.pre-k{color:#93c5fd}
+.diff{margin-top:8px;border:1px solid #e5e7eb;border-radius:8px;font:11.5px/1.6 var(--font-code);overflow:hidden}
+.diff div{padding:0 10px}.diff .add{background:#ecfdf5;color:#065f46}.diff .ctx{color:#6b7280}
+.check{display:flex;gap:8px;align-items:baseline;font-size:13px;padding:6px 0;border-bottom:1px solid #f1f5f9}
+.check.hid{opacity:0}.check.show{animation:fade .4s ease forwards}
+.sum{font-size:28px;font-weight:800}
+.alert{border-radius:10px;padding:11px 13px;font-size:13px}
+.alert.e{background:#fee2e2;border:1px solid #fca5a5}.alert.w{background:#fef3c7;border:1px solid #fcd34d}
+.cons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.con{background:#fff;border:1px solid #fde68a;border-radius:8px;padding:8px 10px;font-size:12.5px}
+.con b{display:block;font-size:11px;color:#92400e;text-transform:uppercase;letter-spacing:.04em}
+.people{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.person{font-size:12px;font-weight:600;border:1px solid #e5e7eb;border-radius:999px;padding:4px 10px;background:#fff}
+.person.sent{border-color:#86efac;background:#f0fdf4;color:#166534}
+.q{background:#f3f4f6;border-radius:12px 12px 2px 12px;padding:9px 12px;font-size:13px;margin-left:auto;max-width:70%}
+.a{background:#eef2ff;border-radius:12px 12px 12px 2px;padding:11px 13px;font-size:13px;line-height:1.5;margin-top:10px}
+.bar{height:18px;background:#e5e7eb;border-radius:4px;position:relative}
+.bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:#4f46e5;border-radius:4px;transition:width 1.2s ease}
+.bar em{position:absolute;right:6px;top:1px;font-size:11px;font-style:normal}
+.fl{display:grid;grid-template-columns:130px 1fr;gap:6px;align-items:center;font-size:12px}
+.sugg{border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;font-size:12.5px;background:#fff}
+.sugg .h{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
+.ad{display:flex;gap:10px;align-items:center;margin-top:6px}
+.adimg{width:170px;height:84px;border-radius:8px;background:#0f2a4a;color:#fff;display:flex;flex-direction:column;justify-content:center;padding:8px 10px;font-size:11px;line-height:1.3}
+.adimg b{font-size:14px}
+.flow{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:14px}
+.st{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:10px;transition:all .4s}
+.st .n{display:inline-block;background:#e5e7eb;font-weight:800;font-size:11px;border-radius:5px;padding:1px 6px;margin-bottom:5px}
+.st.ai .n{background:#f5a524}.st.ai{background:#eef2ff;border-color:#c7d2fe}
+.st b{display:block;font-size:13px}.st small{color:#6b7280;font-size:11.5px}
+.st.lit{box-shadow:0 0 0 3px #f5a524;transform:translateY(-3px)}
+.big{font-size:40px;font-weight:800;line-height:1.1;letter-spacing:-.02em;margin:36px 0 6px}
+.big span{color:#4f46e5}
+.credit{margin-top:18px;font-size:13px;color:#6b7280}
+.toast{position:absolute;right:24px;top:72px;background:#111827;color:#fff;font-size:13px;border-radius:10px;padding:10px 14px;box-shadow:0 8px 20px rgba(0,0,0,.2);opacity:0;transform:translateY(-8px);transition:all .3s}
+.toast.on{opacity:1;transform:none}
+.cap{position:absolute;left:178px;right:0;bottom:0;padding:12px 28px 16px;background:linear-gradient(transparent,rgba(11,18,32,.88) 30%);color:#fff;font-size:19px;line-height:1.4;font-weight:600;min-height:70px;display:flex;align-items:flex-end}
+.cap span{text-wrap:balance;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+#cursor{position:absolute;left:640px;top:360px;width:22px;height:22px;z-index:20;transition:left .7s cubic-bezier(.4,.1,.2,1),top .7s cubic-bezier(.4,.1,.2,1);pointer-events:none}
+.ripple{position:absolute;width:36px;height:36px;margin:-18px 0 0 -18px;border-radius:50%;border:3px solid #f5a524;z-index:19;animation:rip .5s ease-out forwards;pointer-events:none}
+@keyframes rip{from{transform:scale(.3);opacity:1}to{transform:scale(1.4);opacity:0}}
+.caret::after{content:"|";animation:bl 1s steps(1) infinite;color:#4f46e5}
+@keyframes bl{50%{opacity:0}}
+body.kiosk{background:#0b1220}
+body.kiosk .wrap{max-width:none;padding:0}
+body.kiosk .head,body.kiosk .controls,body.kiosk .scenes,body.kiosk .note{display:none}
+body.kiosk .frame{border-radius:0;box-shadow:none}
+@media (prefers-reduced-motion: reduce){#cursor{transition:none}.view.on,tr.show,.check.show{animation:none;opacity:1}}
+</style>
+
+<div class="wrap">
+  <div class="head">
+    <h1>TagOps com IA</h1>
+    <p>Ideias de Thiago D'Agostino · simulação narrada do protótipo</p>
+  </div>
+
+  <div class="frame" id="frame">
+    <div id="stage" aria-label="Protótipo do TagOps com IA">
+      <div class="top"><div class="logo">Tag<b>Ops</b><small>· Assistente IA</small><div class="proj">Banco Nuzzi · projeto de teste</div></div><div class="sim">SIMULAÇÃO CONCEITUAL · DADOS FICTÍCIOS</div></div>
+      <div class="side">
+        <div class="nav on" data-nav="inicio"><i></i>Visão geral</div>
+        <div class="nav" data-nav="mapa"><i></i>Mapa de Tags</div>
+        <div class="nav" data-nav="entrega"><i></i>Entrega ao dev</div>
+        <div class="nav" data-nav="validacao"><i></i>Validação</div>
+        <div class="nav" data-nav="auditoria"><i></i>Auditoria</div>
+        <div class="nav" data-nav="insights"><i></i>Insights</div>
+      </div>
+      <div class="main">
+        <!-- Visão geral -->
+        <section class="view on" data-view="inicio">
+          <div class="big">Da Taxonomia à ativação,<br>com a <span>IA do TagOps</span></div>
+          <p class="lead" style="font-size:15px">As regras da Taxonomia e o Catálogo de Dados viram o contexto da IA. Cada etapa sugere; a pessoa revisa, edita e aprova.</p>
+          <div class="flow" id="flow">
+            <div class="st"><span class="n">Base</span><b>Taxonomia</b><small>nomes, tipos e valores aceitos</small></div>
+            <div class="st"><span class="n">Base</span><b>Catálogo de Dados</b><small>eventos e parâmetros</small></div>
+            <div class="st ai"><span class="n">1</span><b>Mapa por IA</b><small>link das telas → arquitetura</small></div>
+            <div class="st ai"><span class="n">2 · 3</span><b>Entrega ao dev</b><small>.md e PR pronto</small></div>
+            <div class="st ai"><span class="n">7</span><b>Validação</b><small>antes de produção</small></div>
+            <div class="st ai"><span class="n">4 · 5</span><b>Correção</b><small>com aviso de impacto</small></div>
+            <div class="st ai"><span class="n">6</span><b>Insights</b><small>e ativação com aceite</small></div>
+          </div>
+          <p class="credit" id="credit">Ideias de Thiago D'Agostino para o TagOps · nada é publicado, ativado ou corrigido sem o aceite de uma pessoa.</p>
+        </section>
+
+        <!-- Mapa -->
+        <section class="view" data-view="mapa">
+          <h2>Mapa de Tags · Pix <span class="tag">IA</span></h2>
+          <p class="lead">Cole o link das telas. A IA propõe a arquitetura usando a Taxonomia e o Catálogo do projeto.</p>
+          <div class="card">
+            <div class="in"><div class="box" id="url"></div><span class="b ai" id="gerar">Gerar com IA</span></div>
+            <div class="status" id="mstatus"></div>
+            <table>
+              <thead><tr><th>Tela · elemento</th><th>Evento</th><th>Parâmetros e valores esperados</th><th>Regra usada</th></tr></thead>
+              <tbody id="mrows">
+                <tr class="hid"><td>/pix · campo valor</td><td><code>form_start</code></td><td><code>form_id</code>=pix</td><td><span class="src">Catálogo</span></td></tr>
+                <tr class="hid"><td>/pix · Continuar</td><td><code>click</code></td><td id="cellEdit"><code>link_id</code>=pix_continuar · <code>outbound</code>=false</td><td><span class="src">Taxonomia</span></td></tr>
+                <tr class="hid"><td>/pix · Continuar</td><td><code>form_submit</code></td><td><code>step</code> ∈ {recusado, revisao} · <code>pix_key_type</code> ∈ {email, celular, cpf, cnpj, aleatoria}</td><td><span class="src">Catálogo</span></td></tr>
+                <tr class="hid"><td>/pix · Confirmar</td><td><code>form_submit</code></td><td><code>step</code>=confirmado · <code>value</code> number · <code>currency</code>=BRL</td><td><span class="src">Catálogo</span></td></tr>
+              </tbody>
+            </table>
+            <div class="btns"><span class="b" id="editar">Editar linhas</span><span class="b p" id="aprovar">Aprovar mapa</span><span id="aprovado"></span></div>
+          </div>
+        </section>
+
+        <!-- Entrega -->
+        <section class="view" data-view="entrega">
+          <h2>Entrega ao desenvolvedor <span class="tag">IA</span></h2>
+          <p class="lead">Junto com o link da documentação, um .md para a IA do dev, ou um PR pronto a partir do repositório dele.</p>
+          <div class="row2">
+            <div class="card">
+              <div class="file">📄 <b class="mono">tagueamento-pix.md</b> · gerado do mapa aprovado</div>
+              <pre class="md" id="md"></pre>
+              <div class="btns"><span class="b" id="copiar">Copiar link da documentação</span><span class="b p" id="baixar">Baixar .md</span></div>
+            </div>
+            <div class="card">
+              <div class="file" id="repo">🔗 Nenhum repositório vinculado</div>
+              <div class="btns"><span class="b" id="vincular">Vincular GitHub</span><span class="b ai" id="gerarpr">Gerar PR com IA</span></div>
+              <div id="pr" hidden>
+                <div style="margin-top:12px;font-weight:700;font-size:13.5px">PR #42 · feat(tracking): eventos do Pix <span class="badge i">aguardando revisão</span></div>
+                <div class="diff">
+                  <div class="ctx">src/pix/Continuar.tsx</div>
+                  <div class="add">+ track('click', { link_id: 'pix_continuar', outbound: false })</div>
+                  <div class="add">+ track('form_submit', { form_id: 'pix', step, pix_key_type })</div>
+                  <div class="ctx">src/pix/Confirmar.tsx</div>
+                  <div class="add">+ track('form_submit', { form_id: 'pix', step: 'confirmado', value, currency: 'BRL' })</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Validação -->
+        <section class="view" data-view="validacao">
+          <h2>Validação antes de produção <span class="tag">IA</span></h2>
+          <p class="lead">Opcional para o dev: roda no PR, no pipeline ou numa URL de homologação. Dispensa uma pessoa só para validar.</p>
+          <div class="row2">
+            <div class="card">
+              <div style="font-weight:700;font-size:13.5px;margin-bottom:6px">PR #42 · check TagOps IA <span class="badge y" id="vstatus">rodando</span></div>
+              <div class="check hid"><span class="ok">✓</span><span>4 eventos encontrados, todos no Catálogo</span></div>
+              <div class="check hid"><span class="ok">✓</span><span>Nomes de evento e de parâmetro seguem a Taxonomia</span></div>
+              <div class="check hid" id="cval"><span class="wa" id="cvalIcon">!</span><span id="cvalTxt"><code>value</code> enviado como string em Confirmar.tsx:41 (esperado number)</span></div>
+              <div class="check hid"><span class="ok">✓</span><span>Nenhum dado pessoal no payload</span></div>
+              <div class="btns"><span class="b ai" id="corrigir">Pedir correção à IA</span><span class="b" id="ver">Ver detalhes</span></div>
+            </div>
+            <div class="card" style="display:grid;align-content:start;gap:8px">
+              <div style="font-size:12.5px;color:#6b7280">Disparos que batem com o catálogo</div>
+              <div class="sum" id="vsum">0 de 15</div>
+              <div style="font-size:12.5px;color:#6b7280" id="vcommit">Último commit: feat(tracking): eventos do Pix</div>
+              <div id="vok" hidden><span class="badge g">Pronto para revisão humana do código</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Auditoria -->
+        <section class="view" data-view="auditoria">
+          <h2>Auditoria em produção <span class="tag">IA + BigQuery</span></h2>
+          <p class="lead">O TagOps compara o que chega no BigQuery com o Catálogo e prepara a correção.</p>
+          <div class="alert e"><b>Divergência:</b> <code>element_type</code> chega com a lista inteira ("cta, link, shortcut…") em 38% dos <code>click</code> dos últimos 7 dias.</div>
+          <div class="btns"><span class="b" id="gmd">Gerar .md de correção</span><span class="b ai" id="gpr43">Abrir PR de correção</span><span id="pr43"></span></div>
+          <div class="alert w" style="margin-top:12px" id="impacto">
+            <b>Antes de corrigir:</b> o valor passa a ser um item só (ex.: <code>cta</code>). Quem usa esse dado pode ver queda ou quebra de série.
+            <div class="cons">
+              <div class="con"><b>Dashboard</b>Power BI · Uso de botões</div>
+              <div class="con"><b>CRM</b>Audiência clicou_cartao</div>
+              <div class="con"><b>Mídia paga</b>Meta Ads · Pix Ágil</div>
+              <div class="con"><b>Banner interno</b>inicio_oferta_2</div>
+            </div>
+            <div class="people"><span class="person">Dev</span><span class="person">Dona do produto</span><span class="person">Analista de dados</span></div>
+          </div>
+          <div class="btns"><span class="b p" id="notificar">Avisar e agendar a troca para 25/10</span></div>
+        </section>
+
+        <!-- Insights -->
+        <section class="view" data-view="insights">
+          <h2>Insights TagOps <span class="tag">IA + BigQuery</span></h2>
+          <div class="row2">
+            <div class="card">
+              <div class="in"><div class="box" id="pergunta" style="font-family:var(--font-ui);font-size:13px"></div><span class="b ai" id="perguntar">Perguntar</span></div>
+              <div id="resposta" hidden>
+                <div class="q" style="margin-top:12px">Como está o funil do Pix nesta semana?</div>
+                <div class="a">
+                  <div class="fl"><span>Início (form_start)</span><div class="bar"><i data-w="100"></i><em>10.420</em></div>
+                  <span>Revisão</span><div class="bar"><i data-w="62"></i><em>62% · −9 p.p.</em></div>
+                  <span>Confirmado</span><div class="bar"><i data-w="55"></i><em>55%</em></div></div>
+                  <div style="margin-top:8px">A queda está em <code>pix_key_type</code>=celular, com <code>error_type</code>=chave_invalida 31% maior. Sugestão de produto: máscara de telefone e aviso antes de enviar.</div>
+                </div>
+              </div>
+            </div>
+            <div style="display:grid;gap:10px;align-content:start" id="suggs" hidden>
+              <div class="sugg"><div class="h"><b>Ativação · Google Ads (API)</b><span class="badge y" id="adsSt">aguarda seu aceite</span></div>Nova linha de campanha para quem parou na chave por celular. Teste de 7 dias com orçamento limitado.
+                <div class="btns"><span class="b">Editar</span><span class="b">Recusar</span><span class="b ai" id="ativar">Aprovar e ativar</span></div></div>
+              <div class="sugg"><div class="h"><b>Peça criativa · Guia de Comunicação</b><span class="badge y">aguarda seu aceite</span></div>
+                <div class="ad"><div class="adimg"><b>Pix pelo celular?</b>Confira o número antes de enviar. Rápido e seguro.</div><div style="font-size:12px;color:#374151">Tom e termos do guia da marca. Também serve para CRM e banner interno.</div></div></div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="toast" id="toast"></div>
+      <svg id="cursor" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 2l7 19 2.6-7.4L20 11z" fill="#fff" stroke="#111827" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <div class="cap" id="cap"><span id="capTxt">Clique em Assistir para começar.</span></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn primary" id="play" type="button">▶ Assistir</button>
+    <button class="btn" id="pause" type="button" disabled>Pausar</button>
+    <div class="voice">
+      <label><input type="checkbox" id="voiceOn" checked> Narração</label>
+      <select id="voiceSel" aria-label="Voz da narração"></select>
+    </div>
+  </div>
+  <div class="scenes" id="scenes" role="list"></div>
+  <p class="note">A narração usa a voz em português do seu navegador ou dispositivo, e as legendas acompanham. É uma simulação: telas, números e ações são fictícios.</p>
+</div>
+
+<script>
+(() => {
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const stage = $('#stage'), frame = $('#frame');
+const kiosk = location.hash === '#gravar';
+if (kiosk) document.body.classList.add('kiosk');
+function fit(){ const s = frame.clientWidth / 1280; stage.style.transform = `scale(${s})`; stage.dataset.s = s; }
+new ResizeObserver(fit).observe(frame); fit();
+
+/* ---------- voz ---------- */
+let voices = [];
+function loadVoices(){
+  try{ voices = (speechSynthesis.getVoices()||[]).filter(v=>/^pt/i.test(v.lang)); }catch(e){ voices=[]; }
+  const sel = $('#voiceSel'); const prev = sel.value; sel.innerHTML='';
+  if(!voices.length){ sel.innerHTML='<option value="">Sem voz em português neste dispositivo</option>'; return; }
+  const score = v => (/pt-BR/i.test(v.lang)?10:0) + (/natural|neural|online/i.test(v.name)?5:0) + (/google/i.test(v.name)?3:0) + (/francisca|antonio|thalita|maria|luciana/i.test(v.name)?2:0);
+  voices.sort((a,b)=>score(b)-score(a));
+  voices.forEach((v,i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=`${v.name} (${v.lang})`; sel.appendChild(o); });
+  if(prev) sel.value=prev;
+}
+if('speechSynthesis' in window){ loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+
+/* ---------- motor da simulação ---------- */
+let RUN = 0, paused = false;
+class Stop extends Error{}
+const guard = t => { if (t !== RUN) throw new Stop(); };
+async function wait(ms, t){ let e=0; while(e<ms){ await new Promise(r=>setTimeout(r,40)); guard(t); if(!paused) e+=40; } }
+function sentences(txt){ return txt.match(/[^.!?]+[.!?]+|[^.!?]+$/g).map(s=>s.trim()).filter(Boolean); }
+async function speakOne(s, t){
+  const useVoice = !kiosk && $('#voiceOn').checked && voices.length && 'speechSynthesis' in window;
+  const words = s.split(/\s+/).length;
+  if(!useVoice){ await wait(Math.max(1400, words*360), t); return; }
+  const u = new SpeechSynthesisUtterance(s.replace(/\.md\b/g,' ponto M D').replace(/\bPR\b/g,'P R')); const v = voices[+$('#voiceSel').value||0];
+  u.voice = v; u.lang = v.lang; u.rate = 1.04;
+  let done=false; u.onend = u.onerror = () => done=true;
+  speechSynthesis.speak(u);
+  const limit = Date.now() + words*900 + 4000;
+  let limit2 = limit;
+  while(!done){ await new Promise(r=>setTimeout(r,60)); if(t!==RUN){ speechSynthesis.cancel(); throw new Stop(); } if(paused){ limit2+=60; continue; } if(Date.now()>limit2){ speechSynthesis.cancel(); break; } }
+  await wait(180, t);
+}
+async function say(txt, t){ $('#capTxt').textContent = txt; for(const s of sentences(txt)) await speakOne(s, t); }
+const both = (...ps) => Promise.all(ps);
+
+function pos(el){ const s=+stage.dataset.s||1, r=el.getBoundingClientRect(), b=stage.getBoundingClientRect(); return {x:(r.left-b.left)/s + r.width/s/2, y:(r.top-b.top)/s + r.height/s/2}; }
+async function move(el, t){ if(typeof el==='string') el=$(el); const p=pos(el); const c=$('#cursor'); c.style.left=(p.x-3)+'px'; c.style.top=(p.y-2)+'px'; await wait(760, t); }
+async function click(el, t){ if(typeof el==='string') el=$(el); await move(el, t); const p=pos(el); const r=document.createElement('div'); r.className='ripple'; r.style.left=p.x+'px'; r.style.top=p.y+'px'; stage.appendChild(r); setTimeout(()=>r.remove(),600); el.classList.add('pressed'); await wait(220,t); el.classList.remove('pressed'); }
+async function type(el, txt, t, speed=38){ if(typeof el==='string') el=$(el); el.textContent=''; el.classList.add('caret'); for(const ch of txt){ el.textContent+=ch; await wait(speed,t);} el.classList.remove('caret'); }
+function go(name){ $$('.view').forEach(v=>v.classList.toggle('on', v.dataset.view===name)); $$('.nav').forEach(n=>n.classList.toggle('on', n.dataset.nav===name)); }
+async function nav(name, t){ await click(`.nav[data-nav="${name}"]`, t); go(name); await wait(350,t); }
+async function toast(txt, t, ms=2200){ const el=$('#toast'); el.textContent=txt; el.classList.add('on'); await wait(ms,t); el.classList.remove('on'); }
+
+/* estado inicial de cada tela, para poder pular entre cenas */
+function reset(){
+  $('#url').textContent=''; $('#mstatus').textContent=''; $$('#mrows tr').forEach(r=>{r.className='hid'}); $('#aprovado').innerHTML='';
+  $('#cellEdit').classList.remove('edit'); $('#cellEdit').innerHTML='<code>link_id</code>=pix_continuar · <code>outbound</code>=false';
+  $('#md').textContent=''; $('#repo').textContent='🔗 Nenhum repositório vinculado'; $('#pr').hidden=true;
+  $$('[data-view="validacao"] .check').forEach(c=>c.className='check hid'); $('#vstatus').textContent='rodando'; $('#vstatus').className='badge y';
+  $('#cvalIcon').className='wa'; $('#cvalIcon').textContent='!'; $('#cvalTxt').innerHTML='<code>value</code> enviado como string em Confirmar.tsx:41 (esperado number)';
+  $('#vsum').textContent='0 de 15'; $('#vcommit').textContent='Último commit: feat(tracking): eventos do Pix'; $('#vok').hidden=true;
+  $('#pr43').innerHTML=''; $$('.person').forEach(p=>p.classList.remove('sent'));
+  $('#pergunta').textContent=''; $('#resposta').hidden=true; $$('.bar i').forEach(i=>i.style.width='0'); $('#suggs').hidden=true; $('#adsSt').textContent='aguarda seu aceite'; $('#adsSt').className='badge y';
+  $$('.st').forEach(s=>s.classList.remove('lit'));
+}
+
+/* ---------- roteiro ---------- */
+const MD = `# Tagueamento · Pix (Banco Nuzzi)
+## form_submit
+- quando: toque em Continuar ou Confirmar
+- form_id: "pix" · step: recusado | revisao | confirmado
+- value: number (só em confirmado) · currency: "BRL"
+- nunca enviar: chave Pix, saldo, nome
+## click
+- link_id: lista fechada da Taxonomia · outbound: false`;
+
+const SCENES = [
+ {name:'Abertura', run: async t => {
+   go('inicio'); await move('.big', t);
+   await say('Este é um conceito de como a IA do TagOps pode acompanhar o tagueamento do começo ao fim.', t);
+   await both(say('Tudo parte de duas bases: a Taxonomia, com as regras de nomes, tipos e valores esperados, e o Catálogo de Dados, com os eventos e parâmetros.', t),
+     (async()=>{ await move('#flow .st:nth-child(1)', t); $('#flow .st:nth-child(1)').classList.add('lit'); await wait(1600,t); await move('#flow .st:nth-child(2)', t); $('#flow .st:nth-child(2)').classList.add('lit'); })());
+   await say('Em cima disso, a IA trabalha em cada etapa. E a pessoa sempre revisa, edita e aprova.', t);
+ }},
+ {name:'1 · Mapa por IA', run: async t => {
+   go('inicio'); await nav('mapa', t);
+   await both(say('No Mapa de Tags, a pessoa só cola o link das telas.', t), (async()=>{ await click('#url', t); await type('#url','https://figma.com/file/…/Banco-Nuzzi?node=Pix', t, 30); })());
+   await click('#gerar', t);
+   $('#mstatus').innerHTML='<span class="spin"></span>Lendo o protótipo do Pix e aplicando a Taxonomia do projeto…';
+   await both(say('A IA lê o protótipo do Pix, encontra três telas e propõe cada elemento com o evento, os parâmetros e os valores esperados.', t),
+     (async()=>{ await wait(1500,t); for(const r of $$('#mrows tr')){ r.className='show'; await wait(650,t);} $('#mstatus').innerHTML='<span class="ok">✓</span> 3 telas · 4 linhas · nenhum nome fora da Taxonomia'; })());
+   await both(say('Nada fica travado: dá para editar qualquer linha antes de aprovar.', t),
+     (async()=>{ await click('#cellEdit', t); $('#cellEdit').classList.add('edit'); await wait(300,t); $('#cellEdit').insertAdjacentHTML('beforeend',' · <code>page_path</code>=<span id="pp"></span>'); await type('#pp','/pix', t, 90); $('#cellEdit').classList.remove('edit'); })());
+   await click('#aprovar', t); $('#aprovado').innerHTML='<span class="badge g">Aprovado por Thiago · 18/10</span>';
+   await say('Aprovado, o mapa vira a especificação oficial do Pix.', t);
+ }},
+ {name:'2 · .md para o dev', run: async t => {
+   go('mapa'); await nav('entrega', t);
+   await both(say('Na entrega, além do link da documentação, o desenvolvedor recebe um arquivo .md pronto para usar com a IA dele no código.', t),
+     (async()=>{ await move('#md', t); await type('#md', MD, t, 9); })());
+   await click('#baixar', t); await toast('tagueamento-pix.md pronto para o dev', t, 1600);
+ }},
+ {name:'3 · PR pelo GitHub', run: async t => {
+   go('entrega'); if(!$('#md').textContent) $('#md').textContent=MD;
+   await both(say('Se preferir, o dev vincula o GitHub, só no repositório que escolher.', t),
+     (async()=>{ await click('#vincular', t); await wait(500,t); $('#repo').innerHTML='🔗 <b class="mono">banco-nuzzi/app</b> · vinculado <span class="badge g">só este repositório</span>'; })());
+   await both(say('A IA do TagOps lê o código e abre um pull request com o tagueamento. O dev só revisa e publica.', t),
+     (async()=>{ await click('#gerarpr', t); await wait(900,t); $('#pr').hidden=false; await move('#pr .diff', t); })());
+ }},
+ {name:'7 · Validação', run: async t => {
+   go('entrega'); await nav('validacao', t);
+   await both(say('Antes de subir para produção, se o dev quiser, a IA valida o tagueamento no próprio PR.', t),
+     (async()=>{ const cs=$$('[data-view="validacao"] .check'); for(const c of cs){ c.className='check show'; await wait(700,t);} $('#vsum').textContent='14 de 15'; $('#vstatus').textContent='1 alerta'; })());
+   await both(say('Ela confere eventos, parâmetros, tipos e valores contra o catálogo, e se tem algum dado pessoal no payload. Aqui, o value está indo como texto.', t),
+     move('#cval', t));
+   await click('#corrigir', t);
+   await both(say('A correção sai em um clique, e ninguém precisa parar só para validar na mão.', t),
+     (async()=>{ await wait(1200,t); $('#vcommit').textContent='Último commit: fix(tracking): value como number'; $('#cvalIcon').className='ok'; $('#cvalIcon').textContent='✓'; $('#cvalTxt').innerHTML='<code>value</code> enviado como number'; $('#vsum').textContent='15 de 15'; $('#vstatus').textContent='aprovado'; $('#vstatus').className='badge g'; $('#vok').hidden=false; })());
+ }},
+ {name:'4 · 5 · Correção e impacto', run: async t => {
+   go('validacao'); await nav('auditoria', t);
+   await both(say('Quando o tagueamento já está em produção, o TagOps compara o que chega no BigQuery com o catálogo.', t), move('.alert.e', t));
+   await both(say('Achou divergência, ele gera o .md ou já abre o PR de correção.', t),
+     (async()=>{ await click('#gpr43', t); $('#pr43').innerHTML='<span class="badge i">PR #43 aberto</span>'; })());
+   await both(say('E antes de trocar o dado, ele mostra quem usa: um dashboard, uma audiência de CRM, uma campanha de mídia e um banner interno. A série vai mudar, então pode haver queda de performance.', t), move('#impacto .cons', t));
+   await click('#notificar', t);
+   await both(say('Dev, dona do produto e analista de dados são avisados, e a troca fica agendada.', t),
+     (async()=>{ for(const p of $$('.person')){ p.classList.add('sent'); await wait(350,t);} await toast('Aviso enviado a 3 pessoas · troca em 25/10', t, 2000); })());
+ }},
+ {name:'6 · Insights e ativação', run: async t => {
+   go('auditoria'); await nav('insights', t);
+   await both(say('Com o BigQuery ligado, a pessoa pergunta sobre o funil.', t), (async()=>{ await click('#pergunta', t); await type('#pergunta','Como está o funil do Pix nesta semana?', t, 32); })());
+   await click('#perguntar', t); $('#resposta').hidden=false; await wait(200,t); $$('.bar i').forEach(i=>i.style.width=i.dataset.w+'%');
+   await both(say('E recebe a resposta com o motivo: a revisão caiu nove pontos, concentrada na chave Pix por celular.', t), move('#resposta .a', t));
+   $('#suggs').hidden=false;
+   await both(say('Daí saem sugestões: uma linha de campanha nova pela API do Google Ads e uma peça criativa no tom do guia de comunicação da empresa.', t), move('#suggs', t));
+   await click('#ativar', t); $('#adsSt').textContent='ativa · aprovada por Thiago'; $('#adsSt').className='badge g';
+   await say('Nada é ativado sem o aceite da pessoa.', t);
+ }},
+ {name:'Fechamento', run: async t => {
+   go('insights'); await nav('inicio', t);
+   await both(say('Da Taxonomia à ativação, a IA faz o trabalho repetitivo e as pessoas decidem.', t),
+     (async()=>{ for(const s of $$('#flow .st')){ s.classList.add('lit'); await wait(380,t);} })());
+   await both(say('Essas ideias estão detalhadas na planilha de feedbacks do TagOps.', t), move('#credit', t));
+ }},
+];
+
+/* ---------- player ---------- */
+const scenesEl = $('#scenes');
+SCENES.forEach((s,i)=>{ const b=document.createElement('button'); b.type='button'; b.className='scene'; b.textContent=s.name; b.setAttribute('role','listitem'); b.onclick=()=>start(i); scenesEl.appendChild(b); });
+function mark(i){ $$('.scene').forEach((b,j)=>b.setAttribute('aria-current', String(i===j))); }
+async function start(from=0){
+  const t = ++RUN; paused=false; try{ speechSynthesis.cancel(); }catch(e){}
+  $('#play').textContent='↺ Recomeçar'; $('#pause').disabled=false; $('#pause').textContent='Pausar';
+  reset();
+  // prepara o estado das cenas anteriores ao ponto de partida
+  if(from>=2){ $$('#mrows tr').forEach(r=>r.className='show'); $('#url').textContent='https://figma.com/file/…/Banco-Nuzzi?node=Pix'; $('#aprovado').innerHTML='<span class="badge g">Aprovado por Thiago · 18/10</span>'; }
+  if(from>=3){ $('#md').textContent=MD; }
+  try{
+    for(let i=from;i<SCENES.length;i++){ mark(i); await SCENES[i].run(t); await wait(500,t); }
+    $('#capTxt').textContent='Fim da simulação. Escolha uma cena abaixo para rever.'; $('#pause').disabled=true; window.__done=true;
+  }catch(e){ if(!(e instanceof Stop)) throw e; }
+}
+$('#play').onclick=()=>start(0);
+$('#pause').onclick=()=>{ paused=!paused; $('#pause').textContent=paused?'Continuar':'Pausar'; try{ paused?speechSynthesis.pause():speechSynthesis.resume(); }catch(e){} };
+$('#voiceOn').onchange=()=>{ if(!$('#voiceOn').checked){ try{ speechSynthesis.cancel(); }catch(e){} } };
+mark(-1);
+if(kiosk) setTimeout(()=>start(0), 600);
+})();
+</script>
